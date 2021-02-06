@@ -1,5 +1,6 @@
 function setup(){
-    createCanvas(400, 400);
+    let c = createCanvas(400, 400);
+    c.position(10, 100, "sticky");
 }
 var angle = 0;
 var angleSpeed = 0.5;
