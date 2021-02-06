@@ -1,3 +1,4 @@
+new p5();
 function setup(){
     let c = createCanvas(400, 400);
     c.position(10, 100, "sticky");
