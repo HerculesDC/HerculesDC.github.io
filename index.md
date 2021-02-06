@@ -6,4 +6,6 @@ This page should be updated every now and then with whatever project I may be wo
 Those will likely be a mix of artsy ones with game-related projects developed using different 
 platforms/libraries/frameworks.
 
+[Click here](./MoonPhases/MoonPhases.html) for the first project: Moon Phases with Names
+
 Bookmark for updates 🤗
