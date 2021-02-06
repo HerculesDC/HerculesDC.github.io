@@ -94,7 +94,7 @@ function phaseName(x, y, phaseAngle){
     fill(0);
     noStroke();
     rectMode(CORNERS);
-    //rect(0, 0.85*height, width, height);
+    rect(0, 0.85*height, width, height);
     fill(200);
     textSize(height/10);
     textAlign(CENTER, BOTTOM);
