@@ -1,10 +1,10 @@
 new p5();
 function setup(){
     let c = createCanvas(400, 400);
-    c.position(10, 100, "sticky");
-  colorMode(RGB, 255, 255, 255, 255);
-  angleMode(RADIANS);
-  frameRate(60);
+    c.position(10, 100, "float:left");
+    colorMode(RGB, 255, 255, 255, 255);
+    angleMode(RADIANS);
+    frameRate(60);
 }
 
 var angle = 0;
@@ -94,7 +94,7 @@ function phaseName(x, y, phaseAngle){
     fill(0);
     noStroke();
     rectMode(CORNERS);
-    rect(0, 0.85*height, width, height);
+    //rect(0, 0.85*height, width, height);
     fill(200);
     textSize(height/10);
     textAlign(CENTER, BOTTOM);

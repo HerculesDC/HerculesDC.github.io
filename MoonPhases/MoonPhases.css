@@ -1,14 +1,16 @@
 body {
-  font-family: system-ui;
-  background: #18515E;
-  color: white;
-  text-align: center;
-  font-size: 12;
+    font-family: system-ui;
+    background: #18515E;
+    background-image: url(./assets/background.jpg);
 }
 h1{
-    
+    color: silver;
+    text-align: center;
+    font-size: 25;  
 }
 p{
-    text-align:left;
-    /*font-size:15;*/
+    color: white;
+    margin-left: 420px;
+    text-align: left;
+    font-size:15;
 }
