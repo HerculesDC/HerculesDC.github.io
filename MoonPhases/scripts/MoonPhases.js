@@ -136,8 +136,13 @@ function phaseName(x, y, phaseAngle){
 }
 function mouseClicked(){angleSpeed *= -1;};
 background(nightSky);
+function overlay(){
+    fill(red(nightSky), green(nightSky), blue(nightSky), 10);
+    rect(-1, -1, width+2, height+2);
+}
 function draw(){
-    var dt = 1/60;
+    overlay();
+    var dt = 1/60; //tried using frameRate or frameRate(), but it didn't work
     angle += angleSpeed*dt + TWO_PI*((angle<0 &&angleSpeed < 0)-(angle >TWO_PI &&angleSpeed>0));    
     push();
     translate(width/2, height/2.5);
@@ -146,7 +151,7 @@ function draw(){
     var rotAngle = (angle-PI)*angleFactor;
     rotate(rotAngle);
     noStroke();
-    twoColorCrescent(0, 0, 150, angle, color(200, 20), color(0,0,32, 20));
+    twoColorCrescent(0, 0, 150, angle, color(210, 20), color(0,0,32, 20));
     pop();
     phaseName(200, 390, angle);
 };

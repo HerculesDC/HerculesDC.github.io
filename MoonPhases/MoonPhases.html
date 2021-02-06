@@ -11,16 +11,19 @@
     <script src="./scripts/MoonPhases.js"></script>
     <p id="desc">This is a simple project I used to try p5.js.
     Even though p5 has 3D capabilities, this project was made entirely in 2D, due
-    to platform limitations where I originally coded it. I tried to give it a 
-    3D-ish feel using a couple of the platform's different features such as
-    transparency.<br>
+    to platform limitations where I originally coded it (which actually used the
+    now-deprecated Processing.js library). I tried to give it a 3D-ish feel using
+    a couple of the platform's features such as transparency.<br>
     The Moon is not an actual circle: it's a combination of four Bezier curves,
     with their control points spaced to best approximate a circle. This setup also
     allowed me to manipulate each Bezier vertex to draw a crescent according to the
     moon phase. The transparency also helps draw a more-or-less convincing 
     terminator, simulating 3D illumination.<br>
+    The canvas also implements a slight rotation as the moon rotates; this effect
+    simulates the Moon's libration<br>
     By clicking on the page, the user can flip the moon's rotation. Doing this 
-    updates the phase names accordingly.
+    updates the phase names accordingly, as the names are calculated at runtime 
+    based on the moon's phase angle.
     </p>
 </body>
 </html>
