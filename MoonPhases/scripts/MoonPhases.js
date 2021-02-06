@@ -2,7 +2,11 @@ new p5();
 function setup(){
     let c = createCanvas(400, 400);
     c.position(10, 100, "sticky");
+  colorMode(RGB, 255, 255, 255, 255);
+  angleMode(RADIANS);
+  frameRate(60);
 }
+
 var angle = 0;
 var angleSpeed = 0.5;
 var nightSky = color(0, 0, 50);
@@ -130,20 +134,19 @@ function phaseName(x, y, phaseAngle){
     
     text(phase, x, y);
 }
-var mouseClicked = function(){angleSpeed *= -1;};
+function mouseClicked(){angleSpeed *= -1;};
 background(nightSky);
-var draw = function(){
-    var dt = 1/frameRate;
-    angle += angleSpeed*dt + TWO_PI*((angle<0 &&angleSpeed < 0)-(angle >TWO_PI &&angleSpeed>0));
-    
-    pushMatrix();
+function draw(){
+    var dt = 1/60;
+    angle += angleSpeed*dt + TWO_PI*((angle<0 &&angleSpeed < 0)-(angle >TWO_PI &&angleSpeed>0));    
+    push();
     translate(width/2, height/2.5);
     //The next lines simulate precession =>Must refine
-    var angleFactor = (angleSpeed > 0)?-5:5;
+    var angleFactor = (angleSpeed > 0)?-0.05:0.05;
     var rotAngle = (angle-PI)*angleFactor;
     rotate(rotAngle);
     noStroke();
     twoColorCrescent(0, 0, 150, angle, color(200, 20), color(0,0,32, 20));
-    popMatrix();
+    pop();
     phaseName(200, 390, angle);
 };
