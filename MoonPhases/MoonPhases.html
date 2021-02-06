@@ -6,7 +6,19 @@
     <link rel="stylesheet" type="text/css" href="./MoonPhases.css">
 </head>
 <body>
-<script src="./scripts/p5.js"></script>
-<script src="./scripts/MoonPhases.js"></script>
+    <h1>Moon Phases, with names</h1>
+    <script src="./scripts/p5.js"></script>
+    <script src="./scripts/MoonPhases.js"></script>
+    <p>This is a simple project I used to try p5.js.
+    Even though p5 has 3D capabilities, this project was made entirely in 2D, due
+    to platform limitations where I originally coded it. I tried to give it a 
+    3D-ish feel using a couple of the platform's different features such as
+    transparency.
+    The Moon is not an actual circle: it's a combination of four Bezier curves,
+    with their control points spaced to best approximate a circle. This setup also
+    allowed me to manipulate each Bezier vertex to draw a crescent according to the
+    moon phase. The transparency also helps draw a more-or-less convincing 
+    terminator, simulating 3D illumination.
+    </p>
 </body>
 </html>
