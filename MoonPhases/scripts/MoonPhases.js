@@ -1,7 +1,7 @@
 new p5();
 function setup(){
     let c = createCanvas(400, 400);
-    c.position(10, 100, "float:left");
+    c.position(10, 75, "float:left");
     colorMode(RGB, 255, 255, 255, 255);
     angleMode(RADIANS);
     frameRate(60);
