@@ -8,4 +8,6 @@ platforms/libraries/frameworks.
 
 [![Moon Phases](assets/MoonPhases.png)](./MoonPhases/MoonPhases.html)Click the crescent for the first project: Moon Phases with Names
 
+[Space Shooter Dev Diary](./SpaceShooter/SpaceShooter.html) Click here for a dev log of a generic space shooter game, developed almost exclusively in code (particle systems included).
+
 Bookmark for updates 🤗
