@@ -7,14 +7,74 @@
 </head>
 <body>
     <h1>Space Shooter</h1>
+    <h2>April 6, 2021</h2>
+    <h3>Intro</h3>
+    <img src="./assets/gameplay.png" alt="Ship Images" class = "centeredImage">
     <p id="desc">
         This is a generic 2D top-down shooter/bullet hell project I'm prototyping using Python/pygame and P5.js on codepen.io.
-    </p>
-    <p id="desc">
-        The choice of languages/libraries stem basically from the fact that both are fairly easy to use. I used p5 to design the particles I intended to use, and loaded the generated pngs into pygame to see how they looked. In the future, my idea is to port the code to a C++ engine with SDL and use Lua as a scripting language.
-    </p>
-    <p id="desc">
+        <br><br>
+        The choice of languages/libraries stem basically from the fact that both are fairly easy to use. I use p5 to design the particles and other graphical elements I intended to use (apart from the spaceships). I then load the generated PNGs into pygame to see how they looked. In the future, my idea is to port the code to a C++ engine with SDL, and to use Lua as a scripting language.
+        <br><br>
+        pygame has many interesting features, one of them being the ability to save images from the application (via pygame's image submodule). This allows me to screenshot the game-making process.
+        <br><br>
         All for the sake of learning...
+        <br><br>
+        A bit of storybuilding, as there are twelve ships, I originally decided to name them after things that came in twelves, like months of the year, nouns from 12-step programs, zodiac signs and the like. The problem arose when I noticed patterns in the ships, and my naming convention turned to mush. I then settled for Greek gods/titans names (sometimes with numbers), apart from what I intend to be the first two playable ships: Alpha and Omega. The names are listed in order in the table below:
+        <br><br>
+        <table>
+            <tr>
+                <td>Alpha</td>
+                <td>Poseidon   </td>
+                <td>Gaia II</td>
+                <td>Charon</td>
+                <td rowspan="2">Hades</td>
+            </tr><tr>
+                <td>Artemis    </td>
+                <td>Omega</td>
+                <td>Gaia V</td>
+                <td rowspan="2">Selene</td>
+                
+            </tr><tr>
+                <td>Gaia III</td>
+                <td>Gaia I</td>
+                <td>Gaia IV</td>
+            </tr>
+        </table>
+        <br>
     </p>
+    <img src="./assets/ship_display_original.png" alt="Ship Images" class = "centeredImage">
+    <p>
+        <br>
+        These images were taken from Ubisoft's NEXT API from 2020. I'm using them as a model (and I have written helper programs that let me slice up spritesheets and save slice parameters in a .json file), but replacing these later will be a relatively trivial matter. This being a prototype, I simply want to flesh out a couple ideas before I port the code to C++, possibly with different graphical materials (don't trust my choice of art, though. I'm just a programmer).
+        <br><br>
+        The red rectangles represent each sprite's slice in the spritesheet. Since the last two ships are considerably larger than the others (which fit a 256*256 square), I ultimately decided to place slicing coordinates in a .json file. The blue rectangles (obtained using one of pygame's Surface methods) were later saved into a new .json file. This allows me to save sprite space by slicing and blitting only the smallest possible area (I don't intend to rotate the ships; at least, not in this first iteration). The green circle was outlined as more of a test as I brainstorm for more suitable collisions.
+        <br><br>
+        On a side note, the flames are separate sprites in the spritesheet. They were joined in-app.
+        <br>
+    </p>
+    <img src="./assets/moonshield_test.png" alt="Moon Shield" class = "centeredImage">
+    <p>
+        <br>
+        This is a simple test of one of the shields I designed for the game. I call this one "moonshield", as it looks like a half-moon rotating around the ship's length. This shield is actually based on the <a href="https://herculesdc.github.io/MoonPhases/MoonPhases.html" target="_self">Moon Phases</a> project from a previous post. The numbers seen below each ship indicate the shield's opacity level, chosen from a range between 0 (no opacity) and 255(fully opaque). The shield is generated as a (32*256)*256 spritesheet, and the source code is available <a href="https://codepen.io/herculesdc/pen/bGgwZqV?editors=0010" target="_self">here</a>.
+        <br><br>
+    </p>
+    <img src="./assets/moonshield_a200.png" alt="Ship Images" class = "centeredImage">
+    <p>
+        <br>
+        This is a second shield model, which I (creatively) dubbed polyshield. I have not yet decided which one(s) to use, and I'll probably go back to the original code and create the frames directly in p5 before moving on with its implementation. I believe p5's rotation and image generation algorithms work somewhat better than pygame's rotate method.
+        <br><br>
+        You may also notice that there is a subtle difference between shields that have the same number of sides (I forgot to generate the second version for the hexashield). I wanted to have an "energy field" feel with the thicker lines and a "soap bubble" effect for the thinner ones. However debatable my level of success may be, and considering these effects were generated white on purpose (to allow for recolouring at runtime), this is enough for further testing. If you want to try it out, you can get the source code <a href="https://codepen.io/herculesdc/pen/YzNVRJY?editors=0110" target="_self">here</a>.
+        <br>
+    </p>
+     <img src="./assets/polyshield.png" alt="Ship Images" class = "centeredImage">
+    <p>
+        <br>
+        These next two pictures show the game's particles as generated after being sliced into their respective sprites from their spritesheets. The first one shows the particles with colorkey; that is, a background colour that will be ignored when the particle is rendered on the screen. The second one shows particles with transparency. Transparency and colorkeys cannot be used in conjunction, so the second set had to be handled separately.
+        <br><br>
+        Note: These particles are tentative, and may be replaced in future iterations
+        <br>
+    </p>
+    <img src="./assets/particles_colorkey.png" alt="Ship Images" class = "centeredImage">
+    <img src="./assets/particles_transparency.png" alt="Ship Images" class = "centeredImage">
 </body>
 </html>
