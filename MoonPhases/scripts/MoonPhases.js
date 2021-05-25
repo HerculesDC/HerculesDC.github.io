@@ -111,7 +111,7 @@ function phaseName(x, y, phaseAngle){
        }
     if (phaseAngle > phaseThreshold && phaseAngle < HALF_PI - phaseThreshold ||
         phaseAngle > PI+HALF_PI+phaseThreshold && phaseAngle < TWO_PI-phaseThreshold){
-            phase += "Cresent";
+            phase += "Crescent";
         }
     if(phaseAngle > HALF_PI+phaseThreshold && phaseAngle < PI-phaseThreshold || 
        phaseAngle > PI+phaseThreshold && phaseAngle < PI+HALF_PI-phaseThreshold){
