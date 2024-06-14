@@ -1,6 +1,6 @@
 const ghostLink = document.createElement("link");
 ghostLink.id = "ghostList";
-ghostLink.href = "./assets/json/ghostList.json";
+ghostLink.href = "../Phasmo/assets/json/ghostList.json";
 
 document.body.appendChild(ghostLink);
 
