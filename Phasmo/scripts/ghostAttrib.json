@@ -28,75 +28,93 @@
 		"evidence":[0, 1, 3],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Mare":{
+	},
+	"Mare":{
 		"evidence":[2, 5, 6],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Revenant":{
+	},
+	"Revenant":{
 		"evidence":[2, 3, 5],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Shade":{
+	},
+	"Shade":{
 		"evidence":[0, 2, 3],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Demon":{
+	},
+	"Demon":{
 		"evidence":[1, 2, 3],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Yurei":{
+	},
+	"Yurei":{
 		"evidence":[3, 4, 5],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Oni":{
+	},
+	"Oni":{
 		"evidence":[0, 3, 4],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Youkai":{
+	},
+	"Youkai":{
 		"evidence":[4, 5, 6],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Hantu":{
+	},
+	"Hantu":{
 		"evidence":[1, 3, 5],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Goryo":{
+	},
+	"Goryo":{
 		"evidence":[0, 1, 4],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Myling":{
+	},
+	"Myling":{
 		"evidence":[0, 1, 2],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Onryo":{
+	},
+	"Onryo":{
 		"evidence":[3, 5, 6],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "the Twins":{
+	},
+	"the Twins":{
 		"evidence":[0, 3, 6],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Raiju":{
+	},
+	"Raiju":{
 		"evidence":[0, 4, 5],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Obake":{
+	},
+	"Obake":{
 		"evidence":[0, 1, 5],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "the Mimic":{
+	},
+	"the Mimic":{
 		"evidence":[1, 3, 5, 6],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Moroi":{
+	},
+	"Moroi":{
 		"evidence":[2, 3, 6],
 		"hunting":[5, 2, 5],
 		"extra":""
-	}, "Deogen":{
+	},
+	"Deogen":{
 		"evidence":[2, 4, 6],
 		"hunting":[4, 2, 3],
 		"extra":""
-	}, "Thaye":{
+	},
+	"Thaye":{
 		"evidence":[2, 4, 5],
 		"hunting":[5, 2, 5],
 		"extra":""

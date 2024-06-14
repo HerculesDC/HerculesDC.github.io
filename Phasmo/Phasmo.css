@@ -14,8 +14,21 @@ p{
     font-size: 17;
 }
 #randomize{
-	margin: auto;
+	margin: left;
 	background-color: #5F5F5F;
-	width: 100px;
-	height: 100px;
+	width: 128px;
+	height: 142px;
+	padding:5px;
+}
+#ghostLoop{
+	width: 128px;
+}
+#ghostEvidence{
+	color: silver;
+}
+#ghostHunting{
+	color: silver;
+}
+#ghostExtra{
+	color: silver;
 }
