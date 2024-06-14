@@ -1,0 +1,104 @@
+{
+	"Spirit":{
+		"evidence":[0, 2, 6],
+		"hunting":[5,2,5],
+		"extra":""
+		},
+	"Wraith":{
+		"evidence":[0,4,6],
+		"hunting":[5,2, 5],
+		"extra":""
+	},
+	"Phantom":{
+		"evidence":[1, 4, 6],
+		"hunting":[5, 2, 5],
+		"extra":""
+	},
+	"Poltergeist":{
+		"evidence":[1, 2, 6],
+		"hunting":[5, 2, 5],
+		"extra":""
+	},
+	"Banshee":{
+		"evidence":[1, 4, 5],
+		"hunting":[5, 2, 5],
+		"extra":""
+	},
+	"Jinn":{
+		"evidence":[0, 1, 3],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Mare":{
+		"evidence":[2, 5, 6],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Revenant":{
+		"evidence":[2, 3, 5],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Shade":{
+		"evidence":[0, 2, 3],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Demon":{
+		"evidence":[1, 2, 3],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Yurei":{
+		"evidence":[3, 4, 5],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Oni":{
+		"evidence":[0, 3, 4],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Youkai":{
+		"evidence":[4, 5, 6],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Hantu":{
+		"evidence":[1, 3, 5],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Goryo":{
+		"evidence":[0, 1, 4],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Myling":{
+		"evidence":[0, 1, 2],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Onryo":{
+		"evidence":[3, 5, 6],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "the Twins":{
+		"evidence":[0, 3, 6],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Raiju":{
+		"evidence":[0, 4, 5],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Obake":{
+		"evidence":[0, 1, 5],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "the Mimic":{
+		"evidence":[1, 3, 5, 6],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Moroi":{
+		"evidence":[2, 3, 6],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}, "Deogen":{
+		"evidence":[2, 4, 6],
+		"hunting":[4, 2, 3],
+		"extra":""
+	}, "Thaye":{
+		"evidence":[2, 4, 5],
+		"hunting":[5, 2, 5],
+		"extra":""
+	}
+}
