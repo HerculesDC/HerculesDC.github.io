@@ -1,0 +1,22 @@
+body {
+    font-family: system-ui;
+    background: #0A0A0A;
+    background-image: url(./assets/background.jpg);
+}
+h1{
+    color: silver;
+    text-align: center;
+    font-size: 50;  
+}
+p{
+    color: white;
+    margin-left: 420px;
+    text-align: left;
+    font-size: 17;
+}
+#randomize{
+	margin: auto;
+	background-color: #5F5F5F;
+	width: 100px;
+	height: 100px;
+}
