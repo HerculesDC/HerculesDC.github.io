@@ -1,38 +1,101 @@
 document.getElementById("randomize").addEventListener("click", randomize);
-const ghostList = document.getElementById("ghostList");
-const ghostAttrib = document.getElementById("ghostAttrib");
-const evidences = document.getElementById("evidence");
+const ghostList = JSON.parse(document.getElementById("ghostList").textContent);
+const ghostAttrib = JSON.parse(document.getElementById("ghostAttrib").textContent);
+const evidences = JSON.parse(document.getElementById("evidence").textContent);
 
 const chosenEvidence = document.getElementById("ghostEvidence");
 const chosenHunting = document.getElementById("ghostHunting");
 const chosenExtra = document.getElementById("ghostExtra");
-const ghostIndex = -1;
-
+var ghostIndex = -1;
 const chosenGhost = document.getElementById("chosen");
 
-function randomize(){
-	
-	var parsed = JSON.parse(ghostList.textContent);
-	var ghostIndex = Math.floor(Math.random()*parsed.length);
-	
-	chosenGhost.innerHTML = ghostIndex+1 + ": " + parsed[ghostIndex];
-	getAttrib(parsed[ghostIndex]);
+const bookletIcon = document.getElementById("symbol");
+const itemIcon = [ document.getElementById("equip00"),
+				   document.getElementById("equip01"),
+				   document.getElementById("equip02"),
+				   document.getElementById("equip03"),
+				   document.getElementById("equip04"),
+				   document.getElementById("equip05"),
+				   document.getElementById("equip06"),
+				   document.getElementById("sanity"),
+				   document.getElementById("speed"),
+				   document.getElementById("diff"),
+				   document.getElementById("extraAttrib"),
+				   document.getElementById("reveal")]
+
+for(let i = 0; i < itemIcon.length; ++i){
+	itemIcon[i].addEventListener("click", () => { reveal(i, ghostIndex); });
 }
 
-function getAttrib(ghost){
-
-	console.log(ghost);
-	let gAttrib = JSON.parse(ghostAttrib.textContent);
-	let evidencesJSON = JSON.parse(evidences.textContent);
-	console.log(evidencesJSON);
-	console.log(gAttrib[ghost].evidence);
-	chosenEvidence.innerHTML = "";
-	
-	for(var evd = 0; evd < gAttrib[ghost].evidence.length; ++evd){
-		chosenEvidence.innerHTML += evidencesJSON[gAttrib[ghost].evidence[evd]] + ", ";
+function randomize(){
+	ghostIndex = Math.floor(Math.random()*ghostList.length);
+	bookletIcon.innerHTML="NEW<br>GHOST\nCHOSEN";
+	for(let i = 0; i < itemIcon.length; ++i){
+		itemIcon[i].style.color="silver";;
 	}
-	chosenEvidence.innerHTML = chosenEvidence.innerHTML.substring(0, chosenEvidence.innerHTML.length-2);
-	console.log(chosenEvidence.innerHTML);
-	chosenHunting.innerHTML = gAttrib[ghost].hunting;
-	chosenExtra.innerHTML = gAttrib[ghost].extra;
+}
+
+function getGhostAttrib(ghost){
+	return ghostAttrib[ghostList[ghost]];
+}
+
+function highlight(iconNo){
+	for(let i = 0;i < itemIcon.length; ++i){
+		itemIcon[i].removeAttribute("class");
+	}
+	itemIcon[iconNo].setAttribute("class", "highlighted");
+}
+
+function revealGhost(ghost){
+	bookletIcon.style.color="ivory";
+	bookletIcon.style.fontSize="50px";
+	bookletIcon.innerHTML=ghostList[ghost];
+}
+
+function revealExtra(ghost){
+	bookletIcon.style.color="silver";
+	bookletIcon.style.fontSize = "20px";
+	bookletIcon.innerHTML = getGhostAttrib(ghost).extra;
+}
+
+function revealHuntingAttribute(attrib, ghost){
+	bookletIcon.style.color="silver";
+	bookletIcon.innerHTML = getGhostAttrib(ghost).hunting[attrib];
+}
+
+function revealEquipmentInteraction(equip, ghost){
+	if(getGhostAttrib(ghost).evidence.includes(equip)){
+		itemIcon[equip].style.color = bookletIcon.style.color = "green";
+		bookletIcon.innerHTML = "O";
+	}
+	else{
+		itemIcon[equip].style.color = bookletIcon.style.color = "red";
+		bookletIcon.innerHTML = "X";
+	}
+}
+
+function reveal(evidenceNo, ghost){
+	highlight(evidenceNo);
+	
+	if (ghostIndex < 0) return;
+	
+	if (evidenceNo == 11){
+		revealGhost(ghost);
+		return;
+	}
+	
+	if(evidenceNo == 10){
+		revealExtra(ghost);
+		return;
+	}
+	
+	bookletIcon.style.color="silver";
+	bookletIcon.style.fontSize = "128px";
+	bookletIcon.style.fontWeight = "bold";
+	if (evidenceNo >= evidences.length){
+		revealHuntingAttribute(evidenceNo-evidences.length, ghost);
+		return;
+	}
+	
+	revealEquipmentInteraction(evidenceNo, ghost);
 }

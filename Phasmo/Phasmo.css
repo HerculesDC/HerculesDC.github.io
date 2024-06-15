@@ -9,18 +9,31 @@ h1{
 }
 p{
     color: white;
-    margin-left: 420px;
-    text-align: left;
+    text-align: center;
     font-size: 17;
 }
+table{
+	margin-left: auto;
+	margin-right: auto;
+	color:white;
+}
+td{
+	border: 2px solid ivory;
+	font-size: 20;
+}
+#symbol{
+	color: silver;
+}
 #randomize{
-	margin: left;
-	background-color: #5F5F5F;
+	margin-left: auto;
+	margin-right: auto;
 	width: 128px;
 	height: 142px;
 	padding:5px;
 }
 #ghostLoop{
+	margin-left: auto;
+	margin-right: auto;
 	width: 128px;
 }
 #ghostEvidence{
@@ -31,4 +44,21 @@ p{
 }
 #ghostExtra{
 	color: silver;
+}
+.highlighted{
+	background-color: #5F5F5F;
+}
+.iconText{
+	font-size: 48;
+	font-weight: bold;
+	text-align: center;
+}
+.hasEvidence{
+	color: green;
+}
+.noEvidence{
+	color: red;
+}
+#otherProperties{
+	color: ivory;
 }
