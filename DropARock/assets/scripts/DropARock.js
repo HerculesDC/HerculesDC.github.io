@@ -12,7 +12,7 @@ function setup(){
 	imageMode(CENTER);
 	textFont("Courier New");
 	textAlign(CENTER, CENTER);
-    frameRate(60);
+    frameRate(120);
 }
 //NOTE: This is relative to the calling HTML page location
 //var rock = loadImage("./assets/images/rock.png");
@@ -44,6 +44,9 @@ class Rock{
 				if(this.y > CANVAS_HEIGHT-255){
 					this.currentState = 3;
 				}
+				break;
+			case 3:
+				this.y = CANVAS_HEIGHT - 225;
 				break;
 			default: break;
 		}
