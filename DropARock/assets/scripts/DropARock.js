@@ -35,7 +35,7 @@ class Rock{
 		switch(this.currentState){
 			case 0:
 				this.y += CANVAS_HEIGHT/2*delta;
-				if(this.y >= CANVAS_HEIGHT/5){
+				if(this.y >= CANVAS_HEIGHT/6){
 					this.currentState = 1;
 				}
 				break;
@@ -46,7 +46,7 @@ class Rock{
 				}
 				break;
 			case 3:
-				this.y = CANVAS_HEIGHT - 225;
+				this.y = CANVAS_HEIGHT - 232;
 				break;
 			default: break;
 		}
