@@ -10,6 +10,6 @@ platforms/libraries/frameworks.
 
 [Space Shooter Dev Diary](./SpaceShooter/SpaceShooter.html) Click here for a dev log of a generic space shooter game, developed almost exclusively in code (particle systems included).
 
-[Drop-A-Rock](./DropARock/RockDrop.html)
+[Drop-A-Rock](./DropARock/RockDrop.html) Because someone thought this would be a good idea...
 
 Bookmark for updates 🤗

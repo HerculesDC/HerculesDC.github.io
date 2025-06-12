@@ -9,6 +9,7 @@ function setup(){
     colorMode(HSB, 1.0, 1.0, 1.0, 1.0);
     angleMode(RADIANS);
 	rectMode(CENTER);
+	imageMode(CENTER);
     frameRate(60);
 }
 
