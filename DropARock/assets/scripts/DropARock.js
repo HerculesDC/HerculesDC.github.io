@@ -6,19 +6,20 @@ const CANVAS_HEIGHT = windowHeight - 85;
 function setup(){
     let c = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
     c.position(10, 75, "float:center");
-    colorMode(RGB, 255, 255, 255, 255);
+    colorMode(HSB, 1.0, 1.0, 1.0, 1.0);
     angleMode(RADIANS);
+	rectMode(CENTER);
     frameRate(60);
 }
 
 //NOTE: This is relative to the calling HTML page location
-var rock = loadImage("./assets/images/rock.png");
-console.log(rock);
+//var rock = loadImage("./assets/images/rock.png");
+//var nugget = loadImage("./assets/images/goldnugget.png")
+var rock = loadImage("https://herculesdc.github.io/DropARock/assets/images/rock.png");
+var nugget = loadImage("https://herculesdc.github.io/DropARock/assets/images/goldnugget.png")
 
 function draw(){
-	background(0, 0, 1);
+	background(0, 0, 0.23);
 	image(rock, 0, 0);
-	noFill();
-	stroke(255, 255, 255);
-	ellipse(500, 500, 50, 50);
+	image(nugget, 0, 0);
 }
