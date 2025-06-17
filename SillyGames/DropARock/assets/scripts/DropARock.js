@@ -30,8 +30,8 @@ function windowResized(){
 //var rock = loadImage("./assets/images/rock.png");
 //var nugget = loadImage("./assets/images/goldnugget.png")
 //NOTE 2: AS THESE ARE SIMPLE GAMES, MIGHT AS WELL UNIFY ASSETS
-var rock = loadImage("https://herculesdc.github.io/DropARock/assets/images/rock.png");
-var nugget = loadImage("https://herculesdc.github.io/DropARock/assets/images/goldnugget.png")
+var rock = loadImage("https://herculesdc.github.io/SillyGames/DropARock/assets/images/rock.png");
+var nugget = loadImage("https://herculesdc.github.io/SillyGames/DropARock/assets/images/goldnugget.png")
 
 class Rock{
 	constructor(imgRock, imgNugget){
