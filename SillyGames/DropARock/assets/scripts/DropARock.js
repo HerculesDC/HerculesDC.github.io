@@ -1,11 +1,13 @@
 new p5();
 
-const CANVAS_WIDTH = windowWidth - 20;
-const CANVAS_HEIGHT = windowHeight - 85;
+var CANVAS_WIDTH = Math.floor(windowWidth*0.9825);
+var LPADDING = Math.floor((windowWidth-CANVAS_WIDTH)*0.3);
+var CANVAS_HEIGHT = Math.floor(windowHeight*.9125);
+var TPADDING = 75;
 
 function setup(){
     let c = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-    c.position(10, 75, "float:center");
+    c.position(LPADDING, 75, "float:center");
     colorMode(HSB, TAU, 1.0, 1.0, 1.0);
     angleMode(RADIANS);
 	rectMode(CENTER);
@@ -14,9 +16,20 @@ function setup(){
 	textAlign(CENTER, CENTER);
     frameRate(120);
 }
+
+function windowResized(){
+	CANVAS_WIDTH = Math.floor(windowWidth*0.9825);
+	LPADDING = Math.floor((windowWidth-CANVAS_WIDTH)*0.3);
+	CANVAS_HEIGHT = Math.floor(windowHeight*.9125);
+	TPADDING = 75;
+    let c = resizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT); 
+    c.position(LPADDING, 75, "float:center");
+}
+
 //NOTE: This is relative to the calling HTML page location
 //var rock = loadImage("./assets/images/rock.png");
 //var nugget = loadImage("./assets/images/goldnugget.png")
+//NOTE 2: AS THESE ARE SIMPLE GAMES, MIGHT AS WELL UNIFY ASSETS
 var rock = loadImage("https://herculesdc.github.io/DropARock/assets/images/rock.png");
 var nugget = loadImage("https://herculesdc.github.io/DropARock/assets/images/goldnugget.png")
 
@@ -103,6 +116,8 @@ function displayText(rock){
 }
 
 function draw(){
+	var msg = "rock state "+r.currentState+", rock height: "+r.y;
+	console.log(msg);
 	background(0, 0, 0.23);
 	r.update(1/frameRate());
 	r.render();
