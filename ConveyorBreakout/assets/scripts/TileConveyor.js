@@ -25,6 +25,7 @@ class TileSlots{
     this.ref_width = rw;
     this.y = y;
     this.h = h;
+	this.b = this.y + this.h;
     this.widths = [0,0];
     if (xl > xt){
       this.widths = [rw,0];

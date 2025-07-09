@@ -3,12 +3,16 @@ class Paddle{
     this.x = _x;
     this.y = _y;
     this.w = _w;
-	this.hw = this.w*0.5;
-	this.center = this.x + this.hw; //for collision purposes
     this.h = _h;
+	this.hw = this.w*0.5;
     this.hh = _h/2;
+	this.center = this.x + this.hw; //for collision purposes
+	this.r = this.x + this.w; //right
+	this.b = this.y + this.h; //bottom
     this.vel = _v;
-    this.current_layer = 0;
+    //TODO: remove hardcode
+	this.current_layer = 0;
+	this.lives = 3;
     //drawing
     this.colours = [_fc, _bc];
     this.mh = this.y + (this.hh);
@@ -17,9 +21,10 @@ class Paddle{
   update(dt){
     this.x += this.vel * paddle_displacement;
 	this.center = this.x + this.hw;
+	this.r = this.x + this.w;
 	//will need to take boundaries into account later
     if(this.x < 0){this.x = 0;}
-    if(this.x + this.w > CANVAS_WIDTH){this.x = CANVAS_WIDTH-this.w;}
+    if(this.r > CANVAS_WIDTH){this.x = CANVAS_WIDTH-this.w;}
   }
   render(){
     noStroke();

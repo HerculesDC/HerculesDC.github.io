@@ -8,9 +8,10 @@ class Ball{
 		this.colours = [_flc, _blc];
 		this.vels = [_hv, _vv];
 		this.prnt = _prnt;
+		this.is_parented = this.prnt !== null && this.prnt !== undefined;
 	}
 	update(dt){
-		if(this.check_parent()){
+		if(this.is_parented){
 			this.x = this.prnt.center;
 			this.y = this.prnt.y - this.r;
 		}else{
@@ -24,7 +25,7 @@ class Ball{
 		fill(layer_colour[0], layer_colour[1], layer_colour[2]);
 		ellipse(this.x, this.y, this.r, this.r);
 	}
-	check_parent(){{
-		return this.prnt !== null && this.prnt !== undefined;
+	reparent(){
+		this.is_parented = true;
 	}
 }
