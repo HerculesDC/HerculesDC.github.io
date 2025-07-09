@@ -32,12 +32,11 @@ function keyReleased(){
 	}
 }
 
-
-function mouseClicked(){
-	for(var i = 0; i < cs.tiles.length; ++i){
-		if(mouseX > cs.tiles[i].ref_points[0] && mouseX < cs.tiles[i].ref_points[0] + cs.tiles[i].widths[0] &&
-		   mouseY > cs.tiles[i].y && mouseY < cs.tiles[i].b){
-			cs.tiles[i].is_active = false;
-		}
-	}
-}
+// function mouseClicked(){
+	// for(var i = 0; i < cs.tiles.length; ++i){
+		// if(mouseX > cs.tiles[i].ref_points[0] && mouseX < cs.tiles[i].ref_points[0] + cs.tiles[i].widths[0] &&
+		   // mouseY > cs.tiles[i].y && mouseY < cs.tiles[i].b){
+			// cs.tiles[i].is_active = false;
+		// }
+	// }
+// }
