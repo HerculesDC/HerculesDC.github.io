@@ -5,11 +5,11 @@ class InterfaceRenderer{
 		this.conveyor = _c;
 		this.msgs = {
 			rem_tiles: "Remaining Tiles: ",
-			win: "YOU WIN!!!",
+			win: "YOU WIN!!!\npress ENTER to reset",
 			lose: "YOU LOSE...\npress ENTER to reset",
 			rem_lives: "Remaining lives: ",
 			begin: "Press spacebar\nto launch ball\nA<=>D\nto move tile conveyor",
-			red_ball: "RED ball in back layer"
+			red_ball: "RED ball\nin back layer"
 		};
 	}
 	update(dt){
@@ -31,7 +31,7 @@ class InterfaceRenderer{
 			text(this.msgs.lose, CANVAS_WIDTH >>1, CANVAS_HEIGHT >> 1);
 		}
 		text(this.msgs.rem_lives+this.paddle.lives.toString(), CANVAS_WIDTH * 0.45, this.paddle.b + this.conveyor.ref_width/2);
-		if(this.ball.is_parented && this.paddle.lives === 3){
+		if(this.ball.is_parented && this.paddle.lives === 3 && ! end_condition){
 			text(this.msgs.begin, CANVAS_WIDTH >>1, CANVAS_HEIGHT >> 1);
 			fill(0, 1, 1);
 			text(this.msgs.red_ball, CANVAS_WIDTH>>1, CANVAS_HEIGHT*0.25);

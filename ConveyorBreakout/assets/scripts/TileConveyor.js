@@ -133,14 +133,11 @@ class ConveyorSlots{
       calculate_tile_widths(this.tiles[i], this);
     }
   }
-  render(){
+  render(l){
     strokeWeight(5);
     stroke(0, 0, 1);
     for(let t = 0; t < this.trails.length; ++t){
-      this.tiles[t].render(1);
-    }
-    for(let t = 0; t < this.trails.length; ++t){
-      this.tiles[t].render(0);
+      this.tiles[t].render(l);
     }
   }
   bounce(){

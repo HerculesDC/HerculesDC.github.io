@@ -51,23 +51,42 @@ var ball = new Ball(0, 0, 0.25*tile_height, [0, 0, 1], [0, 1, 0.75], 2, -2, pd);
 
 var ir = new InterfaceRenderer(ball, pd, cs);
 
+var end_condition = false;
+
+function check_end(){
+	end_condition = true;
+	for(let t = 0; t < cs.tiles.length; ++t){
+		if(cs.tiles[t].is_active){
+			end_condition = false;
+			break;
+		}
+	}
+	end_condition = end_condition || pd.lives === 0;
+}
+
 function draw(){
 	background(4.25, 0.25, 0.25);	
 	ip.process_input();
 	//updates
-    cs.update(1);
-	pd.update(1);
-	ball.update(1);
-	ir.update(1);
-	//physics
-	ps.check_ball_boundaries(ball);
-	ps.check_ball_paddle(ball, pd);
-	for(var i = 0; i < cs.tiles.length; ++i){
-		ps.check_ball_tile(ball, cs.tiles[i]);
+	check_end();
+	if(!end_condition){
+		cs.update(1);
+		pd.update(1);
+		ball.update(1);
+		
+		//physics
+		ps.check_ball_boundaries(ball);
+		ps.check_ball_paddle(ball, pd);
+		for(var i = 0; i < cs.tiles.length; ++i){
+			ps.check_ball_tile(ball, cs.tiles[i]);
+		}
 	}
+    ir.update(1);
+
     //rendering
 	pd.render();
+	cs.render(1);
 	ball.render();
-	cs.render();
+	cs.render(0);
 	ir.render();
 }
