@@ -33,7 +33,12 @@ class PhysicsSystem{
 		
 		if(dist <= ball.sqr){
 			ball.y = paddle.y - ball.r;
-			ball.vels[1] *= -1;//just bounce for test purposes
+			let old_vels = ball.vels;
+			let ball_center_dist = ball.x - paddle.center;
+			let radius_halfside_length = ball.r + paddle.hw;
+			let hor_offset = ball_center_dist/radius_halfside_length;
+			ball.vels[0] = ball.ref_vels[0] * hor_offset;
+			ball.vels[1] *= -1; //just bounce for test purposes
 		}
 	}
 	check_ball_tile(ball, tile){
@@ -51,13 +56,15 @@ class PhysicsSystem{
 		if(ball.y < tile.y)		 bpy = tile.y;
 		else if(ball.y > tile.b) bpy = tile.b;
 		
-		let dX = ball.x - bpx;
-		let dY = ball.y - bpy;
-		let dist = (dX*dX) + (dY*dY);
+		let dX = ball.x - bpx;// dX *= dX;
+		let dY = ball.y - bpy;// dY *= dY;
+		let dist = dX*dX + dY*dY;
 		
 		if(dist <= ball.sqr){
 			tile.is_active = false;
-			ball.vels[1] *= -1;//just bounce for test purposes
+			if(ball.x >= tile_l && ball.x <= tile_r){ball.vels[1] *= -1;}
+			else if(ball.y >= tile.y && ball.y <= tile.b){ball.vels[0] *= -1;}
+			else {ball.vels[0] *= -1; ball.vels[1] *= -1;}
 			
 			if(random(100) < 15){
 				ball.cur_layer++;

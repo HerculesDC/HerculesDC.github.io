@@ -84,7 +84,7 @@ class ConveyorSlots{
     }
   }
   update(dt){
-    this.bounce();
+    this.bounce(dt);
     for(let i = 0; i < this.trails.length; ++i){
       let cur_pos =  this.ref_x + (1 - 2*(this.ref_layer !== 0))* this.ref_width*i;
       let trail_layer = this.ref_layer;
@@ -140,10 +140,10 @@ class ConveyorSlots{
       this.tiles[t].render(l);
     }
   }
-  bounce(){
+  bounce(dt){
     let old_vel = this.vel;
     this.vel *= 1 - 2*((this.ref_x < this.x)||(this.ref_x >= this.r));
-    this.ref_x += this.vel * conveyor_displacement;
+    this.ref_x += this.vel * conveyor_displacement * dt;
     if(old_vel !== this.vel){
       ++this.ref_layer;
       this.ref_layer %= 2;

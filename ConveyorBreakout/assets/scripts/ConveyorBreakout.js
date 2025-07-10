@@ -70,9 +70,9 @@ function draw(){
 	//updates
 	check_end();
 	if(!end_condition){
-		cs.update(1);
-		pd.update(1);
-		ball.update(1);
+		cs.update(deltaTime);
+		pd.update(deltaTime);
+		ball.update(deltaTime);
 		
 		//physics
 		ps.check_ball_boundaries(ball);
@@ -81,8 +81,7 @@ function draw(){
 			ps.check_ball_tile(ball, cs.tiles[i]);
 		}
 	}
-    ir.update(1);
-
+    ir.update(deltaTime);
     //rendering
 	pd.render();
 	cs.render(1);

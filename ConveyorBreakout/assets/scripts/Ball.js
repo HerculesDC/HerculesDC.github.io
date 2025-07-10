@@ -6,6 +6,7 @@ class Ball{
 		this.sqr = this.r*this.r; //for distance & physics calcs
 		this.cur_layer = 0;
 		this.colours = [_flc, _blc];
+		this.ref_vels = [_hv, _vv];
 		this.vels = [_hv, _vv];
 		this.prnt = _prnt;
 		this.is_parented = this.prnt !== null && this.prnt !== undefined;
