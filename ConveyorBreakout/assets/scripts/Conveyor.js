@@ -17,43 +17,7 @@ function calculate_tile_widths(t, c){
   }
 }
 
-class TileSlots{
-  constructor(xt, xl, y, rw, h, _tl, _a){
-    this.is_active = _a;
-    this.ref_points = [xt, xl];
-    this.trail_layer - _tl;
-    this.ref_width = rw;
-    this.y = y;
-    this.h = h;
-	this.b = this.y + this.h;
-    this.widths = [0,0];
-    if (xl > xt){
-      this.widths = [rw,0];
-    }
-    else{
-      this.widths = [0,rw];
-    }
-    this.layer_edge = [[0, 0, 1],[0, 0, 0]];
-    this.layer_fill = [[3.5, 0.5, 0.75, 0.3],[0.36, 0.5, 0.75, 0.3]];
-  }
-  render(l){
-	if(!this.is_active) return;
-    if(this.widths[l] === 0) return;
-    let edging = this.layer_edge[l];
-    let filling = this.layer_fill[l];
-    strokeWeight(1);
-    stroke(edging[0], edging[1], edging[2]);
-    fill(filling[0], filling[1], filling[2]);//*/, filling[3]);
-    rect(this.ref_points[l], this.y, this.widths[l], this.h);
-  }
-  toString(){
-    let _str = "Tx: " + this.ref_points[0] + ", Lx: " + this.ref_points[1] + 
-        ", W0: " + this.widths[0] + ", W1: " + this.widths[1];
-    return _str;
-  }
-}
-
-class ConveyorSlots{
+class Conveyor{
   constructor(_x, _y, _w, _h, _n, _v){
     this.x = _x;
     this.y = _y;
@@ -80,11 +44,11 @@ class ConveyorSlots{
       }
       this.trails.push(cur_pos);
       this.layers.push(trail_layer);
-      this.tiles.push(new TileSlots(cur_pos, leading, this.y, this.ref_width, this.ref_height, trail_layer, true));
+      this.tiles.push(new Tile(cur_pos, leading, this.y, this.ref_width, this.ref_height, trail_layer, true));
     }
   }
   update(dt){
-    this.bounce(dt);
+    this.bounce();
     for(let i = 0; i < this.trails.length; ++i){
       let cur_pos =  this.ref_x + (1 - 2*(this.ref_layer !== 0))* this.ref_width*i;
       let trail_layer = this.ref_layer;
@@ -140,26 +104,15 @@ class ConveyorSlots{
       this.tiles[t].render(l);
     }
   }
-  bounce(dt){
+  bounce(){
     let old_vel = this.vel;
     this.vel *= 1 - 2*((this.ref_x < this.x)||(this.ref_x >= this.r));
-    this.ref_x += this.vel * conveyor_displacement * dt;
-    if(old_vel !== this.vel){
+    this.ref_x += this.vel * conveyor_displacement;
+	if(this.ref_x < this.x && conveyor_displacement === 0){this.ref_x = this.x;}
+	if(this.ref_x > this.r && conveyor_displacement === 0){this.ref_x = this.r-1;}
+	if(old_vel !== this.vel){
       ++this.ref_layer;
       this.ref_layer %= 2;
     }
   }
-}
-
-//TODO: IMPLEMENT LATER
-class ConveyorManager{
-	constructor(_x, _y, _tw, _th){
-		this.x = _x;
-		this.y = _y;
-		this.tw = _tw;
-		this.th = _th;
-		this.conveyors = [];
-	}
-	update(dt){}
-	render(){}
 }

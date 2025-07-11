@@ -45,18 +45,19 @@ function cycle(cur, vel, low, high){
   return cur + vel +(high - low)*((cur <= low)-(cur >= high));
 }
 
-var cs = new ConveyorSlots(x_offset, tile_height<<1, tile_width, tile_height, max_tile_division, 1);
+var pw = new Powerup(); //currently only observed by the physics system
 var pd = new Paddle(CANVAS_WIDTH/2 - 0.75*tile_width, CANVAS_HEIGHT - 3*tile_height, 1.5*tile_width, tile_height, 2, [4, 0.5, 1],[2, 0.5, 0.5]);
 var ball = new Ball(0, 0, 0.25*tile_height, [0, 0, 1], [0, 1, 0.75], 2, -2, pd);
+var conv = new ConveyorManager(7);
 
-var ir = new InterfaceRenderer(ball, pd, cs);
+var ir = new InterfaceRenderer(ball, pd);
 
 var end_condition = false;
 
 function check_end(){
 	end_condition = true;
-	for(let t = 0; t < cs.tiles.length; ++t){
-		if(cs.tiles[t].is_active){
+	for(const tile of PhysicsSystem.tiles){
+		if(tile.is_active){
 			end_condition = false;
 			break;
 		}
@@ -67,25 +68,25 @@ function check_end(){
 function draw(){
 	background(4.25, 0.25, 0.25);	
 	ip.process_input();
+	
 	//updates
 	check_end();
 	if(!end_condition){
-		cs.update(deltaTime);
+		pw.update(deltaTime);
+		conv.update(deltaTime);
 		pd.update(deltaTime);
 		ball.update(deltaTime);
 		
 		//physics
-		ps.check_ball_boundaries(ball);
-		ps.check_ball_paddle(ball, pd);
-		for(var i = 0; i < cs.tiles.length; ++i){
-			ps.check_ball_tile(ball, cs.tiles[i]);
-		}
+		PhysicsSystem.update(deltaTime);
 	}
     ir.update(deltaTime);
+	
     //rendering
 	pd.render();
-	cs.render(1);
+	conv.render(1);
+	pw.render();
 	ball.render();
-	cs.render(0);
+	conv.render(0);
 	ir.render();
 }

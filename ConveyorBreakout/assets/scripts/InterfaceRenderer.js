@@ -1,8 +1,7 @@
 class InterfaceRenderer{
-	constructor(_b, _p, _c){
+	constructor(_b, _p){
 		this.ball = _b;
 		this.paddle = _p;
-		this.conveyor = _c;
 		this.msgs = {
 			rem_tiles: "Remaining Tiles: ",
 			win: "YOU WIN!!!\npress ENTER to reset",
@@ -16,22 +15,23 @@ class InterfaceRenderer{
 	
 	}
 	render(){
-		textSize(this.conveyor.ref_width);
+		textSize(tile_width);
 		noStroke();
 		fill(0,0, 1);
 		let active_tiles = 0;
-		for(let r = 0; r < this.conveyor.tiles.length; ++r){
-			active_tiles += 1 * this.conveyor.tiles[r].is_active;
+		//feels cheaty, but it works
+		for(let r = 0; r < PhysicsSystem.tiles.length; ++r){
+			active_tiles += 1 * PhysicsSystem.tiles[r].is_active;
 		}
-		text(this.msgs.rem_tiles + active_tiles.toString(), CANVAS_WIDTH>>1, this.conveyor.y - this.conveyor.ref_width/2);
+		text(this.msgs.rem_tiles + active_tiles.toString(), CANVAS_WIDTH>>1, tile_width>>1);
 		if (active_tiles === 0){
 			text(this.msgs.win, CANVAS_WIDTH >> 1, CANVAS_HEIGHT >> 1);
 		}
 		if(this.paddle.lives === 0){
 			text(this.msgs.lose, CANVAS_WIDTH >>1, CANVAS_HEIGHT >> 1);
 		}
-		text(this.msgs.rem_lives+this.paddle.lives.toString(), CANVAS_WIDTH * 0.45, this.paddle.b + this.conveyor.ref_width/2);
-		if(this.ball.is_parented && this.paddle.lives === 3 && ! end_condition){
+		text(this.msgs.rem_lives+this.paddle.lives.toString(), CANVAS_WIDTH * 0.45, this.paddle.b + (tile_width>>1));
+		if(this.ball.is_parented && this.paddle.lives === 3 && !end_condition){
 			text(this.msgs.begin, CANVAS_WIDTH >>1, CANVAS_HEIGHT >> 1);
 			fill(0, 1, 1);
 			text(this.msgs.red_ball, CANVAS_WIDTH>>1, CANVAS_HEIGHT*0.25);

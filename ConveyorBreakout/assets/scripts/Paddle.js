@@ -1,5 +1,6 @@
-class Paddle{
+class Paddle extends GameObject{
   constructor(_x, _y, _w, _h, _v, _fc, _bc){
+	super("Paddle", "PADDLE");
     this.x = _x;
     this.y = _y;
     this.w = _w;

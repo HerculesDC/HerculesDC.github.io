@@ -1,9 +1,11 @@
-class Ball{
+class Ball extends GameObject{
 	constructor(_x, _y, _r, _flc, _blc, _hv, _vv, _prnt){
+		super("Ball", "BALL");
 		this.x = _x;
 		this.y = _y;
 		this.r = _r; //radius
 		this.sqr = this.r*this.r; //for distance & physics calcs
+		this.shadeDist = this.r/2;
 		this.cur_layer = 0;
 		this.colours = [_flc, _blc];
 		this.ref_vels = [_hv, _vv];
@@ -23,6 +25,8 @@ class Ball{
 	render(){
 		let layer_colour = this.colours[this.cur_layer];
 		noStroke();
+		fill(0, 0, 0.2);
+		//ellipse(this.x+ this.shadeDist, this.y+ this.shadeDist, this.r, this.r);
 		fill(layer_colour[0], layer_colour[1], layer_colour[2]);
 		ellipse(this.x, this.y, this.r, this.r);
 	}

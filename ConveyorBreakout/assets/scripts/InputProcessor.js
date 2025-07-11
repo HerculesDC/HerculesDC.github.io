@@ -19,7 +19,10 @@ class InputProcessor{
 function keyReleased(){
 	//ball => SPACEBAR. Need to move somewhere else
 	if(keyCode === 32){
-		if(ball.is_parented && pd.lives > 0){ball.is_parented = false;}
+		if(ball.is_parented && pd.lives > 0){
+			ball.vels[0] = random(-ball.ref_vels[0], ball.ref_vels[0]);
+			ball.is_parented = false;
+			}
 	}
 	if(keyCode === ENTER){
 		if(end_condition){

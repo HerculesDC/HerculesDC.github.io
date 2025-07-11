@@ -1,6 +1,10 @@
 class PhysicsSystem{
+	static balls = [];
+	static paddles = [];
+	static tiles = [];
+	static powerups = [];
 	constructor(){}
-	check_ball_boundaries(ball){
+	static check_ball_boundaries(ball){
 		if(ball.x + ball.r > CANVAS_WIDTH){
 			ball.x = CANVAS_WIDTH-ball.r;
 			ball.vels[0] *= -1;
@@ -18,7 +22,7 @@ class PhysicsSystem{
 			ball.prnt.lives--;//BAD BAD CODING, but this is a prototype...
 		}
 	}
-	check_ball_paddle(ball, paddle){
+	static check_ball_paddle(ball, paddle){
 		let bpx = ball.x;
 		let bpy = ball.y;
 		
@@ -41,7 +45,7 @@ class PhysicsSystem{
 			ball.vels[1] *= -1; //just bounce for test purposes
 		}
 	}
-	check_ball_tile(ball, tile){
+	static check_ball_tile(ball, tile){
 		if(!tile.is_active) return;
 		if(tile.widths[ball.cur_layer] === 0) return; // check for omni-ball later
 		
@@ -67,9 +71,59 @@ class PhysicsSystem{
 			else {ball.vels[0] *= -1; ball.vels[1] *= -1;}
 			
 			if(random(100) < 15){
-				ball.cur_layer++;
-				ball.cur_layer %= 2;
+				if(!PhysicsSystem.powerups[0].is_active){
+					PhysicsSystem.powerups[0].is_active = true;
+					PhysicsSystem.powerups[0].x = tile_l;
+					PhysicsSystem.powerups[0].y = tile.y;
+				}
 			}
 		} 
+	}
+	static check_paddle_powerup(paddle, powerup){
+		if (!powerup.is_active) return;
+		//straight AABB collision
+		if(paddle.r >= powerup.x && paddle.x <= powerup.r &&
+		   paddle.y <= powerup.b && paddle.b >= powerup.y){
+			   for(const ball of PhysicsSystem.balls){
+				   ball.cur_layer++;
+				   ball.cur_layer %= 2;
+				   console.log(ball.name);
+			   }
+			   powerup.reset_state();
+		   }
+	}
+	static check_powerup_bottom(powerup){
+		if(powerup.y > CANVAS_HEIGHT){
+			powerup.reset_state();
+		}
+	}
+	static update(dt){
+		for (const bl of PhysicsSystem.balls){
+			PhysicsSystem.check_ball_boundaries(bl);
+			for(const tl of PhysicsSystem.tiles){ PhysicsSystem.check_ball_tile(bl, tl);}
+			for(const pd of PhysicsSystem.paddles){ 
+				PhysicsSystem.check_ball_paddle(bl, pd);
+				for(const pw of PhysicsSystem.powerups){
+					PhysicsSystem.check_paddle_powerup(pd, pw);
+					PhysicsSystem.check_powerup_bottom(pw);
+				}
+			}
+		}
+	}
+	static register(_obj){
+		switch(_obj.type){
+			case "BALL": 	return PhysicsSystem.register_to_list(_obj, PhysicsSystem.balls);
+			case "PADDLE": 	return PhysicsSystem.register_to_list(_obj, PhysicsSystem.paddles);
+			case "TILE":	return PhysicsSystem.register_to_list(_obj, PhysicsSystem.tiles);
+			case "POWERUP":	return PhysicsSystem.register_to_list(_obj, PhysicsSystem.powerups);
+			default:		return false;
+		}
+	}
+	static register_to_list(gameobject, list){
+		for(const obj of list){
+			if(gameobject.uuid === obj.uuid) return false;
+		}
+		list.push(gameobject);
+		return true;
 	}
 }
