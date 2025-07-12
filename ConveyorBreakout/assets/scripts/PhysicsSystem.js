@@ -47,6 +47,7 @@ class PhysicsSystem{
 	}
 	static check_ball_tile(ball, tile){
 		if(!tile.is_active) return;
+		
 		if(tile.widths[ball.cur_layer] === 0) return; // check for omni-ball later
 		
 		let tile_l = tile.ref_points[ball.cur_layer];
