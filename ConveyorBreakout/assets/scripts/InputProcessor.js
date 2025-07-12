@@ -16,22 +16,22 @@ class InputProcessor{
 	}
 }
 
-function keyReleased(){
-	//ball => SPACEBAR. Need to move somewhere else
-	if(keyCode === 32){
-		if(ball.is_parented && pd.lives > 0){
-			ball.vels[0] = random(-ball.ref_vels[0], ball.ref_vels[0]);
-			ball.is_parented = false;
+function keyReleased(e){
+	switch(keyCode){
+		case 13:
+			if(end_condition){
+				for(const tile of PhysicsSystem.tiles){ tile.is_active = true; }
+				pd.lives = 3;
+				ball.cur_layer = 0;
 			}
-	}
-	if(keyCode === ENTER){
-		if(end_condition){
-			for(var t = 0; t < cs.tiles.length; ++t){
-				cs.tiles[t].is_active = true;
+			break;
+		case 32:
+			if(ball.is_parented && pd.lives > 0){
+				ball.vels[0] = random(-ball.ref_vels[0], ball.ref_vels[0]);
+				ball.is_parented = false;
 			}
-			pd.lives = 3;
-			ball.cur_layer = 0;
-		}
+			break;
+		default: break;
 	}
 }
 
