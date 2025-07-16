@@ -45,7 +45,9 @@ function cycle(cur, vel, low, high){
   return cur + vel +(high - low)*((cur <= low)-(cur >= high));
 }
 
-var pw = new Powerup(); //currently only observed by the physics system
+var wd = new World(CANVAS_WIDTH, CANVAS_HEIGHT);
+var pw = [new LayerPowerup(), new WrapPowerup()]; //currently only observed by the physics system
+
 var pd = new Paddle(CANVAS_WIDTH/2 - 0.75*tile_width, CANVAS_HEIGHT - 3*tile_height, 1.5*tile_width, tile_height, 2.5, [4, 0.5, 1],[2, 0.5, 0.5]);
 var ball = new Ball(0, 0, 0.25*tile_height, [0, 0, 1], [0, 1, 0.75], 3, -3, pd);
 var conv = new ConveyorManager(7);
@@ -72,7 +74,7 @@ function draw(){
 	//updates
 	check_end();
 	if(!end_condition){
-		pw.update(deltaTime);
+		for(let powerup of pw){ powerup.update(deltaTime); }
 		conv.update(deltaTime);
 		pd.update(deltaTime);
 		ball.update(deltaTime);
@@ -85,7 +87,7 @@ function draw(){
     //rendering
 	pd.render();
 	conv.render(1);
-	pw.render();
+	for(let powerup of pw){ powerup.render(); }
 	ball.render();
 	conv.render(0);
 	ir.render();

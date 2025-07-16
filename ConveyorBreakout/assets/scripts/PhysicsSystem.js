@@ -1,25 +1,28 @@
+class CollisionObject{
+	constructor(_colObj){
+		this.collision_object = _colObj;
+	}
+}
+
 class PhysicsSystem{
 	static balls = [];
 	static paddles = [];
 	static tiles = [];
 	static powerups = [];
+	static world = null;
 	constructor(){}
 	static check_ball_boundaries(ball){
-		if(ball.x + ball.r > CANVAS_WIDTH){
-			ball.x = CANVAS_WIDTH-ball.r;
-			ball.vels[0] *= -1;
-		}
-		if(ball.x - ball.r < 0){
-			ball.x = ball.r;
-			ball.vels[0] *= -1;
-		}
-		if(ball.y - ball.r < 0){
-			ball.y = ball.r;
-			ball.vels[1] *= -1;
-		}
-		if(ball.y + ball.r > CANVAS_HEIGHT){
-			ball.reparent();
-			ball.prnt.lives--;//BAD BAD CODING, but this is a prototype...
+		if(ball.x + ball.r > PhysicsSystem.world.r || 
+		   ball.x - ball.r < PhysicsSystem.world.l ||
+		   ball.y - ball.r < PhysicsSystem.world.t || 
+		   ball.y + ball.r > PhysicsSystem.world.b){
+			   ball.on_world_boundary_reached(PhysicsSystem.world);
+		   }
+	}
+	static check_paddle_boundaries(paddle){
+		if(paddle.x < PhysicsSystem.world.l || 
+		   paddle.r > PhysicsSystem.world.r){
+			   paddle.on_world_boundary_reached(PhysicsSystem.world);
 		}
 	}
 	static check_ball_paddle(ball, paddle){
@@ -36,22 +39,17 @@ class PhysicsSystem{
 		let dist = (dX*dX) + (dY*dY);
 		
 		if(dist <= ball.sqr){
-			ball.y = paddle.y - ball.r;
-			let old_vels = ball.vels;
-			let ball_center_dist = ball.x - paddle.center;
-			let radius_halfside_length = ball.r + paddle.hw;
-			let hor_offset = ball_center_dist/radius_halfside_length;
-			ball.vels[0] = ball.ref_vels[0] * hor_offset;
-			ball.vels[1] *= -1; //just bounce for test purposes
+			ball.on_collision_enter(paddle);
+			paddle.on_collision_enter(ball);
 		}
 	}
 	static check_ball_tile(ball, tile){
 		if(!tile.is_active) return;
 		
-		if(tile.widths[ball.cur_layer] === 0) return; // check for omni-ball later
+		let ref_index = tile.widths[0] < tile.widths[1] ? 1 : 0;
 		
-		let tile_l = tile.ref_points[ball.cur_layer];
-		let tile_r = tile.ref_points[ball.cur_layer] + tile.widths[ball.cur_layer];
+		let tile_l = tile.ref_points[ref_index];
+		let tile_r = tile.ref_points[ref_index] + tile.widths[ref_index];
 		
 		let bpx = ball.x;
 		let bpy = ball.y;
@@ -66,18 +64,8 @@ class PhysicsSystem{
 		let dist = dX*dX + dY*dY;
 		
 		if(dist <= ball.sqr){
-			tile.is_active = false;
-			if(ball.x >= tile_l && ball.x <= tile_r){ball.vels[1] *= -1;}
-			else if(ball.y >= tile.y && ball.y <= tile.b){ball.vels[0] *= -1;}
-			else {ball.vels[0] *= -1; ball.vels[1] *= -1;}
-			
-			if(random(100) < 15){
-				if(!PhysicsSystem.powerups[0].is_active){
-					PhysicsSystem.powerups[0].is_active = true;
-					PhysicsSystem.powerups[0].x = tile_l;
-					PhysicsSystem.powerups[0].y = tile.y;
-				}
-			}
+			ball.on_collision_enter(tile);
+			tile.on_collision_enter(ball);
 		} 
 	}
 	static check_paddle_powerup(paddle, powerup){
@@ -85,17 +73,13 @@ class PhysicsSystem{
 		//straight AABB collision
 		if(paddle.r >= powerup.x && paddle.x <= powerup.r &&
 		   paddle.y <= powerup.b && paddle.b >= powerup.y){
-			   for(const ball of PhysicsSystem.balls){
-				   ball.cur_layer++;
-				   ball.cur_layer %= 2;
-				   console.log(ball.name);
-			   }
-			   powerup.reset_state();
+			   powerup.on_collision_enter(paddle);
+			   paddle.on_collision_enter(powerup);
 		   }
 	}
 	static check_powerup_bottom(powerup){
-		if(powerup.y > CANVAS_HEIGHT){
-			powerup.reset_state();
+		if(powerup.y > PhysicsSystem.world.b){
+			powerup.on_world_boundary_reached(PhysicsSystem.world);
 		}
 	}
 	static update(dt){
@@ -103,6 +87,7 @@ class PhysicsSystem{
 			PhysicsSystem.check_ball_boundaries(bl);
 			for(const tl of PhysicsSystem.tiles){ PhysicsSystem.check_ball_tile(bl, tl);}
 			for(const pd of PhysicsSystem.paddles){ 
+				PhysicsSystem.check_paddle_boundaries(pd);
 				PhysicsSystem.check_ball_paddle(bl, pd);
 				for(const pw of PhysicsSystem.powerups){
 					PhysicsSystem.check_paddle_powerup(pd, pw);
@@ -117,6 +102,12 @@ class PhysicsSystem{
 			case "PADDLE": 	return PhysicsSystem.register_to_list(_obj, PhysicsSystem.paddles);
 			case "TILE":	return PhysicsSystem.register_to_list(_obj, PhysicsSystem.tiles);
 			case "POWERUP":	return PhysicsSystem.register_to_list(_obj, PhysicsSystem.powerups);
+			case "WORLD" : 	
+				if(PhysicsSystem.world === null){
+					PhysicsSystem.world = _obj;
+					return true;
+				}
+				return false;
 			default:		return false;
 		}
 	}

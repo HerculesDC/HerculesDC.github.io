@@ -1,32 +1,84 @@
 class Powerup extends GameObject{
-	constructor(){
+	constructor(_class){
 		super("Powerup", "POWERUP");
 		this.x = 0;
 		this.y = -1*(tile_height+1);
 		this.w = tile_width;
+		this.hw = this.w>>1;
+		this.cx = this.x + this.hw;
 		this.r = this.x + this.w;
 		this.h = tile_height;
+		this.hh = this.h >> 1;
+		this.cy = this.y + this.hh;
 		this.b = this.y + this.h;
-		this.vel = 0.5;
+		this.vel = 0.25;
 		this.is_active = false;
+		
+		//rendering
+		this.bc = [];
+		this.fc = [];
+		this.txtsz = this.h - 4;//remove hardcode later
+		this.lbl = "";
+		
+		//Powerup manager
+		this.powerup_class = _class;
+		this.effect = "";
+		PowerupManager.register(this);
 	}
 	update(dt){
 		if (!this.is_active) return;
-		this.y += this.vel*dt;
+		this.y += this.vel * dt;
+		this.cy = this.y + this.hh;
+		this.cx = this.x + this.hw; //has to account for world boundaries later
 		this.r = this.x + this.w;
 		this.b = this.y + this.h;
 	}
 	render(){
 		if(!this.is_active) return;
-		stroke(1, 1, 1);
-		fill(0, 0, 0);
+		strokeWeight(2);
+		stroke(this.bc[0], this.bc[1], this.bc[2]);
+		fill(this.fc[0], this.fc[1], this.fc[2]);
 		rect(this.x, this.y, this.w, this.h);
+		textAlign(CENTER, CENTER);
+		textSize(this.txtsz);
+		fill(this.bc[0], this.bc[1], this.bc[2]);
+		text(this.lbl, this.cx, this.cy);
+		
+	}
+	on_world_boundary_reached(world){
+		this.reset_state(); /*Currently works with the PhysicsSystem. Should ideally reset from here */
+	}
+	on_collision_enter(other){
+		if(other.type === "PADDLE"){
+			PowerupManager.activate_powerup(this);
+			this.reset_state();
+		}
 	}
 	reset_state(){
 		this.x = 0;
 		this.r = this.x + this.w;
 		this.b = this.y + this.h;
-		this.y = -1*(tile_height+1);
+		this.y = -1*(this.h+1);
 		this.is_active = false;
+	}
+}
+
+class LayerPowerup extends Powerup{
+	constructor(){
+		super("BALL");
+		this.effect = "BallLayer";
+		this.bc = [1, 1, 1];
+		this.fc = [0, 0, 0];
+		this.lbl = "BL";
+	}
+}
+
+class WrapPowerup extends Powerup{
+	constructor(){
+		super("BALL");
+		this.effect = "BallWrap";
+		this.bc = [2, 1, 1];
+		this.fc = [0, 0, 0.5];
+		this.lbl = "BW";
 	}
 }

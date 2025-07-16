@@ -28,6 +28,7 @@ class Conveyor{
     this.ref_x = _x;
     this.ref_layer = 0;
     this.r = this.x + this.w; //right
+	this.ref_vel = _v; //for conveyor effects
     this.vel = _v;
     this.tiles = []; //figure in a bit
     this.trails = [];
@@ -46,6 +47,9 @@ class Conveyor{
       this.layers.push(trail_layer);
       this.tiles.push(new Tile(cur_pos, leading, this.y, this.ref_width, this.ref_height, trail_layer, true));
     }
+	
+	//Powerups
+	PowerupManager.register(this);
   }
   update(dt){
     this.bounce();

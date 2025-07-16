@@ -8,9 +8,11 @@ class ConveyorManager{
 		this.tiles_per_row = max_tile_division;		
 		this.num_rows = _numRows;
 		this.conveyors = [];
+		this.ref_conveyor_speeds = []
 		for(let r = 0; r < this.num_rows; ++r){
 			let half_rows = this.num_rows >>1;
 			let rv = 0.5 + 0.5*r - ((r-half_rows)*(r > half_rows));
+			this.ref_conveyor_speeds.push(rv);
 			this.conveyors.push(new Conveyor(this.x, this.y + this.th*r, this.tw, this.th, this.tiles_per_row, rv));
 		}
 	}

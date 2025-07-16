@@ -3,6 +3,7 @@ class Paddle extends GameObject{
 	super("Paddle", "PADDLE");
     this.x = _x;
     this.y = _y;
+	this.ref_w = _w;
     this.w = _w;
     this.h = _h;
 	this.hw = this.w*0.5;
@@ -18,14 +19,15 @@ class Paddle extends GameObject{
     this.colours = [_fc, _bc];
     this.mh = this.y + (this.hh);
     this.right = this.x + this.w;
+	
+	//Powerups
+	PowerupManager.register(this);
   }
   update(dt){
     this.x += this.vel * paddle_displacement;
 	this.center = this.x + this.hw;
 	this.r = this.x + this.w;
-	//will need to take boundaries into account later
-    if(this.x < 0){this.x = 0;}
-    if(this.r > CANVAS_WIDTH){this.x = CANVAS_WIDTH-this.w;}
+	
   }
   render(){
     noStroke();
@@ -34,5 +36,24 @@ class Paddle extends GameObject{
     //ellipse(this.x, this.mh, this.h, this.h);
     rect(this.x, this.y, this.w, this.h);
     //ellipse(this.x+this.w, this.mh, this.h, this.h);
+  }
+  on_world_boundary_reached(world){
+	  if(this.x < world.l){this.x = world.l;}
+	  if(this.r > world.r){this.x = world.r-this.w;}	  
+  }
+  on_collision_enter(other){
+	  switch(other.type){
+		  case "BALL": return;
+		  case "POWERUP": return;
+		  default: return;
+	  }
+  }
+  enlarge(){ this.w *= 1.5; }
+  shrink(){ this.w *= (2/3);}
+  reset_width(){ this.w = this.ref_w; }
+  activate_powerup_effect(effect){
+	  switch(effect){
+		  default: return;
+	  }
   }
 }

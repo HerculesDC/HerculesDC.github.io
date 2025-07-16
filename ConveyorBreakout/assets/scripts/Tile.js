@@ -17,6 +17,7 @@ class Tile extends GameObject{
     }
     this.layer_edge = [[0, 0, 1],[0, 0, 0]];
     this.layer_fill = [[3.5, 0.5, 0.75, 0.3],[0.36, 0.5, 0.75, 0.3]];
+	this.has_powerup = random(100) < 15;
   }
   render(l){
 	if(!this.is_active) return;
@@ -32,5 +33,19 @@ class Tile extends GameObject{
     let _str = "Tx: " + this.ref_points[0] + ", Lx: " + this.ref_points[1] + 
         ", W0: " + this.widths[0] + ", W1: " + this.widths[1];
     return _str;
+  }
+  on_collision_enter(other){
+	  switch(other.type){
+		  case "BALL":
+			if(!this.is_active) return;
+			//check for omniball later
+			if(this.widths[other.cur_layer] === 0) return;
+			this.is_active = false;
+			if(this.has_powerup){
+				PowerupManager.request_next_powerup(this);
+			}
+			return;
+		  default: return;
+	  }
   }
 }

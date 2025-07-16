@@ -18,9 +18,10 @@ class InputProcessor{
 
 function keyReleased(e){
 	switch(keyCode){
-		case 13:
+		case 13: //has to reset powerups as well
 			if(end_condition){
 				for(const tile of PhysicsSystem.tiles){ tile.is_active = true; }
+				for(const pw of PhysicsSystem.powerups){ pw.reset_state(); }
 				pd.lives = 3;
 				ball.cur_layer = 0;
 			}
