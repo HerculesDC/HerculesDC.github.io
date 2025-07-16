@@ -49,11 +49,17 @@ class Paddle extends GameObject{
 	  }
   }
   enlarge(){ this.w *= 1.5; }
-  shrink(){ this.w *= (2/3);}
+  shrink(){ this.w *= (2/3); }
   reset_width(){ this.w = this.ref_w; }
   activate_powerup_effect(effect){
 	  switch(effect){
 		  default: return;
 	  }
+  }
+  reset_state(){
+	  this.x = (CANVAS_WIDTH >> 1) - this.hw;
+	  this.center = this.x + this.hw;
+	  this.r = this.x + this.ref_w;
+	  this.lives = 3;
   }
 }

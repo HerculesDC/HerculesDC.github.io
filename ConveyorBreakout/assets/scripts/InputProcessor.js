@@ -22,8 +22,9 @@ function keyReleased(e){
 			if(end_condition){
 				for(const tile of PhysicsSystem.tiles){ tile.is_active = true; }
 				for(const pw of PhysicsSystem.powerups){ pw.reset_state(); }
-				pd.lives = 3;
-				ball.cur_layer = 0;
+				pd.reset_state();
+				ball.reset_state();
+				PowerupManager.shuffle_powerups();
 			}
 			break;
 		case 32:

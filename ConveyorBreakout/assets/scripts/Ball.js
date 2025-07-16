@@ -36,6 +36,12 @@ class Ball extends GameObject{
 		fill(layer_colour[0], layer_colour[1], layer_colour[2]);
 		ellipse(this.x, this.y, this.r, this.r);
 	}
+	reset_state(){
+		this.is_parented = true;
+		this.cur_layer = 0;
+		this.is_loop = false;
+		this.is_wrap = false;
+	}
 	reparent(){ this.is_parented = true; }
 	toggle_layer(){ this.cur_layer = this.cur_layer === 0 ? 1 : 0; }
 	toggle_wrap(){ 
@@ -67,14 +73,8 @@ class Ball extends GameObject{
 		}
 		else if(this.is_loop){
 			let d = this.r * 2; //to create the illusion of out-in
-			if(this.x - d > world.r){
-				this.x = world.l - d;
-				this.vels[0] *= -1;
-			}
-			if(this.x + d < world.l){
-				this.x = world.r + d;
-				this.vels[0] *= -1;
-			}
+			if(this.x - d > world.r){ this.x = world.l - d; }
+			if(this.x + d < world.l){ this.x = world.r + d; }
 			if(this.y  < world.t){
 				this.y =  world.t -1;
 				this.vels[1] *= -1;

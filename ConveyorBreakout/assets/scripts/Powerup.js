@@ -69,7 +69,7 @@ class LayerPowerup extends Powerup{
 		this.effect = "BallLayer";
 		this.bc = [1, 1, 1];
 		this.fc = [0, 0, 0];
-		this.lbl = "BL";
+		this.lbl = "BLy";
 	}
 }
 
@@ -79,6 +79,16 @@ class WrapPowerup extends Powerup{
 		this.effect = "BallWrap";
 		this.bc = [2, 1, 1];
 		this.fc = [0, 0, 0.5];
-		this.lbl = "BW";
+		this.lbl = "BWr";
+	}
+}
+
+class LoopPowerup extends Powerup{
+	constructor(){
+		super("BALL");
+		this.effect = "BallLoop";
+		this.bc = [3, 1, 1];
+		this.fc = [0, 0, 0.25];
+		this.lbl = "BLp";
 	}
 }

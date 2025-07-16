@@ -46,7 +46,7 @@ function cycle(cur, vel, low, high){
 }
 
 var wd = new World(CANVAS_WIDTH, CANVAS_HEIGHT);
-var pw = [new LayerPowerup(), new WrapPowerup()]; //currently only observed by the physics system
+var pw = [new LayerPowerup(), new WrapPowerup(), new LoopPowerup()]; //Physics and Powerup systems 
 
 var pd = new Paddle(CANVAS_WIDTH/2 - 0.75*tile_width, CANVAS_HEIGHT - 3*tile_height, 1.5*tile_width, tile_height, 2.5, [4, 0.5, 1],[2, 0.5, 0.5]);
 var ball = new Ball(0, 0, 0.25*tile_height, [0, 0, 1], [0, 1, 0.75], 3, -3, pd);
