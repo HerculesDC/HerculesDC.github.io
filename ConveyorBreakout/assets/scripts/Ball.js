@@ -3,6 +3,7 @@ class Ball extends GameObject{
 		super("Ball", "BALL");
 		this.x = _x;
 		this.y = _y;
+		this.ref_r = _r;
 		this.r = _r; //radius
 		this.sqr = this.r*this.r; //for distance & physics calcs
 		this.shadeDist = this.r/2;
@@ -41,6 +42,8 @@ class Ball extends GameObject{
 		this.cur_layer = 0;
 		this.is_loop = false;
 		this.is_wrap = false;
+		this.r = this.ref_r;
+		this.sqr = this.r * this.r;
 	}
 	reparent(){ this.is_parented = true; }
 	toggle_layer(){ this.cur_layer = this.cur_layer === 0 ? 1 : 0; }
@@ -52,6 +55,18 @@ class Ball extends GameObject{
 		this.is_wrap = false;
 		this.is_loop = !this.is_loop;
 	}
+	change_size(size_factor){
+		this.r *= size_factor;
+		this.sqr = this.r*this.r;
+	}
+	enlarge(){ this.change_size(1.5); }
+	shrink(){ this.change_size((2/3)); }
+	change_velocities(factor){
+		this.vels[0] *= factor;
+		this.vels[1] *= factor;
+	}
+	accelerate(){ this.change_velocities(1.5); }
+	decelerate(){ this.change_velocities((2/3)); }
 	on_world_boundary_reached(world){
 		if(this.is_wrap){
 			let d = this.r * 2; //to create the illusion of out-in
@@ -95,20 +110,22 @@ class Ball extends GameObject{
 			}
 		}
 		if(this.y + this.r > world.b){
-			this.reparent();
+			this.reset_state();
+			this.prnt.reset_state();
 			this.prnt.lives--;//BAD BAD CODING, but this is a prototype...
 		}
 	}
 	on_collision_enter(other){
 		switch(other.type){
 			case "PADDLE":
+				if(this.vels[1] < 0) return; //creates pass-through effect
 				this.y = other.y - this.r;
 				let old_vels = this.vels;
 				let ball_center_dist = this.x - other.center;
 				let radius_halfside_length = this.r + other.hw;
 				let hor_offset = ball_center_dist/radius_halfside_length;
 				this.vels[0] = this.ref_vels[0] * hor_offset;
-				this.vels[1] *= -1; //just bounce for test purposes
+				this.vels[1] *= -1;
 				return;
 			case "TILE":
 				//check for omniball later
@@ -125,9 +142,13 @@ class Ball extends GameObject{
 	}
 	activate_powerup_effect(effect){ //array of method pointers didn't work well for some reason
 		switch(effect){
-			case "BallLayer": this.toggle_layer(); return;
-			case "BallWrap":  this.toggle_wrap();  return;
-			case "BallLoop":  this.toggle_loop();  return;
+			case "BallLayer": 	this.toggle_layer(); return;
+			case "BallWrap":  	this.toggle_wrap();  return;
+			case "BallLoop":  	this.toggle_loop();  return;
+			case "BallEnlarge": this.enlarge();		 return;
+			case "BallShrink": 	this.shrink(); 		 return;
+			case "BallAccel":	this.accelerate();	 return;
+			case "BallDecel":	this.decelerate();	 return;
 			default: return;
 		}
 	}

@@ -17,9 +17,12 @@ class ConveyorManager{
 		}
 	}
 	update(dt){
-		for(const conv of this.conveyors){ conv.update(); }
+		for(const conv of this.conveyors){ conv.update(dt); }
 	}
 	render(l){
-		for(const conv of this.conveyors){ conv.render(l);}
+		for(const conv of this.conveyors){ conv.render(l); }
+	}
+	reset_state(){
+		for (const conv of this.conveyors){ conv.reset_state(); }
 	}
 }

@@ -4,31 +4,8 @@
  * controls which one shows up next. The idea is that there should be no powerup *
  * active more than once at the same time. This will vary in the future, but     *
  * until then, these controls are centralized here.                              *
- *********************************************************************************
- * Powerup Classes:																 *
- *  Classes are based on what the powerup affects. They can be:					 *
- *    Ball Powerups:															 *
- *	   Ball Layer Change: Changes ball layer									 *
- *	   Ball Wrap: Changes ball layer when it collides with world's boundaries	 *
- *	   Ball Accelerate: Ball becomes faster										 *
- *     Ball Decelerate: Ball becomes slower										 *
- *     Ball Enlarge: Increases ball size										 *
- *     Ball Shrink: Decreases ball size 										 *
- *    Paddle Powerups:															 *
- *     Paddle Enlarge: Paddle becomes wider										 *
- *     Paddle Shrink: Paddle becomes narrower									 *
- *     Paddle Accelerate: Paddle becomes faster									 *
- *     Paddle Decelerate: Paddle becomes slower									 *
- *     Paddle Reverse: Switches Left-Right Paddle controls						 *
- *    Conveyor Powerups: 														 *
- *     Conveyor Freeze: Freezes Conveyor Belt									 *
- *     Conveyor Accelerate: Conveyor becomes faster								 *
- *     Conveyor Decelerate: Conveyor becomes slower								 *
- *     Conveyor Reverse: Switches Left-Right Conveyor controls					 *
- *	  Ball-Paddle Powerups:														 *
- *     I thought of something but I don't remember what it was...				 *
  *********************************************************************************/
-
+ 
 class PowerupManager{
 	static balls = [];
 	static paddles = [];
@@ -36,20 +13,27 @@ class PowerupManager{
 	static powerups = [];
 	static indices = [];
 	static ref_index = 0;
-	constructor(){}
-	static update(dt){}
+	constructor(){
+		for(const pwd of _powerup_data){ new Powerup(pwd); }
+	}
+	static update(dt){
+		for(const pw of PowerupManager.powerups){ pw.update(dt); }
+	}
+	static render(){
+		for(const pw of PowerupManager.powerups){ pw.render(); }
+	}
 	static register(_obj){
 		switch(_obj.type){
 			case "BALL": 	 return PowerupManager.register_to_list(_obj, PowerupManager.balls);
 			case "PADDLE": 	 return PowerupManager.register_to_list(_obj, PowerupManager.paddles);
 			case "CONVEYOR": return PowerupManager.register_to_list(_obj, PowerupManager.conveyors);
 			case "POWERUP":	 return PowerupManager.register_to_powerups(_obj, PowerupManager.powerups);				
-			// case "WORLD" : 	
-				// if(this.world === null){
-					// this.world = _obj;
-					// return true;
-				// }
-				// return false;
+			case "WORLD" : 	
+				if(this.world === null){
+					this.world = _obj;
+					return true;
+				}
+				return false;
 			default:		return false;
 		}
 	}
@@ -66,7 +50,7 @@ class PowerupManager{
 		}
 		PowerupManager.indices.push(PowerupManager.indices.length);
 		list.push(powerup);
-		//PowerupManager.shuffle_powerups();
+		PowerupManager.shuffle_powerups();
 		return true;
 	}
 	static request_next_powerup(requester){

@@ -1,5 +1,5 @@
 class Powerup extends GameObject{
-	constructor(_class){
+	constructor(powerup_data){
 		super("Powerup", "POWERUP");
 		this.x = 0;
 		this.y = -1*(tile_height+1);
@@ -15,14 +15,14 @@ class Powerup extends GameObject{
 		this.is_active = false;
 		
 		//rendering
-		this.bc = [];
-		this.fc = [];
+		this.bc = powerup_data.bc;
+		this.fc = powerup_data.fc;
 		this.txtsz = this.h - 4;//remove hardcode later
-		this.lbl = "";
+		this.lbl = powerup_data.lbl;
 		
 		//Powerup manager
-		this.powerup_class = _class;
-		this.effect = "";
+		this.powerup_class = powerup_data._class;
+		this.effect = powerup_data.effect;
 		PowerupManager.register(this);
 	}
 	update(dt){
@@ -45,9 +45,7 @@ class Powerup extends GameObject{
 		text(this.lbl, this.cx, this.cy);
 		
 	}
-	on_world_boundary_reached(world){
-		this.reset_state(); /*Currently works with the PhysicsSystem. Should ideally reset from here */
-	}
+	on_world_boundary_reached(world){ this.reset_state(); }
 	on_collision_enter(other){
 		if(other.type === "PADDLE"){
 			PowerupManager.activate_powerup(this);
@@ -60,35 +58,5 @@ class Powerup extends GameObject{
 		this.b = this.y + this.h;
 		this.y = -1*(this.h+1);
 		this.is_active = false;
-	}
-}
-
-class LayerPowerup extends Powerup{
-	constructor(){
-		super("BALL");
-		this.effect = "BallLayer";
-		this.bc = [1, 1, 1];
-		this.fc = [0, 0, 0];
-		this.lbl = "BLy";
-	}
-}
-
-class WrapPowerup extends Powerup{
-	constructor(){
-		super("BALL");
-		this.effect = "BallWrap";
-		this.bc = [2, 1, 1];
-		this.fc = [0, 0, 0.5];
-		this.lbl = "BWr";
-	}
-}
-
-class LoopPowerup extends Powerup{
-	constructor(){
-		super("BALL");
-		this.effect = "BallLoop";
-		this.bc = [3, 1, 1];
-		this.fc = [0, 0, 0.25];
-		this.lbl = "BLp";
 	}
 }
