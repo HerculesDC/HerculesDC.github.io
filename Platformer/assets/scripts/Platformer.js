@@ -28,6 +28,33 @@ function windowResized(){
 
 const G = .000981;
 
+function cycle(curr, spd, low, high){
+	return curr + spd - (high-low)*((curr > high)-(curr <= low));
+}
+
+class DayNightCycle{
+	constructor(){
+		
+	}
+	update(dt){}
+	render(){}
+}
+
+var dn  = new DayNightCycle();
+
+function test(){
+	background(0,0,0);
+	noFill();
+	strokeWeight(2);
+	stroke(0, 0, 1);
+	beginShape();
+	vertex(CANVAS_WIDTH>>1, 50);
+	bezierVertex(0, CANVAS_HEIGHT, CANVAS_WIDTH, CANVAS_HEIGHT, CANVAS_WIDTH>>1, 50);
+	endShape();
+}
+
 function draw(){
-	
+	// dn.update(deltaTime);
+	// dn.render();
+	test();
 }
