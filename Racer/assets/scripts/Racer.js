@@ -26,8 +26,12 @@ function windowResized(){
     c.position(LPADDING, 75, "float:center");
 }
 
-var mnt = loadImage("./assets/images/mnt_pb_1024.png");
+//will be easier to have classes create the things and hand them as images with createImage
 
+var mnt = loadImage("./assets/images/mnt_pb_1024.png");
+if (mnt.width === 1){
+	mnt = loadImage("https://github.com/HerculesDC/HerculesDC.github.io/blob/Racer/Racer/assets/images/mnt_pb_1024.png");
+}
 
 function draw(){
 	background(4, 0.75, 1);
