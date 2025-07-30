@@ -32,8 +32,16 @@ class Tile extends GameObject{
 	  switch(other.type){
 		  case "BALL":
 			if(!this.is_active) return;
-			//check for omniball later
-			if(this.widths[other.cur_layer] === 0) return;
+			//CHANGE INTRODUCED
+			let other_layer = other.cur_layer;
+			if(other.cur_layer === 2){ //2: omni-ball
+				other_layer = this.widths[0] > this.widths[1] ? 0 : 1;
+			}
+			if(other.cur_layer === 3){ //3: melt-ball 
+				other_layer = other.prev_layer;
+			}
+			if(this.widths[other_layer] === 0) return;
+			//CHANGE INTRODUCED END
 			this.is_active = false;
 			if(this.has_powerup){
 				PowerupManager.request_next_powerup(this);

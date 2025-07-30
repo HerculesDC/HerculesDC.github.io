@@ -1,5 +1,5 @@
 class Ball extends GameObject{
-	constructor(_x, _y, _r, _flc, _blc, _hv, _vv, _prnt){
+	constructor(_x, _y, _r, _flc, _blc, _omc, _mmc, _hv, _vv, _prnt){
 		super("Ball", "BALL");
 		this.x = _x;
 		this.y = _y;
@@ -7,13 +7,15 @@ class Ball extends GameObject{
 		this.r = _r; //radius
 		this.sqr = this.r*this.r; //for distance & physics calcs
 		this.shadeDist = this.r/2;
-		this.cur_layer = 0;
-		this.colours = [_flc, _blc];
+		this.prev_layer = 0;
+		this.cur_layer = 3; //layers above 1 are powers: 2 is omni-ball, 3 is melt ball
+		this.colours = [_flc, _blc, _omc, _mmc];
 		this.ref_vels = [_hv, _vv];
 		this.vels = [_hv, _vv];
 		this.prnt = _prnt;
 		this.prnt_offset = 0; //for grip
 		this.is_parented = this.prnt !== null && this.prnt !== undefined;
+		this.has_bounced = false;
 		
 		//Ball Powerup effects:
 		PowerupManager.register(this);
@@ -67,6 +69,8 @@ class Ball extends GameObject{
 	}
 	accelerate(){ this.change_velocities(1.5); }
 	decelerate(){ this.change_velocities((2/3)); }
+	omni_ball(){ this.cur_layer = 2; }
+	melt_ball(){ this.cur_layer = 3; }
 	on_world_boundary_reached(world){
 		if(this.is_wrap){
 			let d = this.r * 2; //to create the illusion of out-in
@@ -127,13 +131,26 @@ class Ball extends GameObject{
 				this.vels[0] = this.ref_vels[0] * hor_offset;
 				this.vels[1] *= -1;
 				return;
-			case "TILE":
-				//check for omniball later
+			case "TILE": //GETTING COMPLEX FOR OMNIBALL!!! MAY NEED SEPARATE METHODS
 				if(!other.is_active) return;
-				if(other.widths[this.cur_layer] === 0)	return;
-				let tile_l = other.ref_points[this.cur_layer];
-				let tile_r = tile_l+other.widths[this.cur_layer]; //here for omniball checks
-				if(this.x >= tile_l && this.x <= tile_r){this.vels[1] *= -1;}
+				if(this.cur_layer === 3) return; //no need to check for collision if melt-ball
+				//HOW TO OMNIBALL?
+				let calc_layer = this.cur_layer;
+				if(this.cur_layer === 2){ //OMNI-BALL CHECK
+					if(this.has_bounced){
+						this.has_bounced = false;
+						return;
+					}
+					calc_layer = other.widths[0] > other.widths[1] ? 0 : 1;
+				}
+				if(other.widths[calc_layer] === 0)	return;
+				//OMNIBALL CHANGE END
+				let tile_l = other.ref_points[calc_layer];
+				let tile_r = tile_l+other.widths[calc_layer]; //here for omniball checks
+				if(this.x >= tile_l && this.x <= tile_r){
+					this.vels[1] *= -1;
+					if(this.cur_layer === 2 && !this.has_bounced) this.has_bounced = true;
+				}
 				else if(this.y >= other.y && this.y <= other.b){this.vels[0] *= -1;}
 				else {this.vels[0] *= -1; this.vels[1] *= -1;}
 				return;
@@ -149,6 +166,8 @@ class Ball extends GameObject{
 			case "BallShrink": 	this.shrink(); 		 return;
 			case "BallAccel":	this.accelerate();	 return;
 			case "BallDecel":	this.decelerate();	 return;
+			case "BallOmni":	this.omni_ball();	 return;
+			case "BallMelt":	this.melt_ball();	 return;
 			default: return;
 		}
 	}

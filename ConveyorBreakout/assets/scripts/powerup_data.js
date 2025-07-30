@@ -10,6 +10,7 @@
  *     Ball Enlarge: Increases ball size										 *
  *     Ball Shrink: Decreases ball size 										 *
  *     OmniBall: Ball hits both layers ***TBI***								 *
+ *     MeltBall: Ball melts through tiles (single layer)						 *
  *     MultiBall: Splits one ball in play into 8 others ***TBI***				 *
  *    Paddle Powerups:															 *
  *     Paddle Enlarge: Paddle becomes wider										 *
@@ -38,6 +39,8 @@ var _powerup_data = [
 		{_class:"BALL", effect:"BallShrink", bc:[0.5,1,1], fc:[0,0.2,0.1], lbl:"BSh"},
 		{_class:"BALL", effect:"BallAccel", bc:[1.5,1,1], fc:[0,0.2,0.1], lbl:"BAc"},
 		{_class:"BALL", effect:"BallDecel", bc:[3.5,1,1], fc:[0,0.2,0.1], lbl:"BDc"},
+		{_class:"BALL", effect:"BallOmni", bc:[4.5,1,1], fc:[0,0.2,0.1], lbl:"BOm"},
+		{_class:"BALL", effect:"BallMelt", bc:[5.5,1,1], fc:[0,0.2,0.1], lbl:"BMl"},
 		/*PADDLE EFFECTS*/
 		{_class:"PADDLE", effect:"PaddleEnlarge", bc:[0,0.2,0.1], fc:[2.5,1,1], lbl:"PEl"},
 		{_class:"PADDLE", effect:"PaddleShrink", bc:[0,0.2,0.1], fc:[0.5,1,1], lbl:"PSh"},
