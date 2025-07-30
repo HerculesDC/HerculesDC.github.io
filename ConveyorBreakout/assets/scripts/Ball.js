@@ -8,7 +8,7 @@ class Ball extends GameObject{
 		this.sqr = this.r*this.r; //for distance & physics calcs
 		this.shadeDist = this.r/2;
 		this.prev_layer = 0;
-		this.cur_layer = 3; //layers above 1 are powers: 2 is omni-ball, 3 is melt ball
+		this.cur_layer = 0; //layers above 1 are powers: 2 is omni-ball, 3 is melt ball
 		this.colours = [_flc, _blc, _omc, _mmc];
 		this.ref_vels = [_hv, _vv];
 		this.vels = [_hv, _vv];
