@@ -9,6 +9,7 @@ class PhysicsSystem{
 	static paddles = [];
 	static tiles = [];
 	static powerups = [];
+	static lasers = [];
 	static world = null;
 	constructor(){}
 	static check_ball_boundaries(ball){
@@ -68,6 +69,28 @@ class PhysicsSystem{
 			tile.on_collision_enter(ball);
 		} 
 	}
+	static check_laser_boundaries(laser){
+		if(laser.b < 0){
+			laser.on_world_boundary_reached();
+		}
+	}
+	static check_laser_tile(laser, tile){
+		if(!tile.is_active) return;
+		if(!laser.is_active) return;
+		
+		let ref_index = tile.widths[0] < tile.widths[1] ? 1 : 0;
+		
+		let tile_l = tile.ref_points[ref_index];
+		let tile_r = tile.ref_points[ref_index] + tile.widths[ref_index];
+		
+		if(laser.x >= tile_l && 
+		   laser.x <= tile_r && 
+		   laser.y <= tile.b && 
+		   laser.b >= tile.y){
+			   laser.on_collision_enter(tile);
+			   tile.on_collision_enter(laser);
+		   }
+	}
 	static check_paddle_powerup(paddle, powerup){
 		if (!powerup.is_active) return;
 		//straight AABB collision
@@ -85,7 +108,13 @@ class PhysicsSystem{
 	static update(dt){
 		for (const bl of PhysicsSystem.balls){
 			PhysicsSystem.check_ball_boundaries(bl);
-			for(const tl of PhysicsSystem.tiles){ PhysicsSystem.check_ball_tile(bl, tl);}
+			for(const tl of PhysicsSystem.tiles){ 
+				PhysicsSystem.check_ball_tile(bl, tl);
+				for(const ls of PhysicsSystem.lasers){
+					PhysicsSystem.check_laser_tile(ls, tl);
+					PhysicsSystem.check_laser_boundaries(ls);
+				}
+			}
 			for(const pd of PhysicsSystem.paddles){ 
 				PhysicsSystem.check_paddle_boundaries(pd);
 				PhysicsSystem.check_ball_paddle(bl, pd);
@@ -102,6 +131,7 @@ class PhysicsSystem{
 			case "PADDLE": 	return PhysicsSystem.register_to_list(_obj, PhysicsSystem.paddles);
 			case "TILE":	return PhysicsSystem.register_to_list(_obj, PhysicsSystem.tiles);
 			case "POWERUP":	return PhysicsSystem.register_to_list(_obj, PhysicsSystem.powerups);
+			case "LASER":	return PhysicsSystem.register_to_list(_obj, PhysicsSystem.lasers);
 			case "WORLD" : 	
 				if(PhysicsSystem.world === null){
 					PhysicsSystem.world = _obj;

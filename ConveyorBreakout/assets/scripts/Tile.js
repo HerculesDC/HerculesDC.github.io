@@ -23,6 +23,12 @@ class Tile extends GameObject{
 	fill(filling[0], filling[1], filling[2]);//*/, filling[3]);
 	rect(this.ref_points[l], this.y, this.widths[l], this.h);
 	}
+	deactivate_and_deploy_powerup(){
+		this.is_active = false;
+		if(this.has_powerup){
+			PowerupManager.request_next_powerup(this);
+		}
+	}
 	toString(){
 	let _str = "Tx: " + this.ref_points[0] + ", Lx: " + this.ref_points[1] + 
 		", W0: " + this.widths[0] + ", W1: " + this.widths[1];
@@ -42,11 +48,12 @@ class Tile extends GameObject{
 			}
 			if(this.widths[other_layer] === 0) return;
 			//CHANGE INTRODUCED END
-			this.is_active = false;
-			if(this.has_powerup){
-				PowerupManager.request_next_powerup(this);
-			}
+			this.deactivate_and_deploy_powerup();
 			return;
+		case "LASER":
+			if(!this.is_active) return;
+			if(this.widths[other.cur_layer] === 0) return;
+			this.deactivate_and_deploy_powerup();
 		  default: return;
 	  }
 	}

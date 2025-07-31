@@ -41,6 +41,7 @@ class Ball extends GameObject{
 	}
 	reset_state(){
 		this.is_parented = true;
+		this.prev_layer = 0;
 		this.cur_layer = 0;
 		this.is_loop = false;
 		this.is_wrap = false;
@@ -48,7 +49,16 @@ class Ball extends GameObject{
 		this.sqr = this.r * this.r;
 	}
 	reparent(){ this.is_parented = true; }
-	toggle_layer(){ this.cur_layer = this.cur_layer === 0 ? 1 : 0; }
+	get_laser_layer(){ return this.cur_layer % 2; }
+	store_prev_layer(){ this.prev_layer = this.cur_layer % 2; } //need a better system. Will set omniball to 0 and meltball to 1
+	set_layer(_layer){ 
+		this.store_prev_layer();
+		this.cur_layer = _layer;
+	}
+	toggle_layer(){ 
+		this.store_prev_layer(); 
+		this.cur_layer = 1 - (this.cur_layer % 2);
+	}
 	toggle_wrap(){ 
 		this.is_loop = false;
 		this.is_wrap = !this.is_wrap;
@@ -69,8 +79,14 @@ class Ball extends GameObject{
 	}
 	accelerate(){ this.change_velocities(1.5); }
 	decelerate(){ this.change_velocities((2/3)); }
-	omni_ball(){ this.cur_layer = 2; }
-	melt_ball(){ this.cur_layer = 3; }
+	omni_ball(){ 
+		this.store_prev_layer();
+		this.cur_layer = 2;
+	}
+	melt_ball(){ 
+		this.store_prev_layer();
+		this.cur_layer = 3;
+	}
 	on_world_boundary_reached(world){
 		if(this.is_wrap){
 			let d = this.r * 2; //to create the illusion of out-in
@@ -137,7 +153,7 @@ class Ball extends GameObject{
 				//HOW TO OMNIBALL?
 				let calc_layer = this.cur_layer;
 				if(this.cur_layer === 2){ //OMNI-BALL CHECK
-					if(this.has_bounced){
+					if(this.has_bounced){ //not sure if I need this
 						this.has_bounced = false;
 						return;
 					}

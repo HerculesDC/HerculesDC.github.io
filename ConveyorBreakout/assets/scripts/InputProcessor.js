@@ -30,9 +30,17 @@ function keyReleased(e){
 			}
 			break;
 		case 32:
-			if(ball.is_parented && pd.lives > 0){
-				ball.vels[0] = random(-ball.ref_vels[0], ball.ref_vels[0]);
-				ball.is_parented = false;
+			if(pd.lives > 0){
+				if(ball.is_parented){
+					ball.vels[0] = random(-ball.ref_vels[0], ball.ref_vels[0]);
+					ball.is_parented = false;
+				}
+				if(!ball.is_parented && pd.laser_enabled){
+					let pos = pd.deploy_laser();
+					if(!laser.is_active){
+						laser.deploy(pos.x, pos.y, ball.get_laser_layer());
+					}
+				}
 			}
 			break;
 		default: break;

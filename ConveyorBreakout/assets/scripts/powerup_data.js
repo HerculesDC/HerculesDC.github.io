@@ -9,7 +9,7 @@
  *     Ball Decelerate: Ball becomes slower										 *
  *     Ball Enlarge: Increases ball size										 *
  *     Ball Shrink: Decreases ball size 										 *
- *     OmniBall: Ball hits both layers ***TBI***								 *
+ *     OmniBall: Ball hits both layers											 *
  *     MeltBall: Ball melts through tiles (single layer)						 *
  *     MultiBall: Splits one ball in play into 8 others ***TBI***				 *
  *    Paddle Powerups:															 *
@@ -18,6 +18,8 @@
  *     Paddle Accelerate: Paddle becomes faster									 *
  *     Paddle Decelerate: Paddle becomes slower									 *
  *     Paddle Reverse: Switches Left-Right Paddle controls						 *
+ *     Paddle Laser: Enables Laser-firing from Paddle							 *
+ *     Paddle Extra Life: Paddle gets one more ball to launch 					 *
  *    Conveyor Powerups: 														 *
  *     Conveyor Accelerate: Conveyor becomes faster								 *
  *     Conveyor Decelerate: Conveyor becomes slower								 *
@@ -47,6 +49,8 @@ var _powerup_data = [
 		{_class:"PADDLE", effect:"PaddleAccel", bc:[0,0.2,0.1], fc:[1.5,1,1], lbl:"PAc"},
 		{_class:"PADDLE", effect:"PaddleDecel", bc:[0,0.2,0.1], fc:[3.5,1,1], lbl:"PDc"},
 		{_class:"PADDLE", effect:"PaddleReverse", bc:[0,0.2,0.1], fc:[1,1,1], lbl:"PRv"},
+		{_class:"PADDLE", effect:"PaddleLaser", bc:[0,0.2,0.1], fc:[4,1,1], lbl:"PLs"},
+		{_class:"PADDLE", effect:"ExtraBall", bc:[0,0.2,0.5], fc:[5,1,1], lbl:"PEb"},
 		/*CONVEYOR EFFECTS*/
 		{_class:"CONVEYOR", effect:"ConvAccel", bc:[4,0.2,0.1], fc:[0.5,1,1], lbl:"CAc"},
 		{_class:"CONVEYOR", effect:"ConvDecel", bc:[4,0.2,0.1], fc:[1.5,1,1], lbl:"CDc"},

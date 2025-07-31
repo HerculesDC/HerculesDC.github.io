@@ -1,5 +1,5 @@
 class Paddle extends GameObject{
-	constructor(_x, _y, _w, _h, _v, _fc, _bc){
+	constructor(_x, _y, _w, _h, _v, _fc, _bc, _lc){
 		super("Paddle", "PADDLE");
 		this.x = _x;
 		this.y = _y;
@@ -16,8 +16,9 @@ class Paddle extends GameObject{
 		//TODO: remove hardcode
 		this.current_layer = 0;
 		this.lives = 3;
+		this.laser_enabled = false;
 		//drawing
-		this.colours = [_fc, _bc];
+		this.colours = [_fc, _bc, _lc]; //_lc: laser colour
 		this.mh = this.y + (this.hh);
 		this.right = this.x + this.w;
 
@@ -36,6 +37,16 @@ class Paddle extends GameObject{
 		fill(fill_colour[0], fill_colour[1], fill_colour[2]);
 		//ellipse(this.x, this.mh, this.h, this.h);
 		rect(this.x, this.y, this.w, this.h);
+		let laser_colour = this.colours[2];
+		stroke(laser_colour[0], laser_colour[1], laser_colour[2], 1*this.laser_enabled);
+		let laser_width = this.ref_w * 0.025;
+		strokeWeight(laser_width);
+		strokeCap(SQUARE);
+		let laser_offset = this.ref_w*0.1; //10%
+		let left_laser = this.x + laser_offset;
+		let right_laser = this.r - laser_offset;
+		line(left_laser, this.y, left_laser, this.y+this.h);
+		line(right_laser, this.y, right_laser, this.y+this.h);
 		//ellipse(this.x+this.w, this.mh, this.h, this.h);
 	}
 	on_world_boundary_reached(world){
@@ -62,13 +73,22 @@ class Paddle extends GameObject{
 	decelerate(){ this.change_speed((2/3)); }
 	reverse(){ this.change_speed(-1); }
 	change_speed(factor){ this.vel *= factor; }
+	add_ball(){ this.lives++; }
+	set_laser(laser_state){ this.laser_enabled = laser_state; }
+	enable_laser(){ this.set_laser(true); }
+	disable_laser(){ this.set_laser(false); }
+	deploy_laser(){
+		return {x: this.center, y: this.y}
+	}
 	activate_powerup_effect(effect){
 		switch(effect){
-			case "PaddleEnlarge": this.enlarge();	 return;
-			case "PaddleShrink":  this.shrink();	 return;
-			case "PaddleAccel":	  this.accelerate(); return;
-			case "PaddleDecel":	  this.decelerate(); return;
-			case "PaddleReverse": this.reverse(); 	 return;
+			case "PaddleEnlarge": this.enlarge();		return;
+			case "PaddleShrink":  this.shrink();		return;
+			case "PaddleAccel":	  this.accelerate();	return;
+			case "PaddleDecel":	  this.decelerate();	return;
+			case "PaddleReverse": this.reverse();		return;
+			case "PaddleLaser":   this.enable_laser();	return;
+			case "ExtraBall":	  this.add_ball();		return;
 			default: return;
 		}
 	}
@@ -79,6 +99,7 @@ class Paddle extends GameObject{
 		this.r = this.x + this.w;
 		this.center = this.x + this.hw;
 		this.vel = this.ref_vel;
+		this.disable_laser();
 	}
 	reset_lives(){ this.lives = 3; }
 }
