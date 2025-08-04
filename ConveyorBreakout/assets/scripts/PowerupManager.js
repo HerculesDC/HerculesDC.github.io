@@ -10,18 +10,18 @@ class PowerupManager{
 	static balls = [];
 	static paddles = [];
 	static conveyors = [];
-	static powerups = [];
-	static indices = [];
+	static powerups = new Map();
+	static names = [];
 	static ref_index = 0;
 	constructor(){}
 	static build_powerups(geometry_data, game_data){
 		for(const pwd of _powerup_data){ new Powerup(geometry_data, game_data, pwd); }
 	}
 	static update(dt){
-		for(const pw of PowerupManager.powerups){ pw.update(dt); }
+		for(const pw of PowerupManager.powerups.keys()){ PowerupManager.powerups.get(pw).update(dt); }
 	}
 	static render(){
-		for(const pw of PowerupManager.powerups){ pw.render(); }
+		for(const pw of PowerupManager.powerups.keys()){ PowerupManager.powerups.get(pw).render(); }
 	}
 	static register(_obj){
 		switch(_obj.type){
@@ -45,25 +45,23 @@ class PowerupManager{
 		list.push(gameobject);
 		return true;
 	}
-	static register_to_powerups(powerup, list){
-		for(const obj of list){
-			if(powerup.uuid === obj.uuid) return false; //already registered
+	static register_to_powerups(powerup, map){
+		for(const key of map.keys()){
+			if(powerup.effect === key) return false; //already registered
 		}
-		PowerupManager.indices.push(PowerupManager.indices.length);
-		list.push(powerup);
+		map.set(powerup.effect, powerup);
+		PowerupManager.names.push(powerup.effect);
 		PowerupManager.shuffle_powerups();
 		return true;
 	}
-	static request_next_powerup(requester){
-		if(PowerupManager.ref_index >= PowerupManager.indices.length){
+	static request_powerup(requester){
+		if(PowerupManager.ref_index >= PowerupManager.names.length){
 			PowerupManager.shuffle_powerups();
 		}
-		let pw = PowerupManager.powerups[PowerupManager.ref_index];
+		let entry = PowerupManager.names[PowerupManager.ref_index];
+		let pw = PowerupManager.powerups.get(entry);
 		if(!pw.is_active){
-			pw.is_active = true;
-			let x = Math.min(requester.ref_points[0], requester.ref_points[1]); //CHANGE LATER
-			pw.x = x;
-			pw.y = requester.y;
+			pw.deploy({x: Math.min(requester.ref_points[0], requester.ref_points[1]), y: requester.y});
 		}
 		PowerupManager.ref_index++;
 		return pw;

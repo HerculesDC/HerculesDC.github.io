@@ -35,9 +35,8 @@ function keyReleased(e){
 					ball.launch();
 				}
 				if(!ball.is_parented && pd.laser_enabled){
-					let pos = pd.deploy_laser();
 					if(!laser.is_active){
-						laser.deploy(pos.x, pos.y, ball.get_laser_layer());
+						laser.deploy(pd.deploy_laser(), ball.get_laser_layer());
 					}
 				}
 			}

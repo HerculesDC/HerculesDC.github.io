@@ -25,6 +25,7 @@
  *     Conveyor Decelerate: Conveyor becomes slower								 *
  *     Conveyor Freeze: Freezes Conveyor Belt									 *
  *     Conveyor Reverse: Switches Left-Right Conveyor controls					 *
+ *     Conveyor Physics: Conveyor rotates based on ball impact ***TBI***		 *
  *	  Ball-Paddle Powerups:														 *
  *     Ball Grip: Ball sticks to paddle on contact until it is re-launched		 *
  *	  World Powerups:														 	 *

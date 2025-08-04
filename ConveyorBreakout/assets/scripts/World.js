@@ -1,10 +1,10 @@
 class World extends GameObject{
-	constructor(_r, _b){
+	constructor(canvas){
 		super("World", "WORLD");
 		this.l = 0;
-		this.r = _r;
+		this.r = canvas.CANVAS_WIDTH;
 		this.t = 0;
-		this.b = _b;
+		this.b = canvas.CANVAS_HEIGHT;
 	}
 	update(dt){}
 	render(){}

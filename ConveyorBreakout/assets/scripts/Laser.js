@@ -1,15 +1,13 @@
 class Laser extends GameObject{
-	constructor(_l){ //Defaulted to front layer for now. Could try and check for ball layer later
+	constructor(laser_data){
 		super("Laser", "LASER");
-		this.x = 0;
-		this.y = 0;
-		this.l = _l;
+		this.l = laser_data.len;
 		this.b = this.y + this.l;
-		this.vel = 5; //will probably have to be faster
-		this.cur_layer = 0;
-		this.is_active = false;
+		this.vel = laser_data.vel; //tunneling through tiles now...
+		this.cur_layer = laser_data.layr;
+		this.is_active = laser_data.active;
 		
-		this.colour = [0, 0.75, 1];
+		this.colour = laser_data.colour;
 	}
 	update(dt){
 		if(!this.is_active) return;
@@ -23,8 +21,8 @@ class Laser extends GameObject{
 		stroke(this.colour[0], this.colour[1], this.colour[2]);
 		line(this.x, this.y, this.x, this.b);
 	}
-	deploy(_x, _y, _layer){
-		this.x = _x; this.y = _y; this.is_active = true;
+	deploy(pos, _layer){
+		this.x = pos.x; this.y = pos.y; this.is_active = true;
 		this.cur_layer = _layer;
 	}
 	on_collision_enter(other){ //omnilaser later???

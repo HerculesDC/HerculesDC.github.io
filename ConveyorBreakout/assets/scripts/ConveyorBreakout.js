@@ -63,8 +63,6 @@ var x_offset = (CANVAS_WIDTH - (tile_width*max_tile_division))>>1;
 var conveyor_displacement = 0;
 var paddle_displacement = 0;
 
-var wd = new World(canvas_attr.CANVAS_WIDTH, canvas_attr.CANVAS_HEIGHT);
-
 //PADDLE DATA CALC & REFS
 let paddle_geometry = { w: tile_attr.tile_width*1.5,
 						h: tile_attr.tile_height }	
@@ -87,13 +85,22 @@ let powerup_geometry = { w: tile_attr.tile_width,
 						 h: tile_attr.tile_height }
 let powerup_game_data = { v: 0.3 }
 
+let laser_game_data = {
+	len: tile_attr.tile_height, //laser length
+	colour: game_colours.laser.laser_colour,
+	vel: 5,
+	layr: 0,
+	active: false
+}
+
 PowerupManager.build_powerups(powerup_geometry, powerup_game_data); //reads powerup data directly
 
+var wd = new World(canvas_attr);
 var pd = new Paddle(paddle_geometry, paddle_game_data, paddle_colours);
 var ball = new Ball(ball_geometry, ball_game_data, ball_colours, pd);
 var conv = new ConveyorManager(7);
 
-var laser = new Laser(tile_height);
+var laser = new Laser(laser_game_data);
 
 var ir = new InterfaceRenderer(ball, pd);
 

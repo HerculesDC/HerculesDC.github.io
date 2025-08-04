@@ -48,8 +48,8 @@ class Paddle extends GameObject{
 		this.r = this.x + this.w;
 	}
 	on_world_boundary_reached(world){
-		if(this.x < world.l){this.x = world.l;}
-		if(this.r > world.r){this.x = world.r-this.w;}	  
+		if(this.x < world.l){ this.x = world.l; }
+		if(this.r > world.r){ this.x = world.r-this.w; }	  
 	}
 	on_collision_enter(other){
 		switch(other.type){
@@ -77,7 +77,7 @@ class Paddle extends GameObject{
 	enable_laser(){ this.set_laser(true); }
 	disable_laser(){ this.set_laser(false); }
 	deploy_laser(){
-		return {x: this.center, y: this.y}
+		return {x: this.cx, y: this.y}
 	}
 	activate_powerup_effect(effect){
 		switch(effect){

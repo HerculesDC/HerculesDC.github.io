@@ -34,6 +34,7 @@ class Powerup extends GameObject{
 		//Powerup manager
 		this.powerup_class = powerup_data._class;
 		this.effect = powerup_data.effect;
+		
 		PowerupManager.register(this);
 	}
 	update(dt){
@@ -47,6 +48,10 @@ class Powerup extends GameObject{
 	render(){
 		if(!this.is_active) return;
 		image(this.sheet, this.x, this.y);
+	}
+	deploy(pos){
+		this.x = pos.x; this.y = pos.y
+		this.is_active = true;
 	}
 	on_world_boundary_reached(world){ this.reset_state(); }
 	on_collision_enter(other){

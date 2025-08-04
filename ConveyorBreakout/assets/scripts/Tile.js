@@ -11,22 +11,22 @@ class Tile extends GameObject{
 		this.widths = xl > xt ? [rw,0] : [0,rw] ;
 		this.layer_edge = [[0, 0, 1],[0, 0, 0]];
 		this.layer_fill = [[3.5, 0.5, 0.75, 0.3],[0.36, 0.5, 0.75, 0.3]];
-		this.has_powerup = random(100) < 15;
+		this.has_powerup = random(100) < 150;
 	}
 	render(l){
-	if(!this.is_active) return;
-	if(this.widths[l] === 0) return;
-	let edging = this.layer_edge[l];
-	let filling = this.layer_fill[l];
-	strokeWeight(1);
-	stroke(edging[0], edging[1], edging[2]);
-	fill(filling[0], filling[1], filling[2]);//*/, filling[3]);
-	rect(this.ref_points[l], this.y, this.widths[l], this.h);
+		if(!this.is_active) return;
+		if(this.widths[l] === 0) return;
+		let edging = this.layer_edge[l];
+		let filling = this.layer_fill[l];
+		strokeWeight(1);
+		stroke(edging[0], edging[1], edging[2]);
+		fill(filling[0], filling[1], filling[2]);
+		rect(this.ref_points[l], this.y, this.widths[l], this.h);
 	}
 	deactivate_and_deploy_powerup(){
 		this.is_active = false;
 		if(this.has_powerup){
-			PowerupManager.request_next_powerup(this);
+			PowerupManager.request_powerup(this);
 		}
 	}
 	toString(){
