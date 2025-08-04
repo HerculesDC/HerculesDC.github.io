@@ -1,46 +1,60 @@
 class Ball extends GameObject{
-	constructor(_x, _y, _r, _flc, _blc, _omc, _mmc, _hv, _vv, _prnt){
+	constructor(ball_geometry, ball_game_data, ball_colours, _prnt){
 		super("Ball", "BALL");
-		this.x = _x;
-		this.y = _y;
-		this.ref_r = _r;
-		this.r = _r; //radius
+		//geometry
+		this.ref_r = ball_geometry.r;
+		this.r = this.ref_r;
+		this.d = this.r*2;
 		this.sqr = this.r*this.r; //for distance & physics calcs
-		this.shadeDist = this.r/2;
-		this.prev_layer = 0;
-		this.cur_layer = 0; //layers above 1 are powers: 2 is omni-ball, 3 is melt ball
-		this.colours = [_flc, _blc, _omc, _mmc];
-		this.ref_vels = [_hv, _vv];
-		this.vels = [_hv, _vv];
+		
+		//parenting
 		this.prnt = _prnt;
 		this.prnt_offset = 0; //for grip
 		this.is_parented = this.prnt !== null && this.prnt !== undefined;
+		
+		//positioning: has to be parented at start
+		this.x = this.prnt.cx + this.prnt_offset;
+		this.y = this.prnt.y - this.r;
+		
+		//physics
+		this.ref_vels = [ball_game_data.hv, ball_game_data.vv];
+		this.vels = [random(-ball_game_data.hv, ball_game_data.hv), ball_game_data.vv];
+		
+		//layering and powerups
+		this.is_wrap = ball_game_data.ball_wrap;
+		this.is_loop = ball_game_data.ball_loop;
+		this.prev_layer = 0;
+		this.cur_layer = 0; //layers above 1 are powers: 2 is omni-ball, 3 is melt ball
 		this.has_bounced = false;
 		
-		//Ball Powerup effects:
+		//RENDERING RELICS:
+		// this.shadeDist = this.r/2;
+		
+		let render_data = {
+			r: ball_geometry.r,
+			ball_layers: ball_colours.ball_layers
+		}
+		
+		this.ball_sheet = Renderers.create_ball_render(render_data);
+		
 		PowerupManager.register(this);
-		this.is_wrap = false;
-		this.is_loop = false;
 	}
 	update(dt){
 		if(this.is_parented){
-			this.x = this.prnt.center + this.prnt_offset;
+			this.x = this.prnt.cx + this.prnt_offset;
 			this.y = this.prnt.y - this.r;
 		}else{
-			this.x += this.vels[0];
-			this.y += this.vels[1];
+			this.x += this.vels[0]*dt;
+			this.y += this.vels[1]*dt;
 		}
 	}
 	render(){
-		let layer_colour = this.colours[this.cur_layer];
-		noStroke();
-		fill(0, 0, 0.2);
-		//ellipse(this.x+ this.shadeDist, this.y+ this.shadeDist, this.r, this.r);
-		fill(layer_colour[0], layer_colour[1], layer_colour[2]);
-		ellipse(this.x, this.y, this.r, this.r);
+		image(this.ball_sheet, this.x-this.r, this.y-this.r, this.d, this.d, 2*this.ref_r*this.cur_layer, 0, this.d, this.d);
 	}
 	reset_state(){
 		this.is_parented = true;
+		this.prnt_offset = 0;
+		this.vels[0] = this.vels[0] = random(-this.ref_vels[0], this.ref_vels[0]);
 		this.prev_layer = 0;
 		this.cur_layer = 0;
 		this.is_loop = false;
@@ -48,6 +62,7 @@ class Ball extends GameObject{
 		this.r = this.ref_r;
 		this.sqr = this.r * this.r;
 	}
+	launch(){ this.is_parented = false; }
 	reparent(){ this.is_parented = true; }
 	get_laser_layer(){ return this.cur_layer % 2; }
 	store_prev_layer(){ this.prev_layer = this.cur_layer % 2; } //need a better system. Will set omniball to 0 and meltball to 1
@@ -69,6 +84,7 @@ class Ball extends GameObject{
 	}
 	change_size(size_factor){
 		this.r *= size_factor;
+		this.d = this.r*2;
 		this.sqr = this.r*this.r;
 	}
 	enlarge(){ this.change_size(1.5); }
@@ -141,7 +157,7 @@ class Ball extends GameObject{
 				if(this.vels[1] < 0) return; //creates pass-through effect
 				this.y = other.y - this.r;
 				let old_vels = this.vels;
-				let ball_center_dist = this.x - other.center;
+				let ball_center_dist = this.x - other.cx;
 				let radius_halfside_length = this.r + other.hw;
 				let hor_offset = ball_center_dist/radius_halfside_length;
 				this.vels[0] = this.ref_vels[0] * hor_offset;

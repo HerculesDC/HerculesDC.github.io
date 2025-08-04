@@ -3,22 +3,31 @@ new p5();
 var ip = new InputProcessor();
 var ps = new PhysicsSystem();
 
+//REMOVE LATER!!!
 var CANVAS_HEIGHT = Math.floor(windowHeight*.9125);
 var TPADDING = 75;
 var CANVAS_WIDTH = Math.floor(CANVAS_HEIGHT * 0.725);
 var LPADDING = Math.floor((windowWidth-CANVAS_WIDTH)*0.5);
+//REMOVE LATER END
 
 function calculateCanvasAttrs(){
-	CANVAS_HEIGHT = Math.floor(windowHeight*.9125);
-	CANVAS_WIDTH = Math.floor(CANVAS_HEIGHT * 0.725);
-	LPADDING = Math.floor((windowWidth-CANVAS_WIDTH)*0.5);
+	let cHeight = Math.floor(windowHeight*.9125);
+	let cWidth = Math.floor(cHeight * 0.725);
+	return {
+		CANVAS_HEIGHT: cHeight,
+		TPADDING: 75,
+		CANVAS_WIDTH: cWidth,
+		LPADDING: Math.floor((windowWidth-cWidth)*0.5)
+	}
 }
 
+var canvas_attr = calculateCanvasAttrs();
+
 function setup() {
-	calculateCanvasAttrs();
-	let c  = createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-	c.position(LPADDING, 75, "float:center");
-	colorMode(HSB, TAU, 1.0, 1.0, 1.0);angleMode(RADIANS);
+	let c  = createCanvas(canvas_attr.CANVAS_WIDTH, canvas_attr.CANVAS_HEIGHT);
+	c.position(canvas_attr.LPADDING, 75, "float:center");
+	colorMode(HSB, TAU, 1.0, 1.0, 1.0);
+	angleMode(RADIANS);
 	rectMode(CORNER);
 	ellipseMode(RADIUS);
 	imageMode(CORNER);
@@ -28,29 +37,56 @@ function setup() {
 }
 
 function windowResized(){ //not working?
-	calculateCanvasAttrs();
-    let c = resizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT); 
-    c.position(LPADDING, 75, "float:center");
+	let attr = calculateCanvasAttrs();
+    let c = resizeCanvas(attr.CANVAS_WIDTH, attr.CANVAS_HEIGHT); 
+    c.position(attr.LPADDING, 75, "float:center");
+}
+
+function calculateTileAttributes(canvasattr, maxtilediv){
+	let tWidth = Math.floor(canvasattr.CANVAS_WIDTH / maxtilediv)
+	return{
+		tile_width: tWidth,
+		tile_height: tWidth >> 1,
+		x_offset: (canvasattr.CANVAS_WIDTH - (tWidth*maxtilediv)) >> 1
+	}
 }
 
 var max_tile_division = 13;
+let tile_attr = calculateTileAttributes(canvas_attr, max_tile_division);
+
+//REMOVE LATER!!!
 var tile_width = Math.floor(CANVAS_WIDTH / max_tile_division);
 var tile_height = tile_width >> 1;
 var x_offset = (CANVAS_WIDTH - (tile_width*max_tile_division))>>1;
+//REMOVE LATER END
 
 var conveyor_displacement = 0;
 var paddle_displacement = 0;
 
-function cycle(cur, vel, low, high){
-  return cur + vel +(high - low)*((cur <= low)-(cur >= high));
-}
-
 new PowerupManager();
 
-var wd = new World(CANVAS_WIDTH, CANVAS_HEIGHT);
+var wd = new World(canvas_attr.CANVAS_WIDTH, canvas_attr.CANVAS_HEIGHT);
 
-var pd = new Paddle(CANVAS_WIDTH/2 - 0.75*tile_width, CANVAS_HEIGHT - 3*tile_height, 1.5*tile_width, tile_height, 2.5, [4, 0.5, 1],[2, 0.5, 0.5], [0, 1, 1]);
-var ball = new Ball(0, 0, 0.25*tile_height, [0, 0, 1], [0, 1, 0.75], [1.25, 1, 1], [0, 1, 0.5], 3, -3, pd);
+//PADDLE DATA CALC & REFS
+let paddle_geometry = { w: tile_attr.tile_width*1.5,
+						h: tile_attr.tile_height }	
+let paddle_game_data = {x: canvas_attr.CANVAS_WIDTH/2 - 0.75*tile_attr.tile_width, 
+						y: canvas_attr.CANVAS_HEIGHT - 3*tile_attr.tile_height, 
+						v: 1.5, lives: 3, laser: false }
+let paddle_colours = {  paddle_colour: game_colours.paddle.paddle_colour,
+						laser_colour: game_colours.laser.laser_colour }
+
+//BALL DATA CALC & REFS
+let ball_geometry = { r: 0.25*tile_attr.tile_height }
+let ball_game_data = { hv: 0.5, vv: -0.5,
+					   ball_wrap: false,
+					   ball_loop: false,
+					   }
+let ball_colours = game_colours.ball;
+
+
+var pd = new Paddle(paddle_geometry, paddle_game_data, paddle_colours);
+var ball = new Ball(ball_geometry, ball_game_data, ball_colours, pd);
 var conv = new ConveyorManager(7);
 
 var laser = new Laser(tile_height);
@@ -87,7 +123,7 @@ function draw(){
 		PhysicsSystem.update(deltaTime);
 	}
     ir.update(deltaTime);
-	
+		
     //rendering
 	pd.render();
 	conv.render(1);

@@ -1,5 +1,5 @@
 class Powerup extends GameObject{
-	constructor(powerup_data){
+	constructor(powerup_data, geometry_data){
 		super("Powerup", "POWERUP");
 		this.x = 0;
 		this.y = -1*(tile_height+1);

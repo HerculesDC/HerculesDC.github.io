@@ -32,8 +32,7 @@ function keyReleased(e){
 		case 32:
 			if(pd.lives > 0){
 				if(ball.is_parented){
-					ball.vels[0] = random(-ball.ref_vels[0], ball.ref_vels[0]);
-					ball.is_parented = false;
+					ball.launch();
 				}
 				if(!ball.is_parented && pd.laser_enabled){
 					let pos = pd.deploy_laser();
