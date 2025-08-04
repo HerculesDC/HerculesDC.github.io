@@ -13,8 +13,9 @@ class PowerupManager{
 	static powerups = [];
 	static indices = [];
 	static ref_index = 0;
-	constructor(){
-		for(const pwd of _powerup_data){ new Powerup(pwd); }
+	constructor(){}
+	static build_powerups(geometry_data, game_data){
+		for(const pwd of _powerup_data){ new Powerup(geometry_data, game_data, pwd); }
 	}
 	static update(dt){
 		for(const pw of PowerupManager.powerups){ pw.update(dt); }
@@ -68,13 +69,7 @@ class PowerupManager{
 		return pw;
 	}
 	static shuffle_powerups(){
-		// for(const current_index of PowerupManager.indices){ current_index = -1; }
-		// for(let max_i = 0; max_i < PowerupManager.indices.length; ++max_i){
-			// let i = parseInt(random(PowerupManager.indices.length));
-			// for(let cur_i = 0; cur_i < max_i; ++cur_i){
-				// //CHECK HOW TO DO THIS PROPERLY LATER
-			// }
-		// }
+		// GET A BETTER SHUFFLE ALGORITHM LATER. MIGHT NOT BE NECESSARY IF POWERUPS ARE FIXED
 		PowerupManager.ref_index = 0;
 	}
 	static activate_powerup(powerup){

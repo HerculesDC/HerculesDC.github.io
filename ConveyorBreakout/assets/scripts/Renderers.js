@@ -32,4 +32,21 @@ class Renderers{
 		}
 		return ball;
 	}
+	static create_powerup_render(render_info){
+		let powerup = createGraphics(render_info.w, render_info.h);
+		powerup.colorMode(HSB, TAU, 1.0, 1.0, 1.0);
+		powerup.textFont("Courier New");
+		powerup.background(render_info.fc);
+		powerup.noFill();
+		powerup.strokeWeight(Math.floor(render_info.h*0.1));
+		powerup.stroke(render_info.bc);
+		powerup.rect(0, 0, render_info.w, render_info.h);
+		powerup.textAlign(CENTER, CENTER);
+		powerup.textSize(render_info.txtsz);
+		powerup.strokeWeight(1);
+		powerup.fill(render_info.bc);
+		powerup.text(render_info.lbl, render_info.w>>1, render_info.h>>1);
+		
+		return powerup;
+	}
 }

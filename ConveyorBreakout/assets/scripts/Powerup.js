@@ -1,24 +1,35 @@
 class Powerup extends GameObject{
-	constructor(powerup_data, geometry_data){
+	constructor(geometry_data, game_data, powerup_data){
 		super("Powerup", "POWERUP");
+		
+		//geometry
+		this.w = geometry_data.w;
+		this.h = geometry_data.h;
+		this.hw = this.w/2;
+		this.hh = this.h/2;
+		
+		//positioning
 		this.x = 0;
-		this.y = -1*(tile_height+1);
-		this.w = tile_width;
-		this.hw = this.w>>1;
+		this.y = -1*(this.h+1);
 		this.cx = this.x + this.hw;
 		this.r = this.x + this.w;
-		this.h = tile_height;
-		this.hh = this.h >> 1;
 		this.cy = this.y + this.hh;
 		this.b = this.y + this.h;
-		this.vel = 0.25;
+		
+		this.vel = game_data.v;
 		this.is_active = false;
 		
 		//rendering
-		this.bc = powerup_data.bc;
-		this.fc = powerup_data.fc;
-		this.txtsz = this.h - 4;//remove hardcode later
-		this.lbl = powerup_data.lbl;
+		let render_info = {
+			w: this.w,
+			h: this.h,
+			txtsz: Math.floor(this.h*0.8),
+			bc: powerup_data.bc,
+			fc: powerup_data.fc,
+			lbl: powerup_data.lbl,
+		}
+		
+		this.sheet = Renderers.create_powerup_render(render_info);
 		
 		//Powerup manager
 		this.powerup_class = powerup_data._class;
@@ -35,15 +46,7 @@ class Powerup extends GameObject{
 	}
 	render(){
 		if(!this.is_active) return;
-		strokeWeight(2);
-		stroke(this.bc[0], this.bc[1], this.bc[2]);
-		fill(this.fc[0], this.fc[1], this.fc[2]);
-		rect(this.x, this.y, this.w, this.h);
-		textAlign(CENTER, CENTER);
-		textSize(this.txtsz);
-		fill(this.bc[0], this.bc[1], this.bc[2]);
-		text(this.lbl, this.cx, this.cy);
-		
+		image(this.sheet, this.x, this.y);
 	}
 	on_world_boundary_reached(world){ this.reset_state(); }
 	on_collision_enter(other){

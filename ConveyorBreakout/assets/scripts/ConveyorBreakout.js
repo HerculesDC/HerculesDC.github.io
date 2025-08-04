@@ -63,8 +63,6 @@ var x_offset = (CANVAS_WIDTH - (tile_width*max_tile_division))>>1;
 var conveyor_displacement = 0;
 var paddle_displacement = 0;
 
-new PowerupManager();
-
 var wd = new World(canvas_attr.CANVAS_WIDTH, canvas_attr.CANVAS_HEIGHT);
 
 //PADDLE DATA CALC & REFS
@@ -84,6 +82,12 @@ let ball_game_data = { hv: 0.5, vv: -0.5,
 					   }
 let ball_colours = game_colours.ball;
 
+//POWERUP DATA => CONTINUE FROM HERE! NEEDS GEOMETRY AND GAME DATA
+let powerup_geometry = { w: tile_attr.tile_width,
+						 h: tile_attr.tile_height }
+let powerup_game_data = { v: 0.3 }
+
+PowerupManager.build_powerups(powerup_geometry, powerup_game_data); //reads powerup data directly
 
 var pd = new Paddle(paddle_geometry, paddle_game_data, paddle_colours);
 var ball = new Ball(ball_geometry, ball_game_data, ball_colours, pd);

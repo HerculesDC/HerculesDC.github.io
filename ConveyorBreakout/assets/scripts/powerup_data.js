@@ -26,7 +26,7 @@
  *     Conveyor Freeze: Freezes Conveyor Belt									 *
  *     Conveyor Reverse: Switches Left-Right Conveyor controls					 *
  *	  Ball-Paddle Powerups:														 *
- *     I thought of something but I don't remember what it was...				 *
+ *     Ball Grip: Ball sticks to paddle on contact until it is re-launched		 *
  *	  World Powerups:														 	 *
  *     World Shield: Prevents the ball from falling through the bottom gap		 *
  *********************************************************************************/

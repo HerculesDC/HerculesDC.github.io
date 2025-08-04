@@ -1,8 +1,16 @@
+/*********************************************************************************
+ * Ball Class:																	 *
+ *  Basic Ball class. Bounces and works through some powerups					 *
+ *    TODO: Check how powerups affect and interact with each other. May need to  *
+ *          change some mechanics to improve gameplay							 *
+ *********************************************************************************/
+
 class Ball extends GameObject{
 	constructor(ball_geometry, ball_game_data, ball_colours, _prnt){
 		super("Ball", "BALL");
 		//geometry
 		this.ref_r = ball_geometry.r;
+		this.ref_d = this.ref_r*2;
 		this.r = this.ref_r;
 		this.d = this.r*2;
 		this.sqr = this.r*this.r; //for distance & physics calcs
@@ -49,7 +57,7 @@ class Ball extends GameObject{
 		}
 	}
 	render(){
-		image(this.ball_sheet, this.x-this.r, this.y-this.r, this.d, this.d, 2*this.ref_r*this.cur_layer, 0, this.d, this.d);
+		image(this.ball_sheet, this.x-this.r, this.y-this.r, this.d, this.d, this.ref_d*this.cur_layer, 0, this.ref_d, this.ref_d);
 	}
 	reset_state(){
 		this.is_parented = true;
@@ -60,6 +68,7 @@ class Ball extends GameObject{
 		this.is_loop = false;
 		this.is_wrap = false;
 		this.r = this.ref_r;
+		this.d = this.r*2;
 		this.sqr = this.r * this.r;
 	}
 	launch(){ this.is_parented = false; }
@@ -98,10 +107,14 @@ class Ball extends GameObject{
 	omni_ball(){ 
 		this.store_prev_layer();
 		this.cur_layer = 2;
+		this.is_loop = false;
+		this.is_wrap = false;
 	}
 	melt_ball(){ 
 		this.store_prev_layer();
 		this.cur_layer = 3;
+		this.is_loop = false;
+		this.is_wrap = false;
 	}
 	on_world_boundary_reached(world){
 		if(this.is_wrap){
