@@ -3,7 +3,8 @@
  * Considerations:															 	 *
  *  Need to fine-tune aspects of different types of tiles. Immune and regen 	 *
  *  tiles require specific tracking variables. UI and end conditions also depend *
- *  on regen and immune tiles not be taken into account. 				 		 *
+ *  on regen and immune tiles not be taken into account. Immune balls should	 *
+ *  also be destroyed by melt balls												 *
  *********************************************************************************/
 
 class Tile extends GameObject{

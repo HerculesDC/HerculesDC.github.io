@@ -60,6 +60,7 @@ class TileManager{
 		for(const key of Object.keys(tiletype)){
 			tile_info[key] = tiletype[key];
 		}
+		if (typeof(powerup_type) === "number") { powerup_type = _powerup_data[powerup_type].effect; }
 		tile_info.powerup = powerup_type;
 		return tile_info;
 	}

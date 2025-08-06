@@ -50,7 +50,7 @@ class Conveyor extends GameObject{
 			this.trails.push(cur_pos);
 			this.layers.push(trail_layer);
 			let tile_data = {ref_points:[cur_pos, leading], y: this.y, ref_width: this.ref_width, h: this.ref_height, trail_layer: trail_layer }
-			this.tiles.push(new Tile(TileManager.request_tile_info(tile_data, Math.floor(random(tiletypes.length)), "BallEnlarge")));
+			this.tiles.push(new Tile(TileManager.request_tile_info(tile_data, Math.floor(random(tiletypes.length)), Math.floor(random(_powerup_data.length)))));
 		}
 		//Powerups
 		PowerupManager.register(this);
