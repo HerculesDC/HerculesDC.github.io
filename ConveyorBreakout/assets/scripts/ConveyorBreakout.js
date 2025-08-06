@@ -101,6 +101,20 @@ PowerupManager.build_powerups(powerup_geometry, powerup_game_data); //reads powe
 let cmdata = {x: tile_attr.x_offset, y: tile_attr.tile_height<<1}
 let tile_attrib = {ref_width: tile_attr.tile_width, w:tile_attr.tile_width, h: tile_attr.tile_height}
 
+var nult = {tiletype:"NULL", 	 powerup:""}
+var regt = {tiletype:"REGULAR", 	 powerup:"BallEnlarge"}
+var invt = {tiletype:"INVISIBLE", powerup:"ConvReverse"}
+var rckt = {tiletype:"ROCK", 	 powerup:"BallOmni"}
+var rgnt = {tiletype:"REGEN", 	 powerup:"PaddleLaser"}
+var immt = {tiletype:"IMMUNE", 	 powerup:""}
+
+var test_tile_data1 = [immt,regt,regt,regt,regt,regt,regt,regt,regt,regt,regt,regt,immt,immt,regt,regt,regt,regt,regt,regt,regt,regt,regt,regt,regt,immt];
+var test_tile_data2 = [rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult];
+var test_tile_data3 = [invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt];
+
+var test_conveyor_tile_data = [test_tile_data1, test_tile_data2, test_tile_data3];
+var test_conveyor_data = [{x:tile_attr.x_offset, vel: 0.5}, {x:(tile_attr.x_offset+tile_attr.tile_width), vel:-1},{x:(tile_attr.x_offset+(2*tile_attr.tile_width)), vel:-1}];
+console.log(test_conveyor_data)
 
 var wd = new World(canvas_attr);
 var pd = new Paddle(paddle_geometry, paddle_game_data, paddle_colours);

@@ -39,6 +39,7 @@ class TileManager{
 			case "NULL":
 				tiletype = tile_types.nulltile;
 				tile_info.sheet_points = [TileManager.tilesheet_refpoints.invisible]; //shouldn't matter
+				break;
 			case "INVISIBLE":
 				tiletype = tile_types.invisible; 
 				tile_info.sheet_points = [TileManager.tilesheet_refpoints.invisible]; 

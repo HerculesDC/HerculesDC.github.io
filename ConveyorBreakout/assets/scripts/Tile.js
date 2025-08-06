@@ -10,10 +10,7 @@
 class Tile extends GameObject{
 	constructor(tile_data){ //factory-generated
 		super("Tile", "TILE");
-		//geometry and position data
-		for(const key of Object.keys(tile_data)){
-			this[key] = tile_data[key];
-		}
+		for(const key of Object.keys(tile_data)){this[key] = tile_data[key];}
 		this.ref_hp = this.hp;
 		this.b = this.y + this.h;
 		this.widths = tile_data.ref_points[0] < tile_data.ref_points[1] ? [this.ref_width, 0] : [0, this.ref_width];
@@ -25,45 +22,38 @@ class Tile extends GameObject{
 		if(!this.is_visible) return;
 		let l_ref = l === 0 ? "front" : "back";
 		let health_map = this.sheet_points.length - this.hp;
-		if(this.tiletype === "IMMUNE") { health_map = 0; }
+		if(this.tiletype === "IMMUNE"){health_map = 0;}
 		image(TileManager.tilesheet, //source tilesheet
 			  this.ref_points[l], this.y, this.widths[l], this.h, //conveyor points
 			  //source points, based on health and layer
 			  this.sheet_points[health_map][l_ref].x, 
 			  this.sheet_points[health_map][l_ref].y, 
 			  this.sheet_points[health_map][l_ref].w, 
-			  this.sheet_points[health_map][l_ref].h)
+			  this.sheet_points[health_map][l_ref].h);
 	}
 	reveal(){ //breaking single responsibility. Rethink
 		this.is_visible = true;
 		this.score_counts = 1;
 	}
 	take_damage(amt){
-		if(this.tiletype === "IMMUNE") return;
+		if(this.tiletype === "IMMUNE"){return;}
 		this.change_health(-amt);
-		if(this.tiletype === "INVISIBLE" && this.score_counts === 0) this.reveal();
+		if(this.tiletype === "INVISIBLE" && this.hp === 1){this.reveal();}
 	}
 	restore(amt){ this.change_health(amt); }
 	change_health(amt){
 		this.hp += amt;
-		if (this.hp <= 0) {
-			this.deactivate_and_deploy_powerup();
-		}
+		if (this.hp <= 0){this.deactivate_and_deploy_powerup();}
 	}
 	deactivate_and_deploy_powerup(){
 		this.is_active = false;
-		if(this.has_powerup){
-			PowerupManager.request_powerup(this);
-		}
+		if(this.has_powerup){PowerupManager.request_powerup(this);}
 	}
-	reset_state(){
-		this.hp = this.ref_hp;
-	}
+	reset_state(){this.hp = this.ref_hp;}
 	on_collision_enter(other){
 	  switch(other.type){
 		  case "BALL":
 			if(!this.is_active) return;
-			//CHANGE INTRODUCED
 			let other_layer = other.cur_layer;
 			if(other.cur_layer === 2){ //2: omni-ball
 				other_layer = this.widths[0] > this.widths[1] ? 0 : 1;
@@ -72,14 +62,13 @@ class Tile extends GameObject{
 				other_layer = other.prev_layer;
 			}
 			if(this.widths[other_layer] === 0) return;
-			//CHANGE INTRODUCED END
-			this.take_damage(other.damage);
-			return;
+			break;
 		case "LASER":
 			if(!this.is_active) return;
 			if(this.widths[other.cur_layer] === 0) return;
-			this.take_damage(other.damage);
-		  default: return;
+			break;
+		default: return;
+		this.take_damage(other.damage);
 	  }
 	}
 }
