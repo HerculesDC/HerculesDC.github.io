@@ -49,4 +49,33 @@ class Renderers{
 		
 		return powerup;
 	}
+	static generate_tilemap(tile_info, render_info){
+		let num_cols = Object.keys(render_info).length;
+		let num_rows = Object.keys(render_info.fills).length;
+		let total_tile_width = tile_info.ref_width * num_cols;
+		let total_tile_height = tile_info.h * num_rows;
+		
+		let tilemap = createGraphics(total_tile_width, total_tile_height);
+		tilemap.colorMode(HSB, TAU, 1.0, 1.0, 1.0);
+		
+		let tilepoints = {};
+		
+		for(let c = 0; c < num_cols; ++c){
+			let ck = c === 0 ? "front" : "back";
+			for(let r = 0; r < num_rows; ++r){
+				let type_index = Object.keys(render_info.fills)[r];
+				tilemap.strokeWeight(1);
+				tilemap.fill(render_info.fills[type_index][ck]);
+				tilemap.stroke(render_info.outlines[type_index][ck]);
+				if(tilepoints[type_index] === null || tilepoints[type_index] === undefined) {tilepoints[type_index] = {}}
+				if(tilepoints[type_index][ck] === null || tilepoints[type_index][ck] === undefined){tilepoints[type_index][ck] = {}}
+				tilepoints[type_index][ck]['x'] = c*tile_info.ref_width;
+				tilepoints[type_index][ck]['y'] = r*tile_info.h;
+				tilepoints[type_index][ck]['w'] = tile_info.ref_width;
+				tilepoints[type_index][ck]['h'] = tile_info.h;
+				tilemap.rect(c*tile_info.ref_width, r*tile_info.h, tile_info.ref_width-1, tile_info.h-1);
+			}
+		}
+		return {map: tilemap, points: tilepoints};
+	}
 }

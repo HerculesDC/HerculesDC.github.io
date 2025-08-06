@@ -1,5 +1,5 @@
 function calculate_tile_widths(t, c){
-	if(t.ref_points[0] + t.ref_width > c.r && t.trail_layer ===0){
+	if(t.ref_points[0] + t.ref_width > c.r && t.trail_layer === 0){
 		let width_offset = (t.ref_points[0] + t.ref_width) - c.r;
 		t.widths[0] = c.r - t.ref_points[0];
 		t.widths[1] = width_offset;

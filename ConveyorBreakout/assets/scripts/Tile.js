@@ -1,27 +1,40 @@
 class Tile extends GameObject{
-	constructor(xt, xl, y, rw, h, _tl, _a){
+	constructor(tile_data){ //factory-generated
 		super("Tile", "TILE");
-		this.is_active = _a;
-		this.ref_points = [xt, xl];
-		this.trail_layer - _tl;
-		this.ref_width = rw;
-		this.y = y;
-		this.h = h;
+		//geometry and position data
+		for(const key of Object.keys(tile_data)){
+			this[key] = tile_data[key]
+		}
+		this.ref_hp = this.hp;
 		this.b = this.y + this.h;
-		this.widths = xl > xt ? [rw,0] : [0,rw] ;
-		this.layer_edge = [[0, 0, 1],[0, 0, 0]];
-		this.layer_fill = [[3.5, 0.5, 0.75, 0.3],[0.36, 0.5, 0.75, 0.3]];
-		this.has_powerup = random(100) < 150;
+		this.widths = tile_data.ref_points[0] < tile_data.ref_points[1] ? [this.ref_width, 0] : [0, this.ref_width];
+		this.has_powerup = this.powerup !== null && this.powerup !== undefined && this.powerup !== "";
 	}
 	render(l){
 		if(!this.is_active) return;
 		if(this.widths[l] === 0) return;
-		let edging = this.layer_edge[l];
-		let filling = this.layer_fill[l];
-		strokeWeight(1);
-		stroke(edging[0], edging[1], edging[2]);
-		fill(filling[0], filling[1], filling[2]);
-		rect(this.ref_points[l], this.y, this.widths[l], this.h);
+		if(!this.is_visible) return;
+		let l_ref = l === 0 ? "front" : "back";
+		let health_map = this.sheet_points.length - this.hp;
+		image(TileManager.tilesheet, //source tilesheet
+			  this.ref_points[l], this.y, this.widths[l], this.h, //conveyor points
+			  //source points, based on health and layer
+			  this.sheet_points[health_map][l_ref].x, 
+			  this.sheet_points[health_map][l_ref].y, 
+			  this.sheet_points[health_map][l_ref].w, 
+			  this.sheet_points[health_map][l_ref].h)
+	}
+	reveal(){ this.is_visible = true; }
+	take_damage(amt){
+		this.change_health(-amt);
+		this.reveal();
+	}
+	restore(amt){ this.change_health(amt); }
+	change_health(amt){
+		this.hp += amt;
+		if (this.hp <= 0) {
+			this.deactivate_and_deploy_powerup();
+		}
 	}
 	deactivate_and_deploy_powerup(){
 		this.is_active = false;
@@ -48,12 +61,12 @@ class Tile extends GameObject{
 			}
 			if(this.widths[other_layer] === 0) return;
 			//CHANGE INTRODUCED END
-			this.deactivate_and_deploy_powerup();
+			this.take_damage(other.damage);
 			return;
 		case "LASER":
 			if(!this.is_active) return;
 			if(this.widths[other.cur_layer] === 0) return;
-			this.deactivate_and_deploy_powerup();
+			this.take_damage(1);
 		  default: return;
 	  }
 	}

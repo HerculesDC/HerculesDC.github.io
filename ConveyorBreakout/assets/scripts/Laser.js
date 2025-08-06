@@ -6,6 +6,7 @@ class Laser extends GameObject{
 		this.vel = laser_data.vel; //tunneling through tiles now...
 		this.cur_layer = laser_data.layr;
 		this.is_active = laser_data.active;
+		this.damage = laser_data.damage;
 		
 		this.colour = laser_data.colour;
 	}

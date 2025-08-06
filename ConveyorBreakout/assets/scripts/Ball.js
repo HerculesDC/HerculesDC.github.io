@@ -27,6 +27,7 @@ class Ball extends GameObject{
 		//physics
 		this.ref_vels = [ball_game_data.hv, ball_game_data.vv];
 		this.vels = [random(-ball_game_data.hv, ball_game_data.hv), ball_game_data.vv];
+		this.damage = ball_game_data.damage;
 		
 		//layering and powerups
 		this.is_wrap = ball_game_data.ball_wrap;

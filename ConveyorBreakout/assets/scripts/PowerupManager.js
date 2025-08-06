@@ -55,10 +55,14 @@ class PowerupManager{
 		return true;
 	}
 	static request_powerup(requester){
+		console.log("requesting");
 		if(PowerupManager.ref_index >= PowerupManager.names.length){
 			PowerupManager.shuffle_powerups();
 		}
 		let entry = PowerupManager.names[PowerupManager.ref_index];
+		if(requester.powerup !== "Random"){
+			entry = requester.powerup;
+		}
 		let pw = PowerupManager.powerups.get(entry);
 		if(!pw.is_active){
 			pw.deploy({x: Math.min(requester.ref_points[0], requester.ref_points[1]), y: requester.y});

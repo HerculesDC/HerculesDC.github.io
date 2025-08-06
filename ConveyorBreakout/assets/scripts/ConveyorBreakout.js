@@ -77,6 +77,7 @@ let ball_geometry = { r: 0.25*tile_attr.tile_height }
 let ball_game_data = { hv: 0.5, vv: -0.5,
 					   ball_wrap: false,
 					   ball_loop: false,
+					   damage: 1
 					   }
 let ball_colours = game_colours.ball;
 
@@ -90,7 +91,8 @@ let laser_game_data = {
 	colour: game_colours.laser.laser_colour,
 	vel: 5,
 	layr: 0,
-	active: false
+	active: false,
+	damage: 1
 }
 
 PowerupManager.build_powerups(powerup_geometry, powerup_game_data); //reads powerup data directly
@@ -98,7 +100,7 @@ PowerupManager.build_powerups(powerup_geometry, powerup_game_data); //reads powe
 var wd = new World(canvas_attr);
 var pd = new Paddle(paddle_geometry, paddle_game_data, paddle_colours);
 var ball = new Ball(ball_geometry, ball_game_data, ball_colours, pd);
-var conv = new ConveyorManager(7);
+// var conv = new ConveyorManager(7);
 
 var laser = new Laser(laser_game_data);
 
@@ -117,6 +119,17 @@ function check_end(){
 	end_condition = end_condition || pd.lives === 0;
 }
 
+let tgeom = {
+	ref_points: [300, 346], y: 400, ref_width: powerup_geometry.w, h: powerup_geometry.h, _layer: 0, trail_layer: 0
+}
+
+//TILEMAP TEST
+let t = new Tile(TileManager.request_tile_info(tgeom, "REGULAR", "BallEnlarge"));
+//TILEMAP TEST END
+
+let break_unbreak = 0;
+let is_broken = false;
+
 function draw(){
 	background(4.25, 0.25, 0.25);	
 	ip.process_input();
@@ -125,7 +138,7 @@ function draw(){
 	check_end();
 	if(!end_condition){
 		PowerupManager.update(deltaTime);
-		conv.update(deltaTime);
+		// conv.update(deltaTime);
 		pd.update(deltaTime);
 		ball.update(deltaTime);
 		laser.update(deltaTime);
@@ -135,12 +148,14 @@ function draw(){
 	}
     ir.update(deltaTime);
 		
+	t.render(0);
+	
     //rendering
 	pd.render();
-	conv.render(1);
+	// conv.render(1);
 	PowerupManager.render();
 	ball.render();
-	conv.render(0);
+	// conv.render(0);
 	laser.render();
-	ir.render();
+	// ir.render();
 }
