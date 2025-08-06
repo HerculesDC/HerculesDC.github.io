@@ -100,7 +100,7 @@ PowerupManager.build_powerups(powerup_geometry, powerup_game_data); //reads powe
 var wd = new World(canvas_attr);
 var pd = new Paddle(paddle_geometry, paddle_game_data, paddle_colours);
 var ball = new Ball(ball_geometry, ball_game_data, ball_colours, pd);
-// var conv = new ConveyorManager(7);
+var conv = new ConveyorManager(7);
 
 var laser = new Laser(laser_game_data);
 
@@ -124,7 +124,7 @@ let tgeom = {
 }
 
 //TILEMAP TEST
-let t = new Tile(TileManager.request_tile_info(tgeom, "REGULAR", "BallEnlarge"));
+// let t = new Tile(TileManager.request_tile_info(tgeom, "REGULAR", "BallEnlarge"));
 //TILEMAP TEST END
 
 let break_unbreak = 0;
@@ -138,7 +138,7 @@ function draw(){
 	check_end();
 	if(!end_condition){
 		PowerupManager.update(deltaTime);
-		// conv.update(deltaTime);
+		conv.update(deltaTime);
 		pd.update(deltaTime);
 		ball.update(deltaTime);
 		laser.update(deltaTime);
@@ -148,14 +148,14 @@ function draw(){
 	}
     ir.update(deltaTime);
 		
-	t.render(0);
+	// t.render(0);
 	
     //rendering
 	pd.render();
-	// conv.render(1);
+	conv.render(1);
 	PowerupManager.render();
 	ball.render();
-	// conv.render(0);
+	conv.render(0);
 	laser.render();
-	// ir.render();
+	ir.render();
 }

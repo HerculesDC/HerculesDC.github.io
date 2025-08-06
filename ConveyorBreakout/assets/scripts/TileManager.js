@@ -2,15 +2,18 @@
  * Tile Manager Class:															 *
  * Manages tile gameplay data. Different tiles have different colours and hit 	 *
  * points. Still deciding what that should look like...							 *
+ * NOTE: invisible tiles need the extra hp to reveal 							 *
  *********************************************************************************/
  
 var tile_types = {
-	invisible: {tiletype: "INVISIBLE", hp: 1,  is_active: true, is_visible: false, is_regen: false, regen_time: 0},
 	regular:   {tiletype: "REGULAR",   hp: 1,  is_active: true, is_visible: true,  is_regen: false, regen_time: 0},
+	invisible: {tiletype: "INVISIBLE", hp: 2,  is_active: true, is_visible: false, is_regen: false, regen_time: 0},
 	rock:	   {tiletype: "ROCK", 	   hp: 2,  is_active: true, is_visible: true,  is_regen: false, regen_time: 0},
 	regen:	   {tiletype: "REGEN", 	   hp: 1,  is_active: true, is_visible: true,  is_regen: true,  regen_time: 5},
 	immune:    {tiletype: "IMMUNE",    hp: -1, is_active: true, is_visible: true,  is_regen: false, regen_time: -1}
 }
+
+var tiletypes = ["REGULAR", "INVISIBLE", "ROCK", "REGEN", "IMMUNE"];
 
 class TileManager{
 	static tilesheet = null;
@@ -30,6 +33,7 @@ class TileManager{
 			tile_info[key] = geometry_data[key];
 		}
 		let tiletype = null;
+		if(typeof(tile_type)==="number"){ tile_type = tiletypes[tile_type]; }
 		switch(tile_type){
 			case "INVISIBLE":
 				tiletype = tile_types.invisible; 

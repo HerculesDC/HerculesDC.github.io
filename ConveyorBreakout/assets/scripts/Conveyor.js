@@ -17,6 +17,7 @@ function calculate_tile_widths(t, c){
 	}
 }
 
+//tiletypes = ["REGULAR", "INVISIBLE", "ROCK", "REGEN", "IMMUNE"];
 class Conveyor extends GameObject{
 	constructor(_x, _y, _w, _h, _n, _v){
 		super("Conveyor", "CONVEYOR");
@@ -48,10 +49,12 @@ class Conveyor extends GameObject{
 			}
 			this.trails.push(cur_pos);
 			this.layers.push(trail_layer);
-			this.tiles.push(new Tile(cur_pos, leading, this.y, this.ref_width, this.ref_height, trail_layer, true));
+			let tile_data = {ref_points:[cur_pos, leading], y: this.y, ref_width: this.ref_width, h: this.ref_height, trail_layer: trail_layer }
+			this.tiles.push(new Tile(TileManager.request_tile_info(tile_data, Math.floor(random(tiletypes.length)), "BallEnlarge")));
 		}
 		//Powerups
 		PowerupManager.register(this);
+		console.log(this);
 	}
 	update(dt){
 		this.bounce();

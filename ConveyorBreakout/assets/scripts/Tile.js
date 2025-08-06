@@ -1,3 +1,11 @@
+/*********************************************************************************
+ * Tile Class:																	 *
+ * Considerations:															 	 *
+ *  Need to fine-tune aspects of different types of tiles. Immune and regen 	 *
+ *  tiles require specific tracking variables. UI and end conditions also depend *
+ *  on regen and immune tiles not be taken into account. 				 		 *
+ *********************************************************************************/
+
 class Tile extends GameObject{
 	constructor(tile_data){ //factory-generated
 		super("Tile", "TILE");
@@ -9,6 +17,7 @@ class Tile extends GameObject{
 		this.b = this.y + this.h;
 		this.widths = tile_data.ref_points[0] < tile_data.ref_points[1] ? [this.ref_width, 0] : [0, this.ref_width];
 		this.has_powerup = this.powerup !== null && this.powerup !== undefined && this.powerup !== "";
+		console.log(this);
 	}
 	render(l){
 		if(!this.is_active) return;
@@ -16,6 +25,7 @@ class Tile extends GameObject{
 		if(!this.is_visible) return;
 		let l_ref = l === 0 ? "front" : "back";
 		let health_map = this.sheet_points.length - this.hp;
+		if(this.tiletype === "IMMUNE") { health_map = 0; }
 		image(TileManager.tilesheet, //source tilesheet
 			  this.ref_points[l], this.y, this.widths[l], this.h, //conveyor points
 			  //source points, based on health and layer
@@ -26,6 +36,7 @@ class Tile extends GameObject{
 	}
 	reveal(){ this.is_visible = true; }
 	take_damage(amt){
+		if(this.tiletype === "IMMUNE") return;
 		this.change_health(-amt);
 		this.reveal();
 	}
@@ -41,11 +52,6 @@ class Tile extends GameObject{
 		if(this.has_powerup){
 			PowerupManager.request_powerup(this);
 		}
-	}
-	toString(){
-	let _str = "Tx: " + this.ref_points[0] + ", Lx: " + this.ref_points[1] + 
-		", W0: " + this.widths[0] + ", W1: " + this.widths[1];
-	return _str;
 	}
 	on_collision_enter(other){
 	  switch(other.type){
@@ -66,7 +72,7 @@ class Tile extends GameObject{
 		case "LASER":
 			if(!this.is_active) return;
 			if(this.widths[other.cur_layer] === 0) return;
-			this.take_damage(1);
+			this.take_damage(other.damage);
 		  default: return;
 	  }
 	}

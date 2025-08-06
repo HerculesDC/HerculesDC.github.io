@@ -21,7 +21,8 @@ class InterfaceRenderer{
 		let active_tiles = 0;
 		//feels cheaty, but it works
 		for(let r = 0; r < PhysicsSystem.tiles.length; ++r){
-			active_tiles += 1 * PhysicsSystem.tiles[r].is_active;
+			let tile = PhysicsSystem.tiles[r];
+			active_tiles += 1 * (tile.is_active && tile.is_visible && tile.tiletype !== "REGEN" && tile.tiletype !== "IMMUNE");
 		}
 		text(this.msgs.rem_tiles + active_tiles.toString(), CANVAS_WIDTH>>1, tile_width>>1);
 		if (active_tiles === 0){
