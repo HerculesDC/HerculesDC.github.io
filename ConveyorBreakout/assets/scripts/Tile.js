@@ -38,7 +38,9 @@ class Tile extends GameObject{
 	take_damage(amt){
 		if(this.tiletype === "IMMUNE"){return;}
 		this.change_health(-amt);
-		if(this.tiletype === "INVISIBLE" && this.hp === 1){this.reveal();}
+		if(this.tiletype === "INVISIBLE" && this.hp === 1){
+			this.reveal();
+		}
 	}
 	restore(amt){ this.change_health(amt); }
 	change_health(amt){
@@ -62,13 +64,14 @@ class Tile extends GameObject{
 				other_layer = other.prev_layer;
 			}
 			if(this.widths[other_layer] === 0) return;
+			this.take_damage(other.damage);
 			break;
 		case "LASER":
 			if(!this.is_active) return;
 			if(this.widths[other.cur_layer] === 0) return;
+			this.take_damage(other.damage);
 			break;
 		default: return;
-		this.take_damage(other.damage);
 	  }
 	}
 }
