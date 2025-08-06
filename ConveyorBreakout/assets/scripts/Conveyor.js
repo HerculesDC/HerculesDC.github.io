@@ -17,27 +17,25 @@ function calculate_tile_widths(t, c){
 	}
 }
 
-//tiletypes = ["REGULAR", "INVISIBLE", "ROCK", "REGEN", "IMMUNE"];
+//tiletypes = ["NULL", "REGULAR", "INVISIBLE", "ROCK", "REGEN", "IMMUNE"];
 class Conveyor extends GameObject{
-	constructor(_x, _y, _w, _h, _n, _v){
+	constructor(pos_data, tile_info, tile_data, gameplay_data){
 		super("Conveyor", "CONVEYOR");
-		this.ref_x = _x;
-		this.init_layer = 0;
-		this.x = _x;
-		this.y = _y;
-		this.ref_width = _w;
-		this.ref_height = _h;
-		this.num_tiles = _n;
-		this.w = _w * _n;
-		this.ref_x = _x;
-		this.ref_layer = this.init_layer;
-		this.r = this.x + this.w; //right
-		this.ref_vel = _v; //for conveyor effects
-		this.vel = _v;
-		this.tiles = []; //figure in a bit
+		this.ref_x = pos_data.x;
+		this.x = pos_data.x;
+		this.y = pos_data.y;
+		this.ref_width = tile_info.w;
+		this.ref_height = tile_info.h;
+		
+		this.tiles = [];
 		this.trails = [];
 		this.layers = [];
-		for(let t = 0; t < _n*2; ++t){
+		
+		let tiles_per_layer = Math.ceil(tile_data.length/2); //account for uneven numbers
+		this.w = this.ref_width * tiles_per_layer;
+		this.r = this.x + this.w;
+		
+		for(let t = 0; t < tile_data.length; ++t){
 			let cur_pos = this.x + t*this.ref_width;
 			let leading = cur_pos + this.ref_width;
 			let trail_layer = 0;
@@ -49,13 +47,63 @@ class Conveyor extends GameObject{
 			}
 			this.trails.push(cur_pos);
 			this.layers.push(trail_layer);
-			let tile_data = {ref_points:[cur_pos, leading], y: this.y, ref_width: this.ref_width, h: this.ref_height, trail_layer: trail_layer }
-			this.tiles.push(new Tile(TileManager.request_tile_info(tile_data, Math.floor(random(tiletypes.length)), Math.floor(random(_powerup_data.length)))));
+			let tile_geom_data = {ref_points:[cur_pos, leading], y: this.y, ref_width: this.ref_width, h: this.ref_height, trail_layer: trail_layer }
+			this.tiles.push(new Tile(TileManager.request_tile_info(tile_geom_data, tile_data[t].tiletype, tile_data[t].powerup)));
 		}
+		
+		if(tile_data.length%2 !== 0){ //fills the last spot of an odd-numbered tile_data dataset with a null tile
+			let cur_pos = this.x-this.ref_width;
+			this.trails.push(cur_pos);
+			this.layers.push(1);
+			let geom_data = {ref_points:[cur_pos, this.x], y: this.y, ref_width: this.ref_width, h: this.ref_height, trail_layer:1}
+			this.tiles.push(new Tile(TileManager.request_tile_info(geom_data, "NULL", "")));
+		}
+		
+		this.init_layer = 0;
+		this.ref_layer = this.init_layer;
+		
+		this.ref_vel = gameplay_data.vel;
+		this.vel = gameplay_data.vel;
+		
 		//Powerups
 		PowerupManager.register(this);
-		console.log(this);
 	}
+	// constructor(_x, _y, _w, _h, _n, _v){
+		// super("Conveyor", "CONVEYOR");
+		// this.ref_x = _x;
+		// this.init_layer = 0;
+		// this.x = _x;
+		// this.y = _y;
+		// this.ref_width = _w;
+		// this.ref_height = _h;
+		// this.num_tiles = _n;
+		// this.w = _w * _n;
+		// this.ref_x = _x;
+		// this.ref_layer = this.init_layer;
+		// this.r = this.x + this.w; //right
+		// this.ref_vel = _v; //for conveyor effects
+		// this.vel = _v;
+		// this.tiles = []; //figure in a bit
+		// this.trails = [];
+		// this.layers = [];
+		// for(let t = 0; t < _n*2; ++t){
+			// let cur_pos = this.x + t*this.ref_width;
+			// let leading = cur_pos + this.ref_width;
+			// let trail_layer = 0;
+			// if(cur_pos >= this.r){
+				// trail_layer = 1;
+				// let pos_offset = cur_pos - this.r;
+				// cur_pos = this.r - pos_offset;
+				// leading = cur_pos - this.ref_width;
+			// }
+			// this.trails.push(cur_pos);
+			// this.layers.push(trail_layer);
+			// let tile_data = {ref_points:[cur_pos, leading], y: this.y, ref_width: this.ref_width, h: this.ref_height, trail_layer: trail_layer }
+			// this.tiles.push(new Tile(TileManager.request_tile_info(tile_data, Math.floor(random(tiletypes.length)), Math.floor(random(_powerup_data.length)))));
+		// }
+		// //Powerups
+		// PowerupManager.register(this);
+	// }
 	update(dt){
 		this.bounce();
 		for(let i = 0; i < this.trails.length; ++i){

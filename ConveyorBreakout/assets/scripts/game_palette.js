@@ -3,7 +3,7 @@ var game_colours = {
 	laser:  {laser_colour:  [0,  1,1]},
 	ball:   {ball_layers:  [[0, 0, 1], [0, 1, 0.75], [1.25, 1, 1], [0, 1, 0.5]] },
 	tiles:{
-		outlines: { 
+		outlines: {
 			invisible:{front: [0, 0, 1, 1], back: [0, 0, 0, 1]},
 			regular:  {front: [0, 0, 1, 1], back: [0, 0, 0, 1]},
 			rock_full:{front: [0, 0, 1, 1], back: [0, 0, 0, 1]},

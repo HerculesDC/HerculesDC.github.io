@@ -97,10 +97,15 @@ let laser_game_data = {
 
 PowerupManager.build_powerups(powerup_geometry, powerup_game_data); //reads powerup data directly
 
+//CONVEYOR MANAGER DATA:
+let cmdata = {x: tile_attr.x_offset, y: tile_attr.tile_height<<1}
+let tile_attrib = {ref_width: tile_attr.tile_width, w:tile_attr.tile_width, h: tile_attr.tile_height}
+
+
 var wd = new World(canvas_attr);
 var pd = new Paddle(paddle_geometry, paddle_game_data, paddle_colours);
 var ball = new Ball(ball_geometry, ball_game_data, ball_colours, pd);
-var conv = new ConveyorManager(7);
+var conv = new ConveyorManager(cmdata, tile_attrib, test_conveyor_tile_data, test_conveyor_data);
 
 var laser = new Laser(laser_game_data);
 

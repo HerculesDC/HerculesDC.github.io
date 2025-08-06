@@ -12,13 +12,12 @@ class Tile extends GameObject{
 		super("Tile", "TILE");
 		//geometry and position data
 		for(const key of Object.keys(tile_data)){
-			this[key] = tile_data[key]
+			this[key] = tile_data[key];
 		}
 		this.ref_hp = this.hp;
 		this.b = this.y + this.h;
 		this.widths = tile_data.ref_points[0] < tile_data.ref_points[1] ? [this.ref_width, 0] : [0, this.ref_width];
 		this.has_powerup = this.powerup !== null && this.powerup !== undefined && this.powerup !== "";
-		console.log(this);
 	}
 	render(l){
 		if(!this.is_active) return;
@@ -35,11 +34,14 @@ class Tile extends GameObject{
 			  this.sheet_points[health_map][l_ref].w, 
 			  this.sheet_points[health_map][l_ref].h)
 	}
-	reveal(){ this.is_visible = true; }
+	reveal(){ //breaking single responsibility. Rethink
+		this.is_visible = true;
+		this.score_counts = 1;
+	}
 	take_damage(amt){
 		if(this.tiletype === "IMMUNE") return;
 		this.change_health(-amt);
-		this.reveal();
+		if(this.tiletype === "INVISIBLE" && this.score_counts === 0) this.reveal();
 	}
 	restore(amt){ this.change_health(amt); }
 	change_health(amt){
@@ -53,6 +55,9 @@ class Tile extends GameObject{
 		if(this.has_powerup){
 			PowerupManager.request_powerup(this);
 		}
+	}
+	reset_state(){
+		this.hp = this.ref_hp;
 	}
 	on_collision_enter(other){
 	  switch(other.type){
