@@ -15,6 +15,15 @@ class Tile extends GameObject{
 		this.b = this.y + this.h;
 		this.widths = tile_data.ref_points[0] < tile_data.ref_points[1] ? [this.ref_width, 0] : [0, this.ref_width];
 		this.has_powerup = this.powerup !== null && this.powerup !== undefined && this.powerup !== "";
+		this.ref_regen = this.regen_time*1000; //milliseconds
+		this.cur_regen_time = this.ref_regen;
+		this.is_regen = false;
+	}
+	update(dt){
+		if(this.tiletype === "REGEN"){
+			if(this.is_regen){ this.cur_regen_time -= dt; }
+			if(this.cur_regen_time <= 0){ this.regen(); }
+		}
 	}
 	render(l){
 		if(!this.is_active) return;
@@ -45,7 +54,20 @@ class Tile extends GameObject{
 	restore(amt){ this.change_health(amt); }
 	change_health(amt){
 		this.hp += amt;
-		if (this.hp <= 0){this.deactivate_and_deploy_powerup();}
+		if (this.hp <= 0){
+			this.deactivate_and_deploy_powerup();
+			if(this.tiletype === "REGEN"){
+				this.start_regen();
+			}
+		}
+	}
+	start_regen(){ this.is_regen = true; }
+	regen(){
+		this.cur_regen_time = this.ref_regen;
+		this.is_regen = false;
+		this.is_active = true;
+		this.hp = this.ref_hp;
+		console.log(this.sheet_points);
 	}
 	deactivate_and_deploy_powerup(){
 		this.is_active = false;

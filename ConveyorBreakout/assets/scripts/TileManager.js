@@ -6,12 +6,12 @@
  *********************************************************************************/
  
 var tile_types = {
-	nulltile:  {tiletype:"NULL",	  hp: 0, is_active:false, is_visible:false, is_regen:false, regen_time:-1, score_count:0},
-	regular:   {tiletype:"REGULAR",   hp: 1, is_active:true,  is_visible:true,  is_regen:false, regen_time: 0, score_count:1},
-	invisible: {tiletype:"INVISIBLE", hp: 2, is_active:true,  is_visible:false, is_regen:false, regen_time: 0, score_count:0},
-	rock:	   {tiletype:"ROCK", 	  hp: 2, is_active:true,  is_visible:true,  is_regen:false, regen_time: 0, score_count:1},
-	regen:	   {tiletype:"REGEN", 	  hp: 1, is_active:true,  is_visible:true,  is_regen:true,  regen_time: 5, score_count:0},
-	immune:    {tiletype:"IMMUNE",    hp:-1, is_active:true,  is_visible:true,  is_regen:false, regen_time:-1, score_count:0}
+	nulltile:  {tiletype:"NULL",	  hp: 0, is_active:false, is_visible:false, regen_time:-1, score_count:0},
+	regular:   {tiletype:"REGULAR",   hp: 1, is_active:true,  is_visible:true,  regen_time: 0, score_count:1},
+	invisible: {tiletype:"INVISIBLE", hp: 2, is_active:true,  is_visible:false, regen_time: 0, score_count:0},
+	rock:	   {tiletype:"ROCK", 	  hp: 2, is_active:true,  is_visible:true,  regen_time: 0, score_count:1},
+	regen:	   {tiletype:"REGEN", 	  hp: 1, is_active:true,  is_visible:true,  regen_time: 5, score_count:0},
+	immune:    {tiletype:"IMMUNE",    hp:-1, is_active:true,  is_visible:true,  regen_time:-1, score_count:0}
 }
 
 var tiletypes = ["NULL", "REGULAR", "INVISIBLE", "ROCK", "REGEN", "IMMUNE"];

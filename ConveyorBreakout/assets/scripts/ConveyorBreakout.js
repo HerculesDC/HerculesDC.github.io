@@ -101,19 +101,20 @@ PowerupManager.build_powerups(powerup_geometry, powerup_game_data); //reads powe
 let cmdata = {x: tile_attr.x_offset, y: tile_attr.tile_height<<1}
 let tile_attrib = {ref_width: tile_attr.tile_width, w:tile_attr.tile_width, h: tile_attr.tile_height}
 
-var nult = {tiletype:"NULL", 	 powerup:""}
-var regt = {tiletype:"REGULAR", 	 powerup:"BallEnlarge"}
+var nult = {tiletype:"NULL", 	  powerup:""}
+var regt = {tiletype:"REGULAR",   powerup:"BallEnlarge"}
 var invt = {tiletype:"INVISIBLE", powerup:"ConvReverse"}
-var rckt = {tiletype:"ROCK", 	 powerup:"BallOmni"}
-var rgnt = {tiletype:"REGEN", 	 powerup:"PaddleLaser"}
-var immt = {tiletype:"IMMUNE", 	 powerup:""}
+var rckt = {tiletype:"ROCK", 	  powerup:"BallOmni"}
+var rgnt = {tiletype:"REGEN", 	  powerup:"PaddleLaser"}
+var immt = {tiletype:"IMMUNE", 	  powerup:""}
 
 var test_tile_data1 = [immt,regt,regt,regt,regt,regt,regt,regt,regt,regt,regt,regt,immt,immt,regt,regt,regt,regt,regt,regt,regt,regt,regt,regt,regt,immt];
 var test_tile_data2 = [rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult,rckt,nult];
 var test_tile_data3 = [invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt,invt];
+var test_tile_data4 = [rgnt,rgnt,rgnt,rgnt,rgnt,rgnt,rgnt,rgnt,rgnt,rgnt,rgnt,rgnt,rgnt,rgnt];
 
-var test_conveyor_tile_data = [test_tile_data1, test_tile_data2, test_tile_data3];
-var test_conveyor_data = [{x:tile_attr.x_offset, vel: 0.5}, {x:(tile_attr.x_offset+tile_attr.tile_width), vel:-1},{x:(tile_attr.x_offset+(2*tile_attr.tile_width)), vel:-1}];
+var test_conveyor_tile_data = [test_tile_data1, test_tile_data2, test_tile_data3, test_tile_data4];
+var test_conveyor_data = [{x:tile_attr.x_offset, vel: 0.5}, {x:(tile_attr.x_offset+tile_attr.tile_width), vel:-1},{x:(tile_attr.x_offset+(2*tile_attr.tile_width)), vel:-1},{x:(tile_attr.x_offset+(3*tile_attr.tile_width)), vel:0}];
 console.log(test_conveyor_data)
 
 var wd = new World(canvas_attr);
@@ -141,10 +142,6 @@ function check_end(){
 let tgeom = {
 	ref_points: [300, 346], y: 400, ref_width: powerup_geometry.w, h: powerup_geometry.h, _layer: 0, trail_layer: 0
 }
-
-//TILEMAP TEST
-// let t = new Tile(TileManager.request_tile_info(tgeom, "REGULAR", "BallEnlarge"));
-//TILEMAP TEST END
 
 let break_unbreak = 0;
 let is_broken = false;

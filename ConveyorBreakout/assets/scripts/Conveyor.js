@@ -116,6 +116,7 @@ class Conveyor extends GameObject{
 			this.tiles[i].ref_points[1] = leading;
 			this.tiles[i].trail_layer = trail_layer;
 			calculate_tile_widths(this.tiles[i], this);
+			this.tiles[i].update(dt); //for regen
 		}
 	}
 	render(l){
