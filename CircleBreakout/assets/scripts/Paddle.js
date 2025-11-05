@@ -1,55 +1,58 @@
 class Paddle extends GameObject{
-	constructor(geometry_data, game_data, render_data){
+	constructor(game_data, render_data){
 		super("Paddle", "PADDLE");
-		//geometry
-		this.ref_w = geometry_data.w;
-		this.w = geometry_data.w;
-		this.hw = geometry_data.w*0.5;
-		this.h = geometry_data.h;
-		this.hh = geometry_data.h*0.5;
 		
-		//position: physics-related
-		this.x = game_data.x;
-		this.cx = this.x + this.hw; //center-x
-		this.r = this.x + this.w; //right
+		//geometry. Center will be assumed to be 0, 0
+		this.r = game_data.dist_from_center;
+		this.t = game_data.paddle_thickness; //drawing purposes only
 		
-		this.y = game_data.y;
-		this.b = this.y + this.h; //bottom
+		this.ref_l = game_data.l; //reference length (of arc). Might include min/max lengths later
+		this.l = this.ref_l;
+		this.hl = this.ref_l/2; //half-length, for start-stop rendering functionality
+		
+		this.angle = game_data.angle;
+		this.start_ang = this.angle - this.hl;
+		this.stop_ang = this.angle + this.hl;
 		
 		//gameplay data
-		this.ref_vel = game_data.v;
-		this.vel = game_data.v;
+		this.ref_ang_vel = game_data.ang_vel; //reference angular velocity. Might include min/max velocities later
+		this.ang_vel = game_data.ang_vel;
 		this.lives = game_data.lives;
 		this.laser_enabled = game_data.laser;
 		
 		//render data - PROCESSING
-		let renderdata = {
-			w: geometry_data.w,
-			h: geometry_data.h,
-			paddle_colour: render_data.paddle_colour,
-			laser_colour: render_data.laser_colour
-		}
-		this.sheet = Renderers.create_paddle_render(renderdata);
+		this.paddle_colour = render_data.paddle_colour;
+		this.paddle_contour = render_data.paddle_contour;
+		this.laser_colour = render_data.laser_colour;
+		
+		//this.sheet = Renderers.create_paddle_render(renderdata);
 		//render data END
 		
-		PowerupManager.register(this);
+		//Gotta register with the Interface, Physics, and Powerup systems later
+		//PowerupManager.register(this);
 	}
 	update(dt){
-		this.x += this.vel * dt * paddle_displacement;
-		this.calculate_width_center();
+		this.angle = cycle(this.angle, this.ang_vel*dt, 0, TAU);
+		this.calculate_length_center();
 	}
 	render(){
 		//source, destX, destY, destW, destH, srcX, srcY*, srcW, srcH	
-		image(this.sheet, this.x, this.y, this.w, this.h, 0, this.h*this.laser_enabled, this.w, this.h);
+		//image(this.sheet, this.x, this.y, this.w, this.h, 0, this.h*this.laser_enabled, this.w, this.h);
+		noFill();
+		stroke(this.paddle_contour);
+		let outlineFactor = 1.1;
+		strokeWeight(this.t*outlineFactor);
+		let sa = this.angle - this.hl*outlineFactor;
+		let ea = this.angle + this.hl*outlineFactor;
+		arc(this.x, this.y, this.r, this.r, sa, ea);
+		
+		stroke(this.paddle_colour);
+		strokeWeight(this.t);
+		arc(this.x, this.y, this.r, this.r, this.start_ang, this.stop_ang);
 	}
-	calculate_width_center(){
-		this.hw = this.w/2;
-		this.cx = this.x + this.hw;
-		this.r = this.x + this.w;
-	}
-	on_world_boundary_reached(world){
-		if(this.x < world.l){ this.x = world.l; }
-		if(this.r > world.r){ this.x = world.r-this.w; }	  
+	calculate_length_center(){
+		this.start_ang = this.angle - this.hl;
+		this.stop_ang = this.angle + this.hl;
 	}
 	on_collision_enter(other){
 		switch(other.type){
@@ -58,44 +61,43 @@ class Paddle extends GameObject{
 			default: return;
 		}
 	}
-	enlarge(){ this.change_width(1.5); }
-	shrink(){ this.change_width((2/3)); }
-	change_width(factor){ 
-		this.w *= factor;
-		this.calculate_width_center();
+	enlarge(){ this.change_length(1.5); }
+	shrink(){ this.change_length((2/3)); }
+	change_length(factor){ 
+		this.length *= factor;
+		this.calculate_length_center();
 	}
-	reset_width(){ 
-		this.w = this.ref_w;
-		this.calculate_width_center();
+	reset_length(){ 
+		this.l = this.ref_l;
+		this.calculate_length_center();
 	}
 	accelerate(){ this.change_speed(1.5); }
 	decelerate(){ this.change_speed((2/3)); }
 	reverse(){ this.change_speed(-1); }
-	change_speed(factor){ this.vel *= factor; }
+	change_speed(factor){ this.ang_vel *= factor; }
 	add_ball(){ this.lives++; }
 	set_laser(laser_state){ this.laser_enabled = laser_state; }
 	enable_laser(){ this.set_laser(true); }
 	disable_laser(){ this.set_laser(false); }
 	deploy_laser(){
-		return {x: this.cx, y: this.y}
+		return {x: this.x+this.r*sin(this.angle), y: this.y-this.r*cos(this.angle)}
 	}
 	activate_powerup_effect(effect){
 		switch(effect){
-			case "PaddleEnlarge": this.enlarge();		return;
-			case "PaddleShrink":  this.shrink();		return;
-			case "PaddleAccel":	  this.accelerate();	return;
-			case "PaddleDecel":	  this.decelerate();	return;
-			case "PaddleReverse": this.reverse();		return;
-			case "PaddleLaser":   this.enable_laser();	return;
-			case "ExtraBall":	  this.add_ball();		return;
+			// case "PaddleEnlarge": this.enlarge();		return;
+			// case "PaddleShrink":  this.shrink();		return;
+			// case "PaddleAccel":	  this.accelerate();	return;
+			// case "PaddleDecel":	  this.decelerate();	return;
+			// case "PaddleReverse": this.reverse();		return;
+			// case "PaddleLaser":   this.enable_laser();	return;
+			// case "ExtraBall":	  this.add_ball();		return;
 			default: return;
 		}
 	}
 	reset_state(){
-		this.w = this.ref_w;
-		this.x = (canvas_attr.CANVAS_WIDTH >> 1) - this.hw; //NEEDS REFACTOR LATER
+		this.l = this.ref_l;
 		this.calculate_width_center();
-		this.vel = this.ref_vel;
+		this.ang_vel = this.ref_ang_vel;
 		this.disable_laser();
 	}
 	reset_lives(){ this.lives = 3; }

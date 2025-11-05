@@ -7,7 +7,7 @@ class GameObject{ //for Physics objects, basically...
 		this.uuid = crypto.randomUUID();
 		this.x = 0;
 		this.y = 0;
-		PhysicsSystem.register(this);
+		GameObjectRegistry.register(this);
 	}
 	update(dt){}
 	render(){}
