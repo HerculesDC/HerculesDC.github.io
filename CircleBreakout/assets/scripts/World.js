@@ -11,7 +11,7 @@ class World extends GameObject{
 		super("World", "WORLD");
 		//world diameter/radius
 		this.wd = canvas.CANVAS_SIDE;
-		this.wr = this.wd/2;
+		this.wr = this.wd*0.5;
 		
 		//image, x-y placement
 		this.l = 0;
@@ -31,9 +31,13 @@ class World extends GameObject{
 		this.worldView.strokeWeight(0.5);
 		this.worldView.stroke(255, 255, 255);
 		this.worldView.ellipse(this.hf, this.vf, this.wd, this.wd);
+		
+		GameObjectRegistry.registerTranslateParameters({x:this.hf, y:this.vf});
 	}
 	update(dt){}
 	render(){
-		image(this.worldView, this.l, this.t);
+		//the registry object renders from the center
+		//x and y are defined in GameObject as 0
+		image(this.worldView, this.x, this.y);
 	}
 }

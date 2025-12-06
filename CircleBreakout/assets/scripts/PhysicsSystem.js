@@ -13,17 +13,10 @@ class PhysicsSystem{
 	static world = null;
 	constructor(){}
 	static check_ball_boundaries(ball){
-		if(ball.x + ball.r > PhysicsSystem.world.r || 
-		   ball.x - ball.r < PhysicsSystem.world.l ||
-		   ball.y - ball.r < PhysicsSystem.world.t || 
-		   ball.y + ball.r > PhysicsSystem.world.b){
+		let bSqDist = (ball.x * ball.x) + (ball.y * ball.y);
+		let wdSqRad = PhysicsSystem.world.wr * PhysicsSystem.world.wr;
+		if(bSqDist >= wdSqRad){
 			   ball.on_world_boundary_reached(PhysicsSystem.world);
-		   }
-	}
-	static check_paddle_boundaries(paddle){
-		if(paddle.x < PhysicsSystem.world.l || 
-		   paddle.r > PhysicsSystem.world.r){
-			   paddle.on_world_boundary_reached(PhysicsSystem.world);
 		}
 	}
 	static check_ball_paddle(ball, paddle){

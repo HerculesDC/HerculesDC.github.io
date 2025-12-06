@@ -12,21 +12,28 @@ class Ball extends GameObject{
 		this.ref_r = ball_geometry.r;
 		this.ref_d = this.ref_r*2;
 		this.r = this.ref_r;
-		this.d = this.r*2;
+		this.d = this.ref_d;
 		this.sqr = this.r*this.r; //for distance & physics calcs
 		
 		//parenting
 		this.prnt = _prnt;
-		this.prnt_offset = 0; //for grip
+		this.prnt_angle_offset = 0; //for grip and reflect
+		this.launch_angle_offset = 0;
+		do{
+			this.launch_angle_offset = random(-HALF_PI, HALF_PI);
+		}while(this.launch_angle_offset == 0);
 		this.is_parented = this.prnt !== null && this.prnt !== undefined;
 		
 		//positioning: has to be parented at start
-		this.x = this.prnt.cx + this.prnt_offset;
-		this.y = this.prnt.y - this.r;
+		this.angle = this.prnt.angle;
+		let centerBallDist = this.prnt.r + (this.prnt.t*0.5) + this.r;
+		this.x =  sin(this.prnt.angle) * centerBallDist;
+		this.y = -cos(this.prnt.angle) * centerBallDist;
 		
-		//physics
-		this.ref_vels = [ball_game_data.hv, ball_game_data.vv];
-		this.vels = [random(-ball_game_data.hv, ball_game_data.hv), ball_game_data.vv];
+		//physics. NEEDS REWORK
+		this.ref_vel = ball_game_data.vel;
+		let cur_angle = this.prnt.angle + this.prnt_angle_offset + this.launch_angle_offset;
+		this.vels = [this.ref_vel*cos(cur_angle), this.ref_vel*sin(cur_angle)];
 		this.damage = ball_game_data.damage;
 		
 		//layering and powerups
@@ -36,9 +43,6 @@ class Ball extends GameObject{
 		this.cur_layer = 0; //layers above 1 are powers: 2 is omni-ball, 3 is melt ball
 		this.has_bounced = false;
 		
-		//RENDERING RELICS:
-		// this.shadeDist = this.r/2;
-		
 		let render_data = {
 			r: ball_geometry.r,
 			ball_layers: ball_colours.ball_layers
@@ -46,24 +50,34 @@ class Ball extends GameObject{
 		
 		this.ball_sheet = Renderers.create_ball_render(render_data);
 		
+		PhysicsSystem.register(this);
+		
 		PowerupManager.register(this);
 	}
 	update(dt){
 		if(this.is_parented){
-			this.x = this.prnt.cx + this.prnt_offset;
-			this.y = this.prnt.y - this.r;
+			let centerBallDist = this.prnt.r + (this.prnt.t*0.5) + this.r;
+			this.angle = this.prnt.angle;
+			this.x = cos(this.prnt.angle) * centerBallDist;
+			this.y = sin(this.prnt.angle) * centerBallDist;
 		}else{
+			this.angle = atan2(this.y, this.x);
 			this.x += this.vels[0]*dt;
 			this.y += this.vels[1]*dt;
 		}
 	}
 	render(){
-		image(this.ball_sheet, this.x-this.r, this.y-this.r, this.d, this.d, this.ref_d*this.cur_layer, 0, this.ref_d, this.ref_d);
+		image(this.ball_sheet, this.x, this.y, this.d, this.d, this.ref_d*this.cur_layer, 0, this.ref_d, this.ref_d);
 	}
 	reset_state(){
 		this.is_parented = true;
-		this.prnt_offset = 0;
-		this.vels[0] = this.vels[0] = random(-this.ref_vels[0], this.ref_vels[0]);
+		this.prnt_angle_offset = 0;
+		this.launch_angle_offset = 0;
+		do{
+			this.launch_angle_offset = random(-HALF_PI, HALF_PI);
+		}while(this.launch_angle_offset == 0);
+		let cur_angle = this.prnt.angle + this.prnt_angle_offset + this.launch_angle_offset;
+		this.vels = [this.ref_vel*cos(cur_angle), this.ref_vel*sin(cur_angle)];
 		this.prev_layer = 0;
 		this.cur_layer = 0;
 		this.is_loop = false;
@@ -118,52 +132,18 @@ class Ball extends GameObject{
 		this.is_wrap = false;
 	}
 	on_world_boundary_reached(world){
-		if(this.is_wrap){
-			let d = this.r * 2; //to create the illusion of out-in
-			if(this.x - d > world.r){
-				this.x = world.r + d;
-				this.vels[0] *= -1;
-				this.toggle_layer();
-			}
-			if(this.x + d < world.l){
-				this.x = world.l - d;
-				this.vels[0] *= -1;
-				this.toggle_layer();
-			}
-			if(this.y + d < world.t){
-				this.y =  world.t - d;
-				this.vels[1] *= -1;
-				this.toggle_layer();
-			}
-		}
-		else if(this.is_loop){
-			let d = this.r * 2; //to create the illusion of out-in
-			if(this.x - d > world.r){ this.x = world.l - d; }
-			if(this.x + d < world.l){ this.x = world.r + d; }
-			if(this.y  < world.t){
-				this.y =  world.t -1;
-				this.vels[1] *= -1;
-			}
-		}
-		else{
-			if(this.x + this.r > world.r){
-				this.x = world.r-this.r;
-				this.vels[0] *= -1;
-			}
-			if(this.x - this.r < world.l){
-				this.x = world.l + this.r;
-				this.vels[0] *= -1;
-			}
-			if(this.y - this.r < world.t){
-				this.y = world.t + this.r;
-				this.vels[1] *= -1;
-			}
-		}
-		if(this.y + this.r > world.b){
-			this.reset_state();
-			this.prnt.reset_state();
-			this.prnt.lives--;//BAD BAD CODING, but this is a prototype...
-		}
+		//IMPLEMENTATION UNDERWAY
+		let ballAngle = atan2(this.y, this.x); //angle from center to edge of world as line that passes through center of ball
+		let velAngle = atan2(this.vels[1], this.vels[0]); //current angle at which the ball is actually travelling
+		let angleDiff = velAngle - ballAngle;
+		let newAngle = ballAngle - angleDiff;
+		newAngle -= PI; //for actual reflection
+		
+		let sNA = sin(newAngle);
+		let cNA = cos(newAngle);
+		this.vels = [this.ref_vel*cNA, this.ref_vel*sNA];
+		
+		//NOTE: Might want to implement pixel shift to prevent jittering
 	}
 	on_collision_enter(other){
 		switch(other.type){

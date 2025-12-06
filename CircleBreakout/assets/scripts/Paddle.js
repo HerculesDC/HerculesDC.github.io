@@ -24,23 +24,22 @@ class Paddle extends GameObject{
 		this.paddle_colour = render_data.paddle_colour;
 		this.paddle_contour = render_data.paddle_contour;
 		this.laser_colour = render_data.laser_colour;
-		
-		//this.sheet = Renderers.create_paddle_render(renderdata);
 		//render data END
 		
 		//Gotta register with the Interface, Physics, and Powerup systems later
 		//PowerupManager.register(this);
 	}
 	update(dt){
-		this.angle = cycle(this.angle, this.ang_vel*dt, 0, TAU);
+		
+		this.angle = cycle(this.angle, this.ang_vel*dt*InputDetector.arrow_input.horizontal, 0, TAU);
 		this.calculate_length_center();
 	}
 	render(){
-		//source, destX, destY, destW, destH, srcX, srcY*, srcW, srcH	
-		//image(this.sheet, this.x, this.y, this.w, this.h, 0, this.h*this.laser_enabled, this.w, this.h);
+		
 		noFill();
 		stroke(this.paddle_contour);
-		let outlineFactor = 1.1;
+		strokeCap(SQUARE);
+		let outlineFactor = 1.05;
 		strokeWeight(this.t*outlineFactor);
 		let sa = this.angle - this.hl*outlineFactor;
 		let ea = this.angle + this.hl*outlineFactor;
