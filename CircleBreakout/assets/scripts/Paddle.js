@@ -5,6 +5,7 @@ class Paddle extends GameObject{
 		//geometry. Center will be assumed to be 0, 0
 		this.r = game_data.dist_from_center;
 		this.t = game_data.paddle_thickness; //drawing purposes only
+		this.ht = this.t/2;
 		
 		this.ref_l = game_data.l; //reference length (of arc). Might include min/max lengths later
 		this.l = this.ref_l;
@@ -28,10 +29,10 @@ class Paddle extends GameObject{
 		
 		//Gotta register with the Interface, Physics, and Powerup systems later
 		//PowerupManager.register(this);
+		PhysicsSystem.register(this);
 	}
 	update(dt){
-		
-		this.angle = cycle(this.angle, this.ang_vel*dt*InputDetector.arrow_input.horizontal, 0, TAU);
+		this.angle = cycle(this.angle, this.ang_vel*dt*InputDetector.arrow_input.horizontal, -PI, PI);
 		this.calculate_length_center();
 	}
 	render(){

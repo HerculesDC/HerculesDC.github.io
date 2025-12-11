@@ -20,7 +20,7 @@ class Ball extends GameObject{
 		this.prnt_angle_offset = 0; //for grip and reflect
 		this.launch_angle_offset = 0;
 		do{
-			this.launch_angle_offset = random(-HALF_PI, HALF_PI);
+			this.launch_angle_offset = random(-HALF_PI/2, HALF_PI/2);
 		}while(this.launch_angle_offset == 0);
 		this.is_parented = this.prnt !== null && this.prnt !== undefined;
 		
@@ -42,6 +42,7 @@ class Ball extends GameObject{
 		this.prev_layer = 0;
 		this.cur_layer = 0; //layers above 1 are powers: 2 is omni-ball, 3 is melt ball
 		this.has_bounced = false;
+		this.damage = 1;
 		
 		let render_data = {
 			r: ball_geometry.r,
@@ -74,7 +75,7 @@ class Ball extends GameObject{
 		this.prnt_angle_offset = 0;
 		this.launch_angle_offset = 0;
 		do{
-			this.launch_angle_offset = random(-HALF_PI, HALF_PI);
+			this.launch_angle_offset = random(-HALF_PI/2, HALF_PI/2);
 		}while(this.launch_angle_offset == 0);
 		let cur_angle = this.prnt.angle + this.prnt_angle_offset + this.launch_angle_offset;
 		this.vels = [this.ref_vel*cos(cur_angle), this.ref_vel*sin(cur_angle)];
@@ -132,53 +133,27 @@ class Ball extends GameObject{
 		this.is_wrap = false;
 	}
 	on_world_boundary_reached(world){
-		//IMPLEMENTATION UNDERWAY
-		let ballAngle = atan2(this.y, this.x); //angle from center to edge of world as line that passes through center of ball
-		let velAngle = atan2(this.vels[1], this.vels[0]); //current angle at which the ball is actually travelling
-		let angleDiff = velAngle - ballAngle;
-		let newAngle = ballAngle - angleDiff;
-		newAngle -= PI; //for actual reflection
-		
-		let sNA = sin(newAngle);
-		let cNA = cos(newAngle);
-		this.vels = [this.ref_vel*cNA, this.ref_vel*sNA];
-		
-		//NOTE: Might want to implement pixel shift to prevent jittering
+		let reflection = reflect({x:this.x, y:this.y}, {x:this.vels[0], y:this.vels[1]}, this.ref_vel);
+		this.vels = [reflection.x, reflection.y];
+	}
+	get_polar_coords(){
+		// const _angle = atan2(this.y, this.x);//in relation to world origin
+		const _dist = Math.sqrt(this.x*this.x + this.y*this.y);
+		return {dist:_dist,angle:this.angle};
 	}
 	on_collision_enter(other){
-		switch(other.type){
+		let normal = {x:0,y:0};
+		let reflection = {x:0,y:0}
+		switch(other.type){ //IS THE SAME FOR NOW
 			case "PADDLE":
-				if(this.vels[1] < 0) return; //creates pass-through effect
-				this.y = other.y - this.r;
-				let old_vels = this.vels;
-				let ball_center_dist = this.x - other.cx;
-				let radius_halfside_length = this.r + other.hw;
-				let hor_offset = ball_center_dist/radius_halfside_length;
-				this.vels[0] = this.ref_vels[0] * hor_offset;
-				this.vels[1] *= -1;
+				normal = {x:other.r*cos(other.angle), y:other.r*sin(other.angle)};
+				reflection = reflect({x:this.x, y:this.y}, {x:this.vels[0], y:this.vels[1]}, this.ref_vel);
+				this.vels = [reflection.x, reflection.y];
 				return;
-			case "TILE": //GETTING COMPLEX FOR OMNIBALL!!! MAY NEED SEPARATE METHODS
-				if(!other.is_active) return;
-				if(this.cur_layer === 3) return; //no need to check for collision if melt-ball
-				//HOW TO OMNIBALL?
-				let calc_layer = this.cur_layer;
-				if(this.cur_layer === 2){ //OMNI-BALL CHECK
-					if(this.has_bounced){ //not sure if I need this
-						this.has_bounced = false;
-						return;
-					}
-					calc_layer = other.widths[0] > other.widths[1] ? 0 : 1;
-				}
-				if(other.widths[calc_layer] === 0)	return;
-				//OMNIBALL CHANGE END
-				let tile_l = other.ref_points[calc_layer];
-				let tile_r = tile_l+other.widths[calc_layer]; //here for omniball checks
-				if(this.x >= tile_l && this.x <= tile_r){
-					this.vels[1] *= -1;
-					if(this.cur_layer === 2 && !this.has_bounced) this.has_bounced = true;
-				}
-				else if(this.y >= other.y && this.y <= other.b){this.vels[0] *= -1;}
-				else {this.vels[0] *= -1; this.vels[1] *= -1;}
+			case "TILE": 
+				normal = {x:other.r*cos(other.angle), y:other.r*sin(other.angle)};
+				reflection = reflect({x:this.x, y:this.y}, {x:this.vels[0], y:this.vels[1]}, this.ref_vel);
+				this.vels = [reflection.x, reflection.y];
 				return;
 			default: return;
 		}

@@ -10,35 +10,49 @@
 class Tile extends GameObject{
 	constructor(tile_data){ //factory-generated
 		super("Tile", "TILE");
-		for(const key of Object.keys(tile_data)){this[key] = tile_data[key];}
-		this.ref_hp = this.hp;
-		this.b = this.y + this.h;
-		this.widths = tile_data.ref_points[0] < tile_data.ref_points[1] ? [this.ref_width, 0] : [0, this.ref_width];
-		this.has_powerup = this.powerup !== null && this.powerup !== undefined && this.powerup !== "";
-		this.ref_regen = this.regen_time*1000; //milliseconds
-		this.cur_regen_time = this.ref_regen;
+		
+		this.r = 300; //radius from center
+		this.t = 12; //thickness
+		this.ht = this.t/2;
+		this.hl = 0.0825; //half-length, in radians => .17 for tiles
+		this.angle = tile_data.angle;//-HALF_PI; //angle/position
+		this.start_ang = this.angle - this.hl;
+		this.stop_ang = this.angle + this.hl;
+		this.ref_ang_vel = 0.005;
+		this.cur_ang_vel = 0.005;
+		
+		this.hp = 1;
+		this.is_active = true;
+		this.tiletype = "REGULAR";
+		
+		// for(const key of Object.keys(tile_data)){this[key] = tile_data[key];}
+		// this.ref_hp = this.hp;
+		// this.b = this.y + this.h;
+		// this.widths = tile_data.ref_points[0] < tile_data.ref_points[1] ? [this.ref_width, 0] : [0, this.ref_width];
+		// this.has_powerup = this.powerup !== null && this.powerup !== undefined && this.powerup !== "";
+		// this.ref_regen = this.regen_time*1000; //milliseconds
+		// this.cur_regen_time = this.ref_regen;
+		this.powerup = null;
+		this.has_powerup = false;
 		this.is_regen = false;
+		
+		PhysicsSystem.register(this);
 	}
 	update(dt){
-		if(this.tiletype === "REGEN"){
-			if(this.is_regen){ this.cur_regen_time -= dt; }
-			if(this.cur_regen_time <= 0){ this.regen(); }
-		}
+		// if(this.tiletype === "REGEN"){
+			// if(this.is_regen){ this.cur_regen_time -= dt; }
+			// if(this.cur_regen_time <= 0){ this.regen(); }
+		// }
+		this.angle = cycle(this.angle, this.cur_ang_vel*dt*InputDetector.wasd_input.ad, -PI, PI);
+		this.start_ang = this.angle - this.hl;
+		this.stop_ang = this.angle + this.hl;
 	}
-	render(l){
+	render(){
 		if(!this.is_active) return;
-		if(this.widths[l] === 0) return;
-		if(!this.is_visible) return;
-		let l_ref = l === 0 ? "front" : "back";
-		let health_map = this.sheet_points.length - this.hp;
-		if(this.tiletype === "IMMUNE"){health_map = 0;}
-		image(TileManager.tilesheet, //source tilesheet
-			  this.ref_points[l], this.y, this.widths[l], this.h, //conveyor points
-			  //source points, based on health and layer
-			  this.sheet_points[health_map][l_ref].x, 
-			  this.sheet_points[health_map][l_ref].y, 
-			  this.sheet_points[health_map][l_ref].w, 
-			  this.sheet_points[health_map][l_ref].h);
+		noFill();
+		stroke(0, 0, 1);
+		strokeWeight(this.t);
+		arc(0, 0, this.r, this.r, this.start_ang, this.stop_ang);
 	}
 	reveal(){ //breaking single responsibility. Rethink
 		this.is_visible = true;
@@ -78,14 +92,6 @@ class Tile extends GameObject{
 	  switch(other.type){
 		  case "BALL":
 			if(!this.is_active) return;
-			let other_layer = other.cur_layer;
-			if(other.cur_layer === 2){ //2: omni-ball
-				other_layer = this.widths[0] > this.widths[1] ? 0 : 1;
-			}
-			if(other.cur_layer === 3){ //3: melt-ball 
-				other_layer = other.prev_layer;
-			}
-			if(this.widths[other_layer] === 0) return;
 			this.take_damage(other.damage);
 			break;
 		case "LASER":

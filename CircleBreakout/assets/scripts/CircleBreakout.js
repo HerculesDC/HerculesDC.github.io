@@ -61,6 +61,10 @@ new World(canvas_attr);
 new BlackHole()
 new Paddle(paddle_data, paddle_colours);
 new Ball(ball_geometry, ball_game_data, ball_colours, GameObjectRegistry.GOMap.get("PADDLE")[0]);
+const tileNum = 36;
+for(var i = 0; i < tileNum; ++i){
+	new Tile({angle:-PI+(i*TAU)/tileNum})
+}
 
 function draw(){
 	background(4.25, 0.25, 0.55);

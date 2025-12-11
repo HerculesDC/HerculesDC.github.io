@@ -38,7 +38,7 @@ class GameObjectRegistry{
 		}
 		
 		//DEBUG DRAW
-		//Debug.draw();
+		// Debug.draw();
 		//DEBUG DRAW END
 		
 		pop();

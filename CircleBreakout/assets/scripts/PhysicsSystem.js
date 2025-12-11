@@ -20,47 +20,28 @@ class PhysicsSystem{
 		}
 	}
 	static check_ball_paddle(ball, paddle){
-		let bpx = ball.x;
-		let bpy = ball.y;
 		
-		if(ball.x < paddle.x) 		bpx = paddle.x;
-		else if(ball.x > paddle.r)	bpx = paddle.r;
-		if(ball.y < paddle.y)		bpy = paddle.y;
-		else if(ball.y > paddle.b)	bpy = paddle.b;
-		
-		let dX = ball.x - bpx;
-		let dY = ball.y - bpy;
-		let dist = (dX*dX) + (dY*dY);
-		
-		if(dist <= ball.sqr){
-			ball.on_collision_enter(paddle);
-			paddle.on_collision_enter(ball);
+		const ballCoords = ball.get_polar_coords();
+		if(ballCoords.angle >= paddle.start_ang && ballCoords.angle <= paddle.stop_ang){
+			const inner = paddle.r - paddle.ht;
+			const outer = paddle.r + paddle.ht;
+			if(ballCoords.dist >= inner && ballCoords.dist <= outer){
+				ball.on_collision_enter(paddle);
+			}
 		}
 	}
 	static check_ball_tile(ball, tile){
 		if(!tile.is_active) return;
 		
-		let ref_index = tile.widths[0] < tile.widths[1] ? 1 : 0;
-		
-		let tile_l = tile.ref_points[ref_index];
-		let tile_r = tile.ref_points[ref_index] + tile.widths[ref_index];
-		
-		let bpx = ball.x;
-		let bpy = ball.y;
-		
-		if(ball.x < tile_l) 	 bpx = tile_l;
-		else if(ball.x > tile_r) bpx = tile_r;
-		if(ball.y < tile.y)		 bpy = tile.y;
-		else if(ball.y > tile.b) bpy = tile.b;
-		
-		let dX = ball.x - bpx;// dX *= dX;
-		let dY = ball.y - bpy;// dY *= dY;
-		let dist = dX*dX + dY*dY;
-		
-		if(dist <= ball.sqr){
-			ball.on_collision_enter(tile);
-			tile.on_collision_enter(ball);
-		} 
+		const ballCoords = ball.get_polar_coords();
+		if(ballCoords.angle >= tile.start_ang && ballCoords.angle <= tile.stop_ang){
+			const inner = tile.r - tile.ht;
+			const outer = tile.r + tile.ht;
+			if(ballCoords.dist >= inner && ballCoords.dist <= outer){
+				ball.on_collision_enter(tile);
+				tile.on_collision_enter(ball);
+			}
+		}
 	}
 	static check_laser_boundaries(laser){
 		if(laser.b < 0){
@@ -108,8 +89,7 @@ class PhysicsSystem{
 					PhysicsSystem.check_laser_boundaries(ls);
 				}
 			}
-			for(const pd of PhysicsSystem.paddles){ 
-				PhysicsSystem.check_paddle_boundaries(pd);
+			for(const pd of PhysicsSystem.paddles){
 				PhysicsSystem.check_ball_paddle(bl, pd);
 				for(const pw of PhysicsSystem.powerups){
 					PhysicsSystem.check_paddle_powerup(pd, pw);
