@@ -58,7 +58,7 @@ let ball_game_data = { vel: 0.5,
 let ball_colours = game_colours.ball;
 
 new World(canvas_attr);
-new BlackHole()
+new BlackHole({radius:paddle_data.dist_from_center});
 new Paddle(paddle_data, paddle_colours);
 new Ball(ball_geometry, ball_game_data, ball_colours, GameObjectRegistry.GOMap.get("PADDLE")[0]);
 const tileNum = 36;

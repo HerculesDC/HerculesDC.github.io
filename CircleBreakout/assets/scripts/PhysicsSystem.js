@@ -11,12 +11,21 @@ class PhysicsSystem{
 	static powerups = [];
 	static lasers = [];
 	static world = null;
+	static blackhole = null;
 	constructor(){}
 	static check_ball_boundaries(ball){
 		let bSqDist = (ball.x * ball.x) + (ball.y * ball.y);
 		let wdSqRad = PhysicsSystem.world.wr * PhysicsSystem.world.wr;
-		if(bSqDist >= wdSqRad){
+		if (bSqDist >= wdSqRad){
 			   ball.on_world_boundary_reached(PhysicsSystem.world);
+		}
+	}
+	static check_ball_blackhole(ball){
+		let bSqDist = (ball.x*ball.x) + (ball.y * ball.y);
+		let bhSqRad = PhysicsSystem.blackhole.radius * PhysicsSystem.blackhole.radius;
+		if (bSqDist <= bhSqRad) {
+			ball.on_blackhole_enter(PhysicsSystem.blackhole);
+			PhysicsSystem.blackhole.on_ball_enter(ball);
 		}
 	}
 	static check_ball_paddle(ball, paddle){
@@ -27,6 +36,7 @@ class PhysicsSystem{
 			const outer = paddle.r + paddle.ht;
 			if(ballCoords.dist >= inner && ballCoords.dist <= outer){
 				ball.on_collision_enter(paddle);
+				paddle.on_collision_enter(ball);
 			}
 		}
 	}
@@ -82,6 +92,7 @@ class PhysicsSystem{
 	static update(dt){
 		for (const bl of PhysicsSystem.balls){
 			PhysicsSystem.check_ball_boundaries(bl);
+			PhysicsSystem.check_ball_blackhole(bl);
 			for(const tl of PhysicsSystem.tiles){ 
 				PhysicsSystem.check_ball_tile(bl, tl);
 				for(const ls of PhysicsSystem.lasers){
@@ -111,7 +122,13 @@ class PhysicsSystem{
 					return true;
 				}
 				return false;
-			default:		return false;
+			case "BLACKHOLE":
+				if(PhysicsSystem.blackhole === null){
+					PhysicsSystem.blackhole = _obj;
+					return true;
+				}
+				return false
+			default: return false;
 		}
 	}
 	static register_to_list(gameobject, list){

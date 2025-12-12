@@ -136,8 +136,11 @@ class Ball extends GameObject{
 		let reflection = reflect({x:this.x, y:this.y}, {x:this.vels[0], y:this.vels[1]}, this.ref_vel);
 		this.vels = [reflection.x, reflection.y];
 	}
+	on_blackhole_enter(blackhole){
+		console.log("SWALLOWED!");
+		this.vels = [0,0];
+	}
 	get_polar_coords(){
-		// const _angle = atan2(this.y, this.x);//in relation to world origin
 		const _dist = Math.sqrt(this.x*this.x + this.y*this.y);
 		return {dist:_dist,angle:this.angle};
 	}
