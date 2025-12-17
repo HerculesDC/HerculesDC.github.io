@@ -10,8 +10,6 @@ class InputDetector{
 	constructor(){}
 	static process_input(){
 		
-		/******CORRECT TO STATIC!!!******/
-		
 		//Horizontal Input (Arrows)
 		if (keyIsDown(LEFT_ARROW)){ InputDetector.arrow_input.horizontal = -1; }
 		if (keyIsDown(RIGHT_ARROW)){ InputDetector.arrow_input.horizontal = 1; }
