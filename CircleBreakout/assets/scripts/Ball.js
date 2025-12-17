@@ -59,6 +59,9 @@ class Ball extends GameObject{
 		if(this.is_parented){
 			let centerBallDist = this.prnt.r + (this.prnt.t*0.5) + this.r;
 			this.angle = this.prnt.angle;
+			let cur_angle = this.prnt.angle + this.prnt_angle_offset + this.launch_angle_offset;
+			//must account for current parent angle, therefore:
+			this.vels = [this.ref_vel*cos(cur_angle), this.ref_vel*sin(cur_angle)];
 			this.x = cos(this.prnt.angle) * centerBallDist;
 			this.y = sin(this.prnt.angle) * centerBallDist;
 		}else{

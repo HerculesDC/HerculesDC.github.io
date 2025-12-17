@@ -65,7 +65,7 @@ for(var j = 0; j < h; ++j){
 }
 
 function draw(){
-	background(4.25, 0.25, 0.55);
+	background(4.25, 0.15, 0.25);
 	InputDetector.process_input();
 	GameObjectRegistry.update(deltaTime);
 	GameObjectRegistry.render();

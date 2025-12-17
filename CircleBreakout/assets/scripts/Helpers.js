@@ -66,39 +66,39 @@ class Debug{
 		let paddle = GameObjectRegistry.GOMap.get("PADDLE")[0];
 		let ball   = GameObjectRegistry.GOMap.get("BALL")[0];
 		
-		// let iAngle = atan2(ball.vels[1], ball.vels[0]);
-		// let rAngle = iAngle - ball.angle;
+		let iAngle = atan2(ball.vels[1], ball.vels[0]);
+		let rAngle = iAngle - ball.angle;
 		
-		// //?
-		// rAngle = nAngle - rAngle;
+		//?
+		//rAngle = nAngle - rAngle;
 		
-		// let ballSin = sin(ball.angle);
-		// let ballCos = cos(ball.angle);
+		let ballSin = sin(ball.angle);
+		let ballCos = cos(ball.angle);
 		
-		// let bVSin = sin(iAngle);
-		// let bVCos = cos(iAngle);
+		let bVSin = sin(iAngle);
+		let bVCos = cos(iAngle);
 		
-		// let bRSin = sin(rAngle);
-		// let bRCos = cos(rAngle);
+		let bRSin = sin(rAngle);
+		let bRCos = cos(rAngle);
 		
-		// strokeWeight(1);
-		// stroke(0, 1, 1); //red-Normal
-		// line(0, 0, world.wr*ballCos, world.wr*ballSinDist
-		// stroke(1, 1, 1); //yellow-Incident
-		// let ext = 150;
-		// line(ball.x, ball.y, ball.x+(ext+world.wr)*bVCos, ball.y+(ext+world.wr)*bVSin);
-		// stroke(2, 1, 1); //green-Reflection
-		// line(ball.x, ball.y, ball.x + world.wr*bRCos, ball.y+world.wr*bRSin);
+		strokeWeight(1);
+		stroke(0, 1, 1); //red-Normal
+		line(0, 0, world.wr*ballCos, world.wr*ballSin);
+		stroke(1, 1, 1); //yellow-Incident
+		let ext = 150;
+		line(ball.x, ball.y, ball.x+(ext+world.wr)*bVCos, ball.y+(ext+world.wr)*bVSin);
+		stroke(2, 1, 1); //green-Reflection
+		line(ball.x, ball.y, ball.x + world.wr*bRCos, ball.y+world.wr*bRSin);
 		
-		noStroke();
-		textAlign(LEFT);
-		fill(0, 1, 1);
-		text("Ball Angle:\t"+ball.angle, 0, 100);
-		fill(1, 1, 1);
-		text("Ball Dist:\t"+ball.get_polar_coords().dist, 0, 120);
-		fill(2, 1, 1);
-		text("Paddle Angles:\t"+paddle.start_ang+","+paddle.stop_ang, 0, 140);
-		fill(3, 1, 1);
-		text("Paddle Dist:\t"+paddle.r, 0, 160);
+		// noStroke();
+		// textAlign(LEFT);
+		// fill(0, 1, 1);
+		// text("Ball Angle:\t"+ball.angle, 0, 100);
+		// fill(1, 1, 1);
+		// text("Ball Dist:\t"+ball.get_polar_coords().dist, 0, 120);
+		// fill(2, 1, 1);
+		// text("Paddle Angles:\t"+paddle.start_ang+","+paddle.stop_ang, 0, 140);
+		// fill(3, 1, 1);
+		// text("Paddle Dist:\t"+paddle.r, 0, 160);
 	}
 }
