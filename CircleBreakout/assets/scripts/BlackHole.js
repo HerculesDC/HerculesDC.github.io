@@ -21,10 +21,6 @@ class BlackHole extends GameObject{
 		this.imgDiam = (this.imgDiam >= 0)? this.imgDiam - 1 : this.diameter;
 	}
 	render(){
-		noFill();
-		stroke(0, 0, 1);
-		strokeWeight(2);
-		ellipse(this.x, this.y, this.radius, this.radius);
 		image(this.img, this.x, this.y);
 		image(this.img, this.x, this.y, this.imgDiam, this.imgDiam);
 	}

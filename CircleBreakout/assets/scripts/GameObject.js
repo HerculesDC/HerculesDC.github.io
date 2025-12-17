@@ -1,4 +1,4 @@
-class GameObject{ //for Physics objects, basically...
+class GameObject{
 	static counter = 0;
 	constructor(_name, _type){
 		this.name = _name + GameObject.counter;

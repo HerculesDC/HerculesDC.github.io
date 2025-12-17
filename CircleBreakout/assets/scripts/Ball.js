@@ -138,7 +138,7 @@ class Ball extends GameObject{
 	}
 	on_blackhole_enter(blackhole){
 		console.log("SWALLOWED!");
-		this.vels = [0,0];
+		this.reset_state();
 	}
 	get_polar_coords(){
 		const _dist = Math.sqrt(this.x*this.x + this.y*this.y);

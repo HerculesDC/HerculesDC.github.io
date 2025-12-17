@@ -27,12 +27,6 @@ function setup() {
 
 frameRate(120);
 
-// function windowResized(){ //not working?
-	// let attr = calculateCanvasAttrs();
-    // let c = resizeCanvas(attr.CANVAS_SIDE, attr.CANVAS_SIDE);
-    // c.position(attr.LPADDING, 75, "float:center");
-// }
-
 let paddle_data = {
 	dist_from_center: canvas_attr.CANVAS_SIDE/8,
 	paddle_thickness: canvas_attr.CANVAS_SIDE/75,
@@ -62,13 +56,17 @@ new BlackHole({radius:paddle_data.dist_from_center});
 new Paddle(paddle_data, paddle_colours);
 new Ball(ball_geometry, ball_game_data, ball_colours, GameObjectRegistry.GOMap.get("PADDLE")[0]);
 const tileNum = 36;
-for(var i = 0; i < tileNum; ++i){
-	new Tile({angle:-PI+(i*TAU)/tileNum})
+
+let h = 7
+for(var j = 0; j < h; ++j){
+	for(var i = 0; i < tileNum; ++i){
+		new Tile({radius: 300+j*17, thickness: 15, angle:-PI+(i*TAU)/tileNum, colour: 1+j*(PI/h)})
+	}	
 }
 
 function draw(){
 	background(4.25, 0.25, 0.55);
-	InputDetector.process_input(); //collected input
-	GameObjectRegistry.update(deltaTime); //rig input in a bit
+	InputDetector.process_input();
+	GameObjectRegistry.update(deltaTime);
 	GameObjectRegistry.render();
 }

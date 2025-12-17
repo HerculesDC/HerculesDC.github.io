@@ -11,15 +11,15 @@ class Tile extends GameObject{
 	constructor(tile_data){ //factory-generated
 		super("Tile", "TILE");
 		
-		this.r = 300; //radius from center
-		this.t = 12; //thickness
+		this.r = tile_data.radius; //radius from center
+		this.t = tile_data.thickness; //thickness
 		this.ht = this.t/2;
 		this.hl = 0.0825; //half-length, in radians => .17 for tiles
 		this.angle = tile_data.angle;//-HALF_PI; //angle/position
 		this.start_ang = this.angle - this.hl;
 		this.stop_ang = this.angle + this.hl;
-		this.ref_ang_vel = 0.005;
-		this.cur_ang_vel = 0.005;
+		this.ref_ang_vel = 0.0025;
+		this.cur_ang_vel = 0.0025;
 		
 		this.hp = 1;
 		this.is_active = true;
@@ -35,6 +35,7 @@ class Tile extends GameObject{
 		this.powerup = null;
 		this.has_powerup = false;
 		this.is_regen = false;
+		this.colour = tile_data.colour; //just the hue for now
 		
 		PhysicsSystem.register(this);
 	}
@@ -50,7 +51,7 @@ class Tile extends GameObject{
 	render(){
 		if(!this.is_active) return;
 		noFill();
-		stroke(0, 0, 1);
+		stroke(this.colour, 0.75, 0.75);
 		strokeWeight(this.t);
 		arc(0, 0, this.r, this.r, this.start_ang, this.stop_ang);
 	}
