@@ -27,7 +27,16 @@ class World extends GameObject{
 		
 		//RENDERING INFO => WILL LIKELY BE MOVED TO A DIFFERENT CLASS LATER
 		this.worldView = createGraphics(this.wd, this.wd);
-		this.worldView.noFill();
+		this.worldView.fill(0, 0, 0x0F);
+		this.worldView.ellipse(this.hf, this.vf, this.wd, this.wd);
+		for(let i = 0; i < 150; ++i){
+			this.worldView.noFill();
+			this.worldView.strokeWeight(random(0.5, 4.5));
+			this.worldView.stroke(random(200, 255), random(200,255), random(200, 255));
+			let a = random(TAU);
+			let d = random(this.wd/8, this.wr);
+			this.worldView.point(this.hf+d*cos(a), this.vf+d*sin(a));
+		}
 		this.worldView.strokeWeight(0.5);
 		this.worldView.stroke(255, 255, 255);
 		this.worldView.ellipse(this.hf, this.vf, this.wd, this.wd);

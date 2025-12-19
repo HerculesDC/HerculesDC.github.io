@@ -30,7 +30,7 @@ frameRate(120);
 let scene = new Scene(canvas_attr);
 
 function draw(){
-	background(4.25, 0.15, 0.20);
+	// background(4.25, 0.15, 0.20);
 	InputDetector.process_input();
 	scene.update(deltaTime);
 	scene.render();
