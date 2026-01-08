@@ -14,4 +14,5 @@ platforms/libraries/frameworks.
 
 [Conveyor Breakout](./ConveyorBreakout/ConveyorBreakout.html) A long-standing ambition, finally turned prototype
 
+[Circle Breakout](./CircleBreakout/CircleBreakout.html) Because why stop at conveyors?
 Bookmark for updates 🤗
