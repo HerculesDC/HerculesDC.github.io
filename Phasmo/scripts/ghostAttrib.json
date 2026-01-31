@@ -118,5 +118,20 @@
 		"evidence":[2, 4, 5],
 		"hunting":[5, 2, 5],
 		"extra":""
+	},
+	"Obambo":{
+		"evidence":[1, 2, 4],
+		"hunting":[5, 2, 5],
+		"extra":""
+	},
+	"Gallu":{
+		"evidence":[0, 1, 6],
+		"hunting":[5, 2, 5],
+		"extra":""
+	},
+	"Dayan":{
+		"evidence":[0, 5, 6],
+		"hunting":[5, 2, 5],
+		"extra":""
 	}
 }
