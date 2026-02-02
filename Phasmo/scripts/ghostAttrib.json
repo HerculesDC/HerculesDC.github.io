@@ -2,136 +2,136 @@
 	"Spirit":{
 		"evidence":[0, 2, 6],
 		"hunting":[5,2,5],
-		"extra":""
+		"extra":"3 MIN"
 		},
 	"Wraith":{
 		"evidence":[0,4,6],
 		"hunting":[5,2, 5],
-		"extra":""
+		"extra":"NO SALT"
 	},
 	"Phantom":{
 		"evidence":[1, 4, 6],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"NO PHOTO"
 	},
 	"Poltergeist":{
 		"evidence":[1, 2, 6],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"SUPER THROW"
 	},
 	"Banshee":{
 		"evidence":[1, 4, 5],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"LOUD SCREAM"
 	},
 	"Jinn":{
 		"evidence":[0, 1, 3],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"BREAKER ON"
 	},
 	"Mare":{
 		"evidence":[2, 5, 6],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"NO LIGHT"
 	},
 	"Revenant":{
 		"evidence":[2, 3, 5],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"SLOW BLIND"
 	},
 	"Shade":{
 		"evidence":[0, 2, 3],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"SUPER SHY"
 	},
 	"Demon":{
 		"evidence":[1, 2, 3],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"SUPER ANGRY"
 	},
 	"Yurei":{
 		"evidence":[3, 4, 5],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"CLOSES DOOR"
 	},
 	"Oni":{
 		"evidence":[0, 3, 4],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"SUPER VISIBLE"
 	},
 	"Youkai":{
 		"evidence":[4, 5, 6],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"DON'T TALK"
 	},
 	"Hantu":{
 		"evidence":[1, 3, 5],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"FOG BREATH"
 	},
 	"Goryo":{
 		"evidence":[0, 1, 4],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"ONE ROOM"
 	},
 	"Myling":{
 		"evidence":[0, 1, 2],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"SUPER QUIET"
 	},
 	"Onryo":{
 		"evidence":[3, 5, 6],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"NO FIRE"
 	},
 	"the Twins":{
 		"evidence":[0, 3, 6],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"TWO SPEEDS"
 	},
 	"Raiju":{
 		"evidence":[0, 4, 5],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"BATTERY POWERED"
 	},
 	"Obake":{
 		"evidence":[0, 1, 5],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"SHAPE SHIFTER"
 	},
 	"the Mimic":{
 		"evidence":[1, 3, 5, 6],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"WILD CARD"
 	},
 	"Moroi":{
 		"evidence":[2, 3, 6],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"INSANE FAST"
 	},
 	"Deogen":{
 		"evidence":[2, 4, 6],
 		"hunting":[4, 2, 3],
-		"extra":""
+		"extra":"SEES YOU"
 	},
 	"Thaye":{
 		"evidence":[2, 4, 5],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"OLD AGE"
 	},
 	"Obambo":{
 		"evidence":[1, 2, 4],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"BIPOLAR DISORDER"
 	},
 	"Gallu":{
 		"evidence":[0, 1, 6],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"PROTECTION MOOD"
 	},
 	"Dayan":{
 		"evidence":[0, 5, 6],
 		"hunting":[5, 2, 5],
-		"extra":""
+		"extra":"DON'T MOVE"
 	}
 }
