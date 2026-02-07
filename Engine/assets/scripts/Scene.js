@@ -1,5 +1,4 @@
 class Scene{
-	static scene_index = 0;
 	constructor(scene_data){
 		//__of__is for arrays, __in__ is for objects)
 		for (let key in scene_data){
