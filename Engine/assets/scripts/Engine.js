@@ -1,5 +1,3 @@
-// Asynchronous IIFE
-
 async function init(){
 	let mod = await import("./GameLoader.js");
 	
@@ -25,9 +23,8 @@ function cycle(cur, spd, low, high){
 	return cur + spd - (high-low)*((cur > high)-(cur < low));
 }
 
+// Asynchronous IIFE
 (async () => {
-	
-	var hue = 0;
   
 	let gameArea = await init();
 	
@@ -35,23 +32,22 @@ function cycle(cur, spd, low, high){
 	const app = new PIXI.Application();
 
 	// Intialize the application.
-	await app.init({ background: {h:30, s:100, v:100}, resizeTo: gameArea });
+	await app.init({ background: {h:250, s:100, v:100}, resizeTo: gameArea });
 	
 	const graphics = new PIXI.Graphics();
-	
-	graphics.fill({h:hue, s:100, v:100});
+	graphics.fill({h:270, s:50, v:100}).arc(0,0, 100, 0.5*Math.PI, 1*Math.PI);
+	const tex = app.renderer.textureGenerator.generateTexture({target:graphics});
+	//apparently, can't add event to graphics. 
+	//Must create texture from graphics then create sprite from texture
+	//then the texture can be converted into a Button
+	//question is: how can this work to recolor the sprite?
 
 	// Then adding the application's canvas to the DOM body.
 	gameArea.appendChild(app.canvas);
 	
-	app.stage.addChild(graphics);
+	app.stage.addChild(tex);
+	
 	app.ticker.add(()=>{
-		graphics.clear();
-		hue = cycle(hue, 0.25, 0, 360);
-		graphics.rect(100, 100, 100, 100);
-		graphics.fill({h:hue, s:100, v:100});
 		
-		graphics.circle(400, 400, 150);
-		graphics.fill({h:360-hue, s:100, v:100});
 	});
 })();
