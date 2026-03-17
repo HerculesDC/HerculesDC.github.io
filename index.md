@@ -10,6 +10,8 @@ platforms/libraries/frameworks.
 
 [Space Shooter Dev Diary](./SpaceShooter/SpaceShooter.html) Click here for a dev log of a generic space shooter game, developed almost exclusively in code (particle systems included).
 
+[Treasure Hunt](./TreasureHunt/index.html) A Treasure Radar mechanics in the style of Knuckles's radar from Sonic Adventure.
+
 [Silly Games](./SillyGames/SillyGames.html) Because someone thought this would be a good idea...
 
 [Conveyor Breakout](./ConveyorBreakout/ConveyorBreakout.html) A long-standing ambition, finally turned prototype
